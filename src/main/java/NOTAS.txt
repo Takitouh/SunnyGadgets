@@ -1,0 +1,2 @@
+20/05/2025 --- Se esta formando el esqueleto del proyecto, se supone que los service, repository y controller
+deberian andar, falta implementar la logica del CRUD y la adicional, seguramente luego usaremos DTO's
