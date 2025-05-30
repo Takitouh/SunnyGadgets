@@ -20,7 +20,7 @@ public class Product {
     @Nonnull @NotBlank
     private String description;
     @Min(1)
-    private int unitPrice;
+    private int Price;
     @Min(0)
     private int stock;
     @ManyToOne

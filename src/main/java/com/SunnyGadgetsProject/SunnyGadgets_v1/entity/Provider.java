@@ -14,7 +14,7 @@ import java.util.Set;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class Provider extends Customer {
+public class Provider extends UserSunnyGadgets {
     @Size(max = 10, min = 10) @NotBlank @Nonnull
     private String phone;
 

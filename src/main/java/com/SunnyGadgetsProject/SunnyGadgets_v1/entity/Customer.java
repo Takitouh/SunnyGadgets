@@ -1,30 +1,25 @@
 package com.SunnyGadgetsProject.SunnyGadgets_v1.entity;
 
-import jakarta.annotation.Nonnull;
-import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.MappedSuperclass;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
-import lombok.Getter;
-import lombok.Setter;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
+import lombok.*;
 
-import java.sql.Timestamp;
+@Getter
+@Setter
+@Entity
+@AllArgsConstructor
+@NoArgsConstructor
+@MappedSuperclass
+public class Customer extends UserSunnyGadgets{
 
+  @NotBlank @Column(name = "Address", nullable = false)
+    private String address;
 
-@MappedSuperclass @Getter @Setter
-public class Customer {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
-    @NotBlank @Nonnull
-    private String name;
-    @Column(unique = true)
-            @Email
-    private String email;
-    @CreationTimestamp
-    private Timestamp creationDate;
-    @UpdateTimestamp
-    private Timestamp modificationDate;
+  @Min(10) @Max(10) @NotBlank @Column(name = "phoneNumber", nullable = false)
+    private String phone;
 
 }

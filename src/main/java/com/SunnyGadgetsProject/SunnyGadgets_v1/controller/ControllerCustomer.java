@@ -30,14 +30,14 @@ public class ControllerCustomer {
 
     @PostMapping("/create")
     @PreAuthorize("hasAuthority('CREATE')")
-    public ResponseEntity<Customer> createCustomer(@RequestBody Customer customer) {
-        return serviceCustomer.createCustomer(customer);
+    public ResponseEntity<Customer> createCustomer(@RequestBody Customer userSunnyGadgets) {
+        return serviceCustomer.createCustomer(userSunnyGadgets);
     }
 
     @PostMapping("/createBatch")
     @PreAuthorize("hasAuthority('CREATE')")
-    public ResponseEntity<List<Customer>> createCustomer(@RequestBody List<Customer> customers) {
-        return serviceCustomer.createCustomer(customers);
+    public ResponseEntity<List<Customer>> createCustomer(@RequestBody List<Customer> userSunnyGadgets) {
+        return serviceCustomer.createCustomer(userSunnyGadgets);
     }
 
     @DeleteMapping("/delete/{id}")
@@ -48,7 +48,7 @@ public class ControllerCustomer {
 
     @PutMapping("/update/{id}")
     @PreAuthorize("hasAuthority('UPDATE')")
-    public ResponseEntity<Customer> updateCustomer(@RequestBody Customer customer, @PathVariable Long id) {
-        return serviceCustomer.updateCustomer(customer, id);
+    public ResponseEntity<Customer> updateCustomer(@RequestBody Customer userSunnyGadgets, @PathVariable Long id) {
+        return serviceCustomer.updateCustomer(userSunnyGadgets, id);
     }
 }

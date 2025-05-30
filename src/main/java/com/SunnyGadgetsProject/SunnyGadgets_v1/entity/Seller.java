@@ -9,7 +9,7 @@ import java.util.List;
 @Entity @Getter
 @Setter @ToString
 @NoArgsConstructor @AllArgsConstructor
-public class Seller extends Customer {
+public class Seller extends UserSunnyGadgets {
     @OneToMany(mappedBy = "seller")
     private List<Sale> sales;
 
