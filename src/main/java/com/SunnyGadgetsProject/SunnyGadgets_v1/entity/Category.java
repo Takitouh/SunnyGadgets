@@ -8,13 +8,12 @@ import lombok.*;
 import java.util.Set;
 
 @Entity
-@Getter @Setter @ToString
+@Getter @Setter
 @NoArgsConstructor
-@AllArgsConstructor
 public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    private Long id_category;
     @NotBlank @Nonnull
     private String name;
     @NotBlank @Nonnull

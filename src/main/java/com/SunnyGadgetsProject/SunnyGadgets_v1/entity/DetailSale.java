@@ -10,13 +10,12 @@ import lombok.*;
 @Entity
 @Getter
 @Setter
-@ToString
 @NoArgsConstructor
-@AllArgsConstructor
+
 public class DetailSale {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    private long id_detailsale;
     @Min(1)
     private int quantity;
     @Min(1)

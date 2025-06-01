@@ -2,3 +2,6 @@
 deberian andar, falta implementar la logica del CRUD y la adicional, seguramente luego usaremos DTO's
 30/05/2025 --- Se implemento la logica del CRUD en los service, AUNQUE aun hay que analizar el modelo entidad relacion
 Se implemento la clase Customer con su repository y service
+01/06/2025 --- Se añadio una nueva clase llamada Employee que extendera de UserSunnyGadgets y se implemento su repository
+y service
+# Compilo correctamente y se creo la base de datos con las entidades aunque hay que revisar a fondo las relaciones

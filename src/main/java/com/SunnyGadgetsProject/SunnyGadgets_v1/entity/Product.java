@@ -9,12 +9,11 @@ import lombok.*;
 import java.util.Set;
 
 @Entity
-@Getter @Setter @ToString @NoArgsConstructor
-@AllArgsConstructor
+@Getter @Setter @NoArgsConstructor
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    private Long id_product;
     @Nonnull @NotBlank
     private String name;
     @Nonnull @NotBlank

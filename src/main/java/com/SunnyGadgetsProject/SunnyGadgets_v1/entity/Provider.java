@@ -11,9 +11,8 @@ import java.util.Set;
 @Entity
 @Getter
 @Setter
-@ToString
 @NoArgsConstructor
-@AllArgsConstructor
+@AttributeOverride(name = "id", column = @Column(name = "id_provider"))
 public class Provider extends UserSunnyGadgets {
     @Size(max = 10, min = 10) @NotBlank @Nonnull
     private String phone;

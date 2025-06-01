@@ -10,13 +10,11 @@ import java.util.List;
 
 @Entity @Getter
 @Setter
-@ToString
 @NoArgsConstructor
-@AllArgsConstructor
 public class Sale {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    private Long id_sale;
     @CurrentTimestamp
     private Timestamp salecreatedAt;
     @Min(1)

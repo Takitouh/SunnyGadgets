@@ -4,11 +4,15 @@ import com.SunnyGadgetsProject.SunnyGadgets_v1.entity.Customer;
 import com.SunnyGadgetsProject.SunnyGadgets_v1.service.IServiceCustomer;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
+@EnableMethodSecurity(prePostEnabled = true)
+@PreAuthorize("denyAll()")
+@RequestMapping("/api/v1/customer")
 public class ControllerCustomer {
     private final IServiceCustomer serviceCustomer;
 
