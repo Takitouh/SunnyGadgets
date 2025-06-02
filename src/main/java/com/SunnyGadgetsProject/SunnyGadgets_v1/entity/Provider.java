@@ -13,7 +13,7 @@ import java.util.Set;
 @Setter
 @NoArgsConstructor
 @AttributeOverride(name = "id", column = @Column(name = "id_provider"))
-public class Provider extends UserSunnyGadgets {
+public class Provider extends Employee {
     @Size(max = 10, min = 10) @NotBlank @Nonnull
     private String phone;
 

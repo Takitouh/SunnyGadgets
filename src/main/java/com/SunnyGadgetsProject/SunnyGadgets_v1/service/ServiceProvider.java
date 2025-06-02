@@ -70,7 +70,7 @@ public class ServiceProvider implements IServiceProvider {
         providerOptional.get().setPhone(provider.getPhone());
         //We have to see if is necessary this because it should update automatically
         providerOptional.get().setModificationDate(provider.getModificationDate());
-
+        providerOptional.get().setSalary(provider.getSalary());
         providerOptional.get().setProductSet(provider.getProductSet());
 
         // Agrega otros campos según tu entidad Provider
