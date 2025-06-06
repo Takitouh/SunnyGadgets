@@ -27,6 +27,6 @@ public class Product {
     private Category category;
 
     @ManyToMany(mappedBy = "productSet")
-    Set<Provider> setProviders;
+    private Set<Provider> setProviders;
 
 }
