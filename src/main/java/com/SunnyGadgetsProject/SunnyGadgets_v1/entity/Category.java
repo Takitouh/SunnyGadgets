@@ -10,6 +10,7 @@ import java.util.Set;
 @Entity
 @Getter @Setter
 @NoArgsConstructor
+@Table(name = "categorys")
 public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

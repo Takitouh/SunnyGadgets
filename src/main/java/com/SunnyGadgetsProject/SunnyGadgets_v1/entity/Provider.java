@@ -11,6 +11,8 @@ import java.util.Set;
 @NoArgsConstructor
 @DiscriminatorValue(value = "PROVIDER")
 @PrimaryKeyJoinColumn(name = "id_provider")
+@Table(name = "providers")
+
 public class Provider extends Employee {
 
     @ManyToMany

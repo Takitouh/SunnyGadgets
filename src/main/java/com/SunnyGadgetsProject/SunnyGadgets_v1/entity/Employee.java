@@ -16,6 +16,7 @@ import java.sql.Timestamp;
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 @Getter @Setter @NoArgsConstructor
+@Table(name = "employes")
 
 public class Employee{
     @Id

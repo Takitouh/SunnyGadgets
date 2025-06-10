@@ -11,6 +11,8 @@ import java.util.List;
 @Entity @Getter
 @Setter
 @NoArgsConstructor
+@Table(name = "sales")
+
 public class Sale {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

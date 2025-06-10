@@ -10,6 +10,7 @@ import java.util.List;
 @NoArgsConstructor
 @DiscriminatorValue(value = "SELLER")
 @PrimaryKeyJoinColumn(name = "id_seller")
+@Table(name = "sellers")
 
 public class Seller extends Employee {
 
