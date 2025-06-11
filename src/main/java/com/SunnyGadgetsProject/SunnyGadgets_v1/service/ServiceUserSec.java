@@ -2,6 +2,7 @@ package com.SunnyGadgetsProject.SunnyGadgets_v1.service;
 
 import com.SunnyGadgetsProject.SunnyGadgets_v1.entity.UserSec;
 import com.SunnyGadgetsProject.SunnyGadgets_v1.repository.IRepositoryUserSec;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -40,4 +41,11 @@ public class ServiceUserSec implements IServiceUserSec{
     public void update(UserSec userSec) {
         save(userSec);
     }
+
+    @Override
+    public String encryptPassword(String password) {
+        return new BCryptPasswordEncoder().encode(password);
+    }
+
+
 }
