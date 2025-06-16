@@ -4,8 +4,6 @@ import com.SunnyGadgetsProject.SunnyGadgets_v1.entity.Product;
 import com.SunnyGadgetsProject.SunnyGadgets_v1.repository.IRepositoryProduct;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,70 +20,59 @@ public class ServiceProduct implements IServiceProduct {
     }
 
     @Override
-    public ResponseEntity<Product> createProduct(Product product) {
-        if (product == null) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
+    public Product createProduct(Product product) {
         repositoryProduct.save(product);
         logger.info("Product created: {}", product);
-        return new ResponseEntity<>(product, HttpStatus.CREATED);
+        return product;
     }
 
     @Override
-    public ResponseEntity<List<Product>> createProduct(List<Product> products) {
-        if (products == null || products.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
+    public List<Product> createProduct(List<Product> products) {
         repositoryProduct.saveAll(products);
         logger.info("Products created: {}", products);
-        return new ResponseEntity<>(products, HttpStatus.CREATED);
+        return products;
     }
 
     @Override
-    public ResponseEntity<Product> getProductById(Long id) {
-        Optional<Product> product = repositoryProduct.findById(id);
-        return product.map(value -> new ResponseEntity<>(value, HttpStatus.OK))
-                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    public Optional<Product> getProductById(Long id) {
+        return repositoryProduct.findById(id);
     }
 
     @Override
-    public ResponseEntity<List<Product>> allProducts() {
+    public List<Product> allProducts() {
         List<Product> products = repositoryProduct.findAll();
         if (products.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return null; //Exception not found
         }
-        return new ResponseEntity<>(products, HttpStatus.OK);
+        return products;
     }
 
     @Override
-    public ResponseEntity<Product> updateProduct(Product product, Long id) {
+    public Product updateProduct(Product product, Long id) {
         Optional<Product> productOptional = repositoryProduct.findById(id);
         if (productOptional.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return null; //Exception not found
         }
 
-        // Actualiza los campos necesarios:
         productOptional.get().setName(product.getName());
         productOptional.get().setDescription(product.getDescription());
         productOptional.get().setPrice(product.getPrice());
         productOptional.get().setStock(product.getStock());
         productOptional.get().setSetProviders(product.getSetProviders());
         productOptional.get().setCategory(product.getCategory());
-        // Agrega otros campos según tu entidad Product
 
         repositoryProduct.save(productOptional.get());
         logger.info("Product updated: {}",  product);
-        return new ResponseEntity<>(productOptional.get(), HttpStatus.OK);
+        return productOptional.get();
     }
 
     @Override
-    public ResponseEntity<Product> deleteProduct(Long id) {
+    public void deleteProduct(Long id) {
         Optional<Product> productOptional = repositoryProduct.findById(id);
         if (productOptional.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return; //Exception not found
         }
         logger.info("Product deleted: {}", productOptional.get());
         repositoryProduct.deleteById(id);
-        return new ResponseEntity<>(productOptional.get(), HttpStatus.OK);
     }
 }

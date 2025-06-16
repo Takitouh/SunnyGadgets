@@ -6,9 +6,10 @@ import java.util.List;
 import java.util.Optional;
 
 public interface IServicePermission {
-    List<Permission> findAll();
-    Optional<Permission> findById(Long id);
-    Permission save(Permission permission);
-    void deleteById(Long id);
-    Permission update(Permission permission);
+    List<Permission> allPermissions();
+    Optional<Permission> getPermissionById(Long id);
+    Permission createPermission(Permission permission);
+    Permission updatePermission(Permission permission);
+    void deletePermission(Long id);
+
 }

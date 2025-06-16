@@ -1,16 +1,16 @@
 package com.SunnyGadgetsProject.SunnyGadgets_v1.service;
 
 import com.SunnyGadgetsProject.SunnyGadgets_v1.entity.Sale;
-import org.springframework.http.ResponseEntity;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface IServiceSale {
-    ResponseEntity<Sale> createSale(Sale sale);
-    ResponseEntity<List<Sale>> createSale(List<Sale> sales);
-    ResponseEntity<Sale> getSaleById(Long id);
-    ResponseEntity<List<Sale>> allSales();
-    ResponseEntity<Sale> updateSale(Sale sale, Long id);
-    ResponseEntity<Sale> deleteSale(Long id);
+    Sale createSale(Sale sale);
+    List<Sale> createSale(List<Sale> sales);
+    Optional<Sale> getSaleById(Long id);
+    List<Sale> allSales();
+    Sale updateSale(Sale sale, Long id);
+    void deleteSale(Long id);
 
 }

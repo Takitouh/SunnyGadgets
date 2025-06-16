@@ -23,17 +23,17 @@ public class ServiceRole implements IServiceRole{
     }
 
     @Override
-    public List<Role> findAll() {
+    public List<Role> allRoles() {
         return roleRepository.findAll();
     }
 
     @Override
-    public Optional<Role> findById(Long id) {
+    public Optional<Role> getRoleById(Long id) {
         return roleRepository.findById(id);
     }
 
     @Override
-    public Role save(Role role) {
+    public Role createRole(Role role) {
         Set<Permission> managedPermissions = new HashSet<>();
 
         for (Permission permission : role.getPermissions()) {
@@ -47,13 +47,14 @@ public class ServiceRole implements IServiceRole{
     }
 
 
+
     @Override
-    public void deleteById(Long id) {
-        roleRepository.deleteById(id);
+    public Role updateRole(Role role) {
+        return roleRepository.save(role);
     }
 
     @Override
-    public Role update(Role role) {
-        return roleRepository.save(role);
+    public void deleteRole(Long id) {
+        roleRepository.deleteById(id);
     }
 }

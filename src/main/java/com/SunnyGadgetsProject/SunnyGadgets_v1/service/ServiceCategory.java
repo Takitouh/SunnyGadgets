@@ -4,8 +4,6 @@ import com.SunnyGadgetsProject.SunnyGadgets_v1.entity.Category;
 import com.SunnyGadgetsProject.SunnyGadgets_v1.repository.IRepositoryCategory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -24,67 +22,59 @@ public class ServiceCategory implements IServiceCategory {
     }
 
     @Override
-    public ResponseEntity<Category> createCategory(Category category) {
-         if (category == null) {
-             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-         }
+    public Category createCategory(Category category) {
+
          repositoryCategory.save(category);
         logger.info("Category created: {}", category);
-        return new ResponseEntity<>(category, HttpStatus.CREATED);
+        return category;
     }
 
     @Override
-    public ResponseEntity<List<Category>> createCategory(List<Category> categories) {
-        if (categories == null || categories.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
+    public List<Category> createCategory(List<Category> categories) {
+
         repositoryCategory.saveAll(categories);
         logger.info("Category's created: {}", categories);
-        return new ResponseEntity<>(categories, HttpStatus.CREATED);
+        return categories;
     }
 
     @Override
-    public ResponseEntity<Category> getCategoryById(Long id) {
-        Optional<Category> category = repositoryCategory.findById(id);
-        return category.map(value -> new ResponseEntity<>(value, HttpStatus.OK))
-                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    public Optional<Category> getCategoryById(Long id) {
+        return repositoryCategory.findById(id);
 
     }
 
     @Override
-    public ResponseEntity<List<Category>> allCategories() {
+    public List<Category> allCategories() {
         List<Category> categories = repositoryCategory.findAll();
         if (categories.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return null; //Excepcion Not Found
         }
-        return new ResponseEntity<>(categories, HttpStatus.OK);
+        return categories;
     }
 
     @Override
-    public ResponseEntity<Category> updateCategory(Category category, Long id) {
+    public Category updateCategory(Category category, Long id) {
         Optional<Category> categoryOptional = repositoryCategory.findById(id);
         if (categoryOptional.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return null; //Excepcion Not Found
         }
-
         categoryOptional.get().setName(category.getName());
         categoryOptional.get().setDescription(category.getDescription());
         categoryOptional.get().setProductSet(category.getProductSet());
         repositoryCategory.save(categoryOptional.get());
 
         logger.info("Category updated: {}", category);
-        return new ResponseEntity<>(categoryOptional.get(), HttpStatus.OK);
+        return category;
     }
 
     @Override
-    public ResponseEntity<Category> deleteCategory(Long id) {
+    public void deleteCategory(Long id) {
 
         Optional<Category> categoryOptional = repositoryCategory.findById(id);
         if (categoryOptional.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return ; // Excepcion not found
         }
         logger.info("Category deleted: {}", categoryOptional.get());
         repositoryCategory.deleteById(id);
-        return new ResponseEntity<>(categoryOptional.get(), HttpStatus.OK);
     }
 }

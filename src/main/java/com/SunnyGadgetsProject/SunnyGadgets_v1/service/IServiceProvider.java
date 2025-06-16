@@ -1,16 +1,16 @@
 package com.SunnyGadgetsProject.SunnyGadgets_v1.service;
 
 import com.SunnyGadgetsProject.SunnyGadgets_v1.entity.Provider;
-import org.springframework.http.ResponseEntity;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface IServiceProvider {
-    ResponseEntity<Provider> createProvider(Provider provider);
-    ResponseEntity<List<Provider>> createProvider(List<Provider> providers);
-    ResponseEntity<Provider> getProviderById(Long id);
-    ResponseEntity<List<Provider>> allProviders();
-    ResponseEntity<Provider> updateProvider(Provider provider, Long id);
-    ResponseEntity<Provider> deleteProvider(Long id);
+    Provider createProvider(Provider provider);
+    List<Provider> createProvider(List<Provider> providers);
+    Optional<Provider> getProviderById(Long id);
+    List<Provider> allProviders();
+    Provider updateProvider(Provider provider, Long id);
+    void deleteProvider(Long id);
 
 }

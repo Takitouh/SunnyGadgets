@@ -4,8 +4,6 @@ import com.SunnyGadgetsProject.SunnyGadgets_v1.entity.Employee;
 import com.SunnyGadgetsProject.SunnyGadgets_v1.repository.IRepositoryEmployee;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,70 +21,62 @@ public class ServiceEmployee implements IServiceEmployee {
     }
 
     @Override
-    public ResponseEntity<Employee> createEmployee(Employee employee) {
-        if (employee == null) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
+    public Employee createEmployee(Employee employee) {
         repositoryEmployee.save(employee);
         logger.info("Employee created: {}", employee);
-        return new ResponseEntity<>(employee, HttpStatus.CREATED);
+        return employee;
     }
 
     @Override
-    public ResponseEntity<List<Employee>> createEmployee(List<Employee> employees) {
-        if (employees == null || employees.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
+    public List<Employee> createEmployee(List<Employee> employees) {
         repositoryEmployee.saveAll(employees);
         logger.info("Employee's created: {}", employees);
-        return new ResponseEntity<>(employees, HttpStatus.CREATED);
+        return employees;
     }
 
     @Override
-    public ResponseEntity<Employee> getEmployeeById(Long id) {
-        Optional<Employee> employee = repositoryEmployee.findById(id);
-
-        return employee.map(value -> new ResponseEntity<>(value, HttpStatus.OK))
-                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    public Optional<Employee> getEmployeeById(Long id) {
+        return repositoryEmployee.findById(id);
     }
 
     @Override
-    public ResponseEntity<List<Employee>> allEmployee() {
+    public List<Employee> allEmployee() {
         List<Employee> employees = repositoryEmployee.findAll();
         if (employees.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return null; //Exception not found
         }
-        return new ResponseEntity<>(employees, HttpStatus.OK);
+        return employees;
     }
 
     @Override
-    public ResponseEntity<Employee> updateEmployee(Employee employee, Long id) {
+    public Employee updateEmployee(Employee employee, Long id) {
         Optional<Employee> employeeOptional = repositoryEmployee.findById(id);
         if (employeeOptional.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return null; //Exception not found
         }
 
-        // Actualiza los campos necesarios:
+
         employeeOptional.get().setSalary(employee.getSalary());
         employeeOptional.get().setName(employee.getName());
         employeeOptional.get().setEmail(employee.getEmail());
+        employeeOptional.get().setPhone(employee.getPhone());
         //Aca hay que revisar como se actualiza la fecha de modificacion
+        //Testear
         employeeOptional.get().setModificationDate(employee.getModificationDate());
 
 
         repositoryEmployee.save(employeeOptional.get());
         logger.info("Employee updated: {}",  employeeOptional.get());
-        return new ResponseEntity<>(employeeOptional.get(), HttpStatus.OK);
+        return employeeOptional.get();
     }
 
     @Override
-    public ResponseEntity<Employee> deleteEmployee(Long id) {
+    public void deleteEmployee(Long id) {
         Optional<Employee> employeeOptional = repositoryEmployee.findById(id);
         if (employeeOptional.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return ; //Exception not found
         }
         logger.info("Employee deleted: {}", employeeOptional.get());
         repositoryEmployee.deleteById(id);
-        return new ResponseEntity<>(employeeOptional.get(), HttpStatus.OK);
     }
 }

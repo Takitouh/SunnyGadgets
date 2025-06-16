@@ -4,8 +4,6 @@ import com.SunnyGadgetsProject.SunnyGadgets_v1.entity.Customer;
 import com.SunnyGadgetsProject.SunnyGadgets_v1.repository.IRepositoryCustomer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
@@ -22,46 +20,39 @@ public class ServiceCustomer implements IServiceCustomer {
     }
 
     @Override
-    public ResponseEntity<Customer> createCustomer(Customer customer) {
-        if (customer == null || customer.getEmail() == null) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
+    public Customer createCustomer(Customer customer) {
+
         repositoryCustomer.save(customer);
-        logger.info("Customer creado: {}", customer.getEmail());
-        return new ResponseEntity<>(customer, HttpStatus.CREATED);
+        logger.info("Customer created: {}", customer.getEmail());
+        return customer;
     }
 
     @Override
-    public ResponseEntity<List<Customer>> createCustomer(List<Customer> customers) {
-        if (customers == null || customers.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
+    public List<Customer> createCustomer(List<Customer> customers) {
         repositoryCustomer.saveAll(customers);
-        logger.info("Se crearon {} customers", customers.size());
-        return new ResponseEntity<>(customers, HttpStatus.CREATED);
+        logger.info("Customer's created: {}", customers);
+        return customers;
     }
 
     @Override
-    public ResponseEntity<Customer> getCustomerById(Long id) {
-        Optional<Customer> customer = repositoryCustomer.findById(id);
-        return customer.map(value -> new ResponseEntity<>(value, HttpStatus.OK))
-                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    public Optional<Customer> getCustomerById(Long id) {
+        return repositoryCustomer.findById(id);
     }
 
     @Override
-    public ResponseEntity<List<Customer>> allCustomers() {
+    public List<Customer> allCustomers() {
         List<Customer> customers = repositoryCustomer.findAll();
         if (customers.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            return null; //Exception not found
         }
-        return new ResponseEntity<>(customers, HttpStatus.OK);
+        return customers;
     }
 
     @Override
-    public ResponseEntity<Customer> updateCustomer(Customer customer, Long id) {
+    public Customer updateCustomer(Customer customer, Long id) {
         Optional<Customer> existingCustomer = repositoryCustomer.findById(id);
         if (existingCustomer.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return customer; //Exception Not found
         }
 
         // Actualizar solo campos permitidos (evitar sobrescribir campos sensibles como 'password')
@@ -71,18 +62,17 @@ public class ServiceCustomer implements IServiceCustomer {
         customerToUpdate.setAddress(customer.getAddress());
 
         repositoryCustomer.save(customerToUpdate);
-        logger.info("Customer actualizado: {}", customerToUpdate.getEmail());
-        return new ResponseEntity<>(customerToUpdate, HttpStatus.OK);
+        logger.info("Customer updated: {}", customerToUpdate.getName());
+        return customerToUpdate;
     }
 
     @Override
-    public ResponseEntity<Customer> deleteCustomer(Long id) {
+    public void deleteCustomer(Long id) {
         Optional<Customer> customer = repositoryCustomer.findById(id);
         if (customer.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return; //Exception not found
         }
         repositoryCustomer.deleteById(id);
-        logger.info("Customer eliminado: {}", customer.get().getEmail());
-        return new ResponseEntity<>(customer.get(), HttpStatus.OK);
+        logger.info("Customer deleted: {}", customer.get().getEmail());
     }
 }

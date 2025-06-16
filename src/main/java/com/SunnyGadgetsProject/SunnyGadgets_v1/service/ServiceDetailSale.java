@@ -4,8 +4,6 @@ import com.SunnyGadgetsProject.SunnyGadgets_v1.entity.DetailSale;
 import com.SunnyGadgetsProject.SunnyGadgets_v1.repository.IRepositoryDetailSale;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,66 +20,58 @@ public class ServiceDetailSale implements IServiceDetailSale {
     }
 
     @Override
-    public ResponseEntity<DetailSale> createDetailSale(DetailSale detailSale) {
-        if (detailSale == null) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
+    public DetailSale createDetailSale(DetailSale detailSale) {
+
         repositoryDetailSale.save(detailSale);
         logger.info("DetailSale created: {}", detailSale);
-        return new ResponseEntity<>(detailSale, HttpStatus.CREATED);
+        return detailSale;
     }
 
     @Override
-    public ResponseEntity<List<DetailSale>> createDetailSale(List<DetailSale> detailSales) {
-        if (detailSales == null || detailSales.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
+    public List<DetailSale> createDetailSale(List<DetailSale> detailSales) {
+
         repositoryDetailSale.saveAll(detailSales);
         logger.info("DetailSales created: {}", detailSales);
-        return new ResponseEntity<>(detailSales, HttpStatus.CREATED);
+        return detailSales;
     }
 
     @Override
-    public ResponseEntity<DetailSale> getDetailSaleById(Long id) {
-        Optional<DetailSale> detailSale = repositoryDetailSale.findById(id);
-        return detailSale.map(value -> new ResponseEntity<>(value, HttpStatus.OK))
-                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    public Optional<DetailSale> getDetailSaleById(Long id) {
+        return repositoryDetailSale.findById(id);
     }
 
     @Override
-    public ResponseEntity<List<DetailSale>> allDetailSales() {
+    public List<DetailSale> allDetailSales() {
         List<DetailSale> detailSales = repositoryDetailSale.findAll();
         if (detailSales.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return null; //Exception not found
         }
-        return new ResponseEntity<>(detailSales, HttpStatus.OK);
+        return detailSales;
     }
 
     @Override
-    public ResponseEntity<DetailSale> updateDetailSale(DetailSale detailSale, Long id) {
+    public DetailSale updateDetailSale(DetailSale detailSale, Long id) {
         Optional<DetailSale> detailSaleOptional = repositoryDetailSale.findById(id);
         if (detailSaleOptional.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return null; //Exception not found
         }
 
-        // Actualiza los campos necesarios:
+        // Update the fields
         detailSaleOptional.get().setQuantity(detailSale.getQuantity());
         detailSaleOptional.get().setUnitPrice(detailSale.getUnitPrice());
-        // Agrega otros campos según tu entidad DetailSale
 
         repositoryDetailSale.save(detailSaleOptional.get());
         logger.info("DetailSale updated: {}", detailSale);
-        return new ResponseEntity<>(detailSaleOptional.get(), HttpStatus.OK);
+        return detailSale;
     }
 
     @Override
-    public ResponseEntity<DetailSale> deleteDetailSale(Long id) {
+    public void deleteDetailSale(Long id) {
         Optional<DetailSale> detailSaleOptional = repositoryDetailSale.findById(id);
         if (detailSaleOptional.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return; //Exception not found
         }
         logger.info("DetailSale deleted: {}", detailSaleOptional.get());
         repositoryDetailSale.deleteById(id);
-        return new ResponseEntity<>(detailSaleOptional.get(), HttpStatus.OK);
     }
 }

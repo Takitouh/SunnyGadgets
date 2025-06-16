@@ -6,10 +6,10 @@ import java.util.List;
 import java.util.Optional;
 
 public interface IServiceUserSec {
-    public List<UserSec> findAll();
-    public Optional<UserSec> findById(Long id);
-    public UserSec save(UserSec userSec);
-    public void deleteById(Long id);
-    public void update(UserSec userSec);
-    public String encryptPassword(String password);
+     List<UserSec> allUsers();
+     Optional<UserSec> getUserById(Long id);
+     UserSec createUser(UserSec userSec);
+     void deleteUser(Long id);
+     void updateUser(UserSec userSec, Long id);
+     String encryptPassword(String password);
 }

@@ -4,8 +4,6 @@ import com.SunnyGadgetsProject.SunnyGadgets_v1.entity.Seller;
 import com.SunnyGadgetsProject.SunnyGadgets_v1.repository.IRepositorySeller;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,71 +20,58 @@ public class ServiceSeller implements IServiceSeller {
     }
 
     @Override
-    public ResponseEntity<Seller> createSeller(Seller seller) {
-        if (seller == null) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
+    public Seller createSeller(Seller seller) {
         repositorySeller.save(seller);
         logger.info("Seller created: {}", seller);
-        return new ResponseEntity<>(seller, HttpStatus.CREATED);
+        return seller;
     }
 
     @Override
-    public ResponseEntity<List<Seller>> createSeller(List<Seller> sellers) {
-        if (sellers == null || sellers.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
+    public List<Seller> createSeller(List<Seller> sellers) {
         repositorySeller.saveAll(sellers);
         logger.info("Sellers created: {}", sellers);
-        return new ResponseEntity<>(sellers, HttpStatus.CREATED);
+        return sellers;
     }
 
     @Override
-    public ResponseEntity<Seller> getSellerById(Long id) {
-        Optional<Seller> seller = repositorySeller.findById(id);
-        return seller.map(value -> new ResponseEntity<>(value, HttpStatus.OK))
-                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    public Optional<Seller> getSellerById(Long id) {
+        return repositorySeller.findById(id);
     }
 
     @Override
-    public ResponseEntity<List<Seller>> allSellers() {
+    public List<Seller> allSellers() {
         List<Seller> sellers = repositorySeller.findAll();
         if (sellers.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return null; //Exception not found
         }
-        return new ResponseEntity<>(sellers, HttpStatus.OK);
+        return sellers;
     }
 
     @Override
-    public ResponseEntity<Seller> updateSeller(Seller seller, Long id) {
+    public Seller updateSeller(Seller seller, Long id) {
         Optional<Seller> sellerOptional = repositorySeller.findById(id);
         if (sellerOptional.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return null; //Exception not found
         }
 
-        // Actualiza los campos necesarios:
         sellerOptional.get().setName(seller.getName());
         sellerOptional.get().setEmail(seller.getEmail());
         sellerOptional.get().setPhone(seller.getPhone());
-        //We have to see if is necessary this because it should update automatically
-
-        sellerOptional.get().setModificationDate(seller.getModificationDate());
         sellerOptional.get().setSales(seller.getSales());
-        // Agrega otros campos según tu entidad Seller
+        sellerOptional.get().setSalary(seller.getSalary());
 
         repositorySeller.save(sellerOptional.get());
         logger.info("Seller updated: {}", seller);
-        return new ResponseEntity<>(sellerOptional.get(), HttpStatus.OK);
+        return seller;
     }
 
     @Override
-    public ResponseEntity<Seller> deleteSeller(Long id) {
+    public void deleteSeller(Long id) {
         Optional<Seller> sellerOptional = repositorySeller.findById(id);
         if (sellerOptional.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return; //Exception not found
         }
         logger.info("Seller deleted: {}", sellerOptional.get());
         repositorySeller.deleteById(id);
-        return new ResponseEntity<>(sellerOptional.get(), HttpStatus.OK);
     }
 }

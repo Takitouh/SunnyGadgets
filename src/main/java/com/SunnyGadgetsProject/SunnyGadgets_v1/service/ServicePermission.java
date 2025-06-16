@@ -17,28 +17,29 @@ public class ServicePermission  implements  IServicePermission{
     }
 
     @Override
-    public List<Permission> findAll() {
+    public List<Permission> allPermissions() {
         return permissionRepository.findAll();
     }
 
     @Override
-    public Optional<Permission> findById(Long id) {
+    public Optional<Permission> getPermissionById(Long id) {
         return permissionRepository.findById(id);
     }
 
     @Override
-    public Permission save(Permission permission) {
+    public Permission createPermission(Permission permission) {
+        return permissionRepository.save(permission);
+    }
+
+
+    @Override
+    public Permission updatePermission(Permission permission) {
         return permissionRepository.save(permission);
     }
 
     @Override
-    public void deleteById(Long id) {
+    public void deletePermission(Long id) {
         permissionRepository.deleteById(id);
-    }
-
-    @Override
-    public Permission update(Permission permission) {
-        return permissionRepository.save(permission);
     }
 }
 

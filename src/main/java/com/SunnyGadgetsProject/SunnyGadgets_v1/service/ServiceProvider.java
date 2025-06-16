@@ -4,8 +4,6 @@ import com.SunnyGadgetsProject.SunnyGadgets_v1.entity.Provider;
 import com.SunnyGadgetsProject.SunnyGadgets_v1.repository.IRepositoryProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,72 +20,59 @@ public class ServiceProvider implements IServiceProvider {
     }
 
     @Override
-    public ResponseEntity<Provider> createProvider(Provider provider) {
-        if (provider == null) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
+    public Provider createProvider(Provider provider) {
         repositoryProvider.save(provider);
         logger.info("Provider created: {}", provider);
-        return new ResponseEntity<>(provider, HttpStatus.CREATED);
+        return provider;
     }
 
     @Override
-    public ResponseEntity<List<Provider>> createProvider(List<Provider> providers) {
-        if (providers == null || providers.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
+    public List<Provider> createProvider(List<Provider> providers) {
         repositoryProvider.saveAll(providers);
         logger.info("Providers created: {}", providers);
-        return new ResponseEntity<>(providers, HttpStatus.CREATED);
+        return providers;
     }
 
     @Override
-    public ResponseEntity<Provider> getProviderById(Long id) {
-        Optional<Provider> provider = repositoryProvider.findById(id);
-        return provider.map(value -> new ResponseEntity<>(value, HttpStatus.OK))
-                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    public Optional<Provider> getProviderById(Long id) {
+        return repositoryProvider.findById(id);
     }
 
     @Override
-    public ResponseEntity<List<Provider>> allProviders() {
+    public List<Provider> allProviders() {
         List<Provider> providers = repositoryProvider.findAll();
         if (providers.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return null; //Exception not found
         }
-        return new ResponseEntity<>(providers, HttpStatus.OK);
+        return providers;
     }
 
     @Override
-    public ResponseEntity<Provider> updateProvider(Provider provider, Long id) {
+    public Provider updateProvider(Provider provider, Long id) {
         Optional<Provider> providerOptional = repositoryProvider.findById(id);
         if (providerOptional.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return null; //Exception not found
         }
 
-        // Actualiza los campos necesarios:
         providerOptional.get().setName(provider.getName());
         providerOptional.get().setEmail(provider.getEmail());
         providerOptional.get().setPhone(provider.getPhone());
-        //We have to see if is necessary this because it should update automatically
-        providerOptional.get().setModificationDate(provider.getModificationDate());
         providerOptional.get().setSalary(provider.getSalary());
         providerOptional.get().setProductSet(provider.getProductSet());
 
-        // Agrega otros campos según tu entidad Provider
 
         repositoryProvider.save(providerOptional.get());
         logger.info("Provider updated: {}", provider);
-        return new ResponseEntity<>(providerOptional.get(), HttpStatus.OK);
+        return provider;
     }
 
     @Override
-    public ResponseEntity<Provider> deleteProvider(Long id) {
+    public void deleteProvider(Long id) {
         Optional<Provider> providerOptional = repositoryProvider.findById(id);
         if (providerOptional.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return; //Exception not found
         }
         logger.info("Provider deleted: {}", providerOptional.get());
         repositoryProvider.deleteById(id);
-        return new ResponseEntity<>(providerOptional.get(), HttpStatus.OK);
     }
 }

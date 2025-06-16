@@ -18,28 +18,28 @@ public class ServiceUserSec implements IServiceUserSec{
     }
 
     @Override
-    public List<UserSec> findAll() {
+    public List<UserSec> allUsers() {
         return userRepository.findAll();
     }
 
     @Override
-    public Optional<UserSec> findById(Long id) {
+    public Optional<UserSec> getUserById(Long id) {
         return userRepository.findById(id);
     }
 
     @Override
-    public UserSec save(UserSec userSec) {
+    public UserSec createUser(UserSec userSec) {
         return userRepository.save(userSec);
     }
 
     @Override
-    public void deleteById(Long id) {
+    public void deleteUser(Long id) {
         userRepository.deleteById(id);
     }
 
     @Override
-    public void update(UserSec userSec) {
-        save(userSec);
+    public void updateUser(UserSec userSec, Long id) {
+        createUser(userSec);
     }
 
     @Override
