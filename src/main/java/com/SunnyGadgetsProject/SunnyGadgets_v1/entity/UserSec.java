@@ -17,7 +17,7 @@ import java.util.Set;
 @Table(name = "users")
 public class UserSec {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(unique = true)
     private String username;
@@ -27,7 +27,7 @@ public class UserSec {
     private boolean credentialsNotExpired;
     private boolean accountNotLocked;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE} )
     @JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns =
     @JoinColumn(name = "roles_id"))
     private Set<Role> roles = new HashSet<>();
