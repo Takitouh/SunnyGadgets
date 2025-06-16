@@ -12,7 +12,7 @@ import java.util.Optional;
 
 
 @RestController
-@RequestMapping("/permissions")
+@RequestMapping("/api/v1/permissions")
 public class ControllerPermission {
 
     @Autowired
@@ -20,19 +20,19 @@ public class ControllerPermission {
 
     @GetMapping("/get")
     public ResponseEntity<List<Permission>> getAllPermissions() {
-        List<Permission> permissions = permissionService.findAll();
+        List<Permission> permissions = permissionService.allPermissions();
         return ResponseEntity.ok(permissions);
     }
 
     @GetMapping("/get/{id}")
     public ResponseEntity<Permission> getPermissionById(@PathVariable Long id) {
-        Optional<Permission> permission = permissionService.findById(id);
+        Optional<Permission> permission = permissionService.getPermissionById(id);
         return permission.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @PostMapping("/post")
+    @PostMapping("/create")
     public ResponseEntity<Permission> createPermission(@RequestBody Permission permission) {
-        Permission newPermission = permissionService.save(permission);
+        Permission newPermission = permissionService.createPermission(permission);
         return ResponseEntity.ok(newPermission);
     }
 

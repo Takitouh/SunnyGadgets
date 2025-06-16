@@ -2,12 +2,15 @@ package com.SunnyGadgetsProject.SunnyGadgets_v1.controller;
 
 import com.SunnyGadgetsProject.SunnyGadgets_v1.entity.DetailSale;
 import com.SunnyGadgetsProject.SunnyGadgets_v1.service.IServiceDetailSale;
+import jakarta.persistence.EntityNotFoundException;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 
 @RestController
@@ -25,37 +28,51 @@ public class ControllerDetailSale {
     @GetMapping("/get/{id}")
     @PreAuthorize("hasAuthority('READ')")
     public ResponseEntity<DetailSale> getDetailSale(@PathVariable Long id) {
-        return serviceDetailSale.getDetailSaleById(id);
+        Optional<DetailSale> detailSaleOptional = serviceDetailSale.getDetailSaleById(id);
+        if (detailSaleOptional.isEmpty()){
+            throw new EntityNotFoundException("Detail Sale with ID " + id + " not found");
+        }
+        return ResponseEntity.ok(detailSaleOptional.get());
     }
 
     @GetMapping("/get")
     @PreAuthorize("hasAuthority('READ')")
     public ResponseEntity<List<DetailSale>> getAllDetailSales() {
-        return serviceDetailSale.allDetailSales();
+        List<DetailSale> detailSales = serviceDetailSale.allDetailSales();
+        if (detailSales.isEmpty()){
+            throw new EntityNotFoundException("Detail sale list is empty");
+        }
+        return ResponseEntity.ok(detailSales);
     }
 
     @PostMapping("/create")
     @PreAuthorize("hasAuthority('CREATE')")
     public ResponseEntity<DetailSale> createDetailSale(@RequestBody DetailSale detailSale) {
-        return serviceDetailSale.createDetailSale(detailSale);
+        serviceDetailSale.createDetailSale(detailSale);
+
+        return new ResponseEntity<>(detailSale, HttpStatus.CREATED);
     }
 
     @PostMapping("/createBatch")
     @PreAuthorize("hasAuthority('CREATE')")
     public ResponseEntity<List<DetailSale>> createDetailSales(@RequestBody List<DetailSale> detailSales) {
-        return serviceDetailSale.createDetailSale(detailSales);
+        serviceDetailSale.createDetailSale(detailSales);
+
+        return new ResponseEntity<>(detailSales, HttpStatus.CREATED);
     }
 
     @DeleteMapping("/delete/{id}")
     @PreAuthorize("hasAuthority('DELETE')")
     public ResponseEntity<DetailSale> deleteDetailSale(@PathVariable Long id) {
-        return serviceDetailSale.deleteDetailSale(id);
+        serviceDetailSale.deleteDetailSale(id);
+        return ResponseEntity.noContent().build();
     }
 
     @PutMapping("/update/{id}")
     @PreAuthorize("hasAuthority('UPDATE')")
     public ResponseEntity<DetailSale> updateDetailSale(@RequestBody DetailSale detailSale, @PathVariable Long id) {
-        return serviceDetailSale.updateDetailSale(detailSale, id);
+        serviceDetailSale.updateDetailSale(detailSale, id);
+        return ResponseEntity.ok(detailSale);
     }
 }
 

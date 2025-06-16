@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 @RestController
-@RequestMapping("/roles")
+@RequestMapping("/api/v1/roles")
 public class ControllerRole {
 
     private final IServiceRole roleService;
@@ -25,24 +25,24 @@ public class ControllerRole {
 
     @GetMapping("/get")
     public ResponseEntity<List<Role>> getAllRoles() {
-        List<Role> roles = roleService.findAll();
+        List<Role> roles = roleService.allRoles();
         return ResponseEntity.ok(roles);
     }
 
     @GetMapping("/get/{id}")
     public ResponseEntity<Role> getRoleById(@PathVariable Long id) {
-        Optional<Role> role = roleService.findById(id);
+        Optional<Role> role = roleService.getRoleById(id);
         return role.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @PostMapping("/post")
+    @PostMapping("/create")
     public ResponseEntity<Role> createRole(@RequestBody Role role) {
         Set<Permission> permissionList = new HashSet<>();
         Permission readPermission;
 
         // Recuperar la Permission/s por su ID
         for (Permission per : role.getPermissions()) {
-            readPermission = permissionService.findById(per.getId()).orElse(null);
+            readPermission = permissionService.getPermissionById(per.getId()).orElse(null);
             if (readPermission != null) {
                 //si encuentro, guardo en la lista
                 permissionList.add(readPermission);
@@ -52,7 +52,7 @@ public class ControllerRole {
         role.setPermissions(permissionList);
 
         System.out.println(role);
-        Role newRole = roleService.save(role);
+        Role newRole = roleService.createRole(role);
         return ResponseEntity.ok(newRole);
     }
 }
