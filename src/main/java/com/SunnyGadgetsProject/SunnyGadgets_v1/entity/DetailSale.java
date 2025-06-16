@@ -12,13 +12,12 @@ import lombok.*;
 
 public class DetailSale {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id_detailsale;
     @Min(1)
     private int quantity;
     @Min(1)
     private long unitPrice;
 
-    //PD: Debemos mejorar el modelo de entidades
 
 }

@@ -19,7 +19,7 @@ import java.sql.Timestamp;
 @Table(name = "customers")
 public class Customer {
   @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id_customer;
   @NotBlank  @Min(16) @Column(name = "Age", nullable = false)
   private int age;

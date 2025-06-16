@@ -20,7 +20,7 @@ import java.sql.Timestamp;
 
 public class Employee{
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id_employee;
 
     @NotBlank @Nonnull
