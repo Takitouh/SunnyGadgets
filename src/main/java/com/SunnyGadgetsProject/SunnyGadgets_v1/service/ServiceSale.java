@@ -21,6 +21,41 @@ public class ServiceSale implements IServiceSale {
 
     @Override
     public Sale createSale(Sale sale) {
+        Optional<Customer> optionalCustomer = repositoryCustomer.findById(sale.getCustomer().getId_customer());
+        Set<Sale> sales = new HashSet<>();
+        List<DetailSale> auxlistdetailSale = new ArrayList<>();
+        long auxsubtotal = 0;
+
+        if (optionalCustomer.isEmpty()){
+            throw new RuntimeException("Customer not found");
+        }
+
+        long total = 0;
+
+        for (DetailSale ds : sale.getListdetailSale()){
+            Optional<Product> optionalProduct = repositoryProduct.findById(ds.getProduct().getId_product());
+            if (optionalProduct.isEmpty()){
+                throw new RuntimeException("Product not found");
+            }
+            //Calculate the subtotal with the unit price and the quantity
+            auxsubtotal = (long) optionalProduct.get().getPrice() * ds.getQuantity();
+            //We set the values for the items of the list detail sale
+            ds.setUnitPrice(optionalProduct.get().getPrice());
+            ds.setSubtotal(auxsubtotal);
+            ds.setProduct(optionalProduct.get());
+            //Add all the items to other list
+            auxlistdetailSale.add(ds);
+
+            total += ds.getSubtotal();
+
+        }
+        
+        sales.add(sale);
+        optionalCustomer.get().setSales(sales);
+        //And assignate this new list to sale, also assignate the customer and total
+        sale.setListdetailSale(auxlistdetailSale);
+        sale.setCustomer(optionalCustomer.get());
+        sale.setTotal(total);
 
         repositorySale.save(sale);
         logger.info("Sale created: {}", sale);
