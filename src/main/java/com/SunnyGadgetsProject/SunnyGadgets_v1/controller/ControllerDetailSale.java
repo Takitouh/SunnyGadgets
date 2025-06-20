@@ -50,16 +50,7 @@ public class ControllerDetailSale {
     public ResponseEntity<DetailSale> createDetailSale(@RequestBody DetailSale detailSale) {
         serviceDetailSale.createDetailSale(detailSale);
 
-        return new ResponseEntity<>(detailSale, HttpStatus.CREATED);
-    }
-
-    @PostMapping("/createBatch")
-    @PreAuthorize("hasAuthority('CREATE')")
-    public ResponseEntity<List<DetailSale>> createDetailSales(@RequestBody List<DetailSale> detailSales) {
-        serviceDetailSale.createDetailSale(detailSales);
-
-        return new ResponseEntity<>(detailSales, HttpStatus.CREATED);
-    }
+    
 
     @DeleteMapping("/delete/{id}")
     @PreAuthorize("hasAuthority('DELETE')")
