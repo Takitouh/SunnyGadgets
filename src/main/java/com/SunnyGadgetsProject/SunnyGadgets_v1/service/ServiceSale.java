@@ -17,7 +17,8 @@ public class ServiceSale implements IServiceSale {
     private final IRepositoryCustomer repositoryCustomer;
     private final IRepositoryProduct repositoryProduct;
 
-    public ServiceSale(IRepositorySale repositorySale) {
+
+    public ServiceSale(IRepositorySale repositorySale, IRepositoryCustomer repositoryCustomer, IRepositoryProduct repositoryProduct) {
         this.repositorySale = repositorySale;
     }
 
