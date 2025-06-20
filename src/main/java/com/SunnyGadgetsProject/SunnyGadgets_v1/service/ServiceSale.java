@@ -58,7 +58,7 @@ public class ServiceSale implements IServiceSale {
         sale.setTotal(total);
 
         repositorySale.save(sale);
-        logger.info("Sale created: {}", sale);
+        logger.info("Sale and detail sale created: {}", sale);
         return sale;
     }
 
