@@ -14,6 +14,8 @@ public class ServiceSale implements IServiceSale {
 
     private static final Logger logger = LoggerFactory.getLogger(ServiceSale.class);
     private final IRepositorySale repositorySale;
+    private final IRepositoryCustomer repositoryCustomer;
+    private final IRepositoryProduct repositoryProduct;
 
     public ServiceSale(IRepositorySale repositorySale) {
         this.repositorySale = repositorySale;
