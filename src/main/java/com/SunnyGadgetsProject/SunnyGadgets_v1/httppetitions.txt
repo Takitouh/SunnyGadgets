@@ -16,10 +16,14 @@ POST (create):
 POST (create batch):
   URL: http://localhost:8080/api/v1/category/createBatch
   JSON Body:
-  [
-    { "name": "Electronics", "description": "Modern electronic products" },
-    { "name": "Home", "description": "Household items and appliances" }
-  ]
+[
+  { "name": "Computers", "description": "Laptops, desktops, and components" },
+  { "name": "Peripherals", "description": "External devices like mice, keyboards, and monitors" },
+  { "name": "Mobile Devices", "description": "Smartphones, tablets, and accessories" },
+  { "name": "Audio", "description": "Headphones, speakers, and microphones" },
+  { "name": "Storage", "description": "Hard drives, SSDs, USB sticks, and memory cards" },
+  { "name": "Networking", "description": "Routers, modems, and network accessories" }
+]
 
 PUT (update):
   URL: http://localhost:8080/api/v1/category/update/{id}
