@@ -55,6 +55,55 @@ POST (create):
     }
   }
 
+  POST (create batch):
+    URL: http://localhost:8080/api/v1/product/createBatch
+    JSON Body:
+    [
+      {
+        "name": "Gaming Laptop",
+        "description": "Intel i7, 16GB RAM, RTX 3060, 1TB SSD",
+        "price": 1800,
+        "stock": 8,
+        "category": { "id_category": 1 }
+      },
+      {
+        "name": "Mechanical Keyboard",
+        "description": "RGB backlit, blue switches",
+        "price": 120,
+        "stock": 25,
+        "category": { "id_category": 2 }
+      },
+      {
+        "name": "Smartphone",
+        "description": "6.7-inch OLED, 128GB, dual SIM",
+        "price": 900,
+        "stock": 15,
+        "category": { "id_category": 3 }
+      },
+      {
+        "name": "Noise-Canceling Headphones",
+        "description": "Wireless over-ear with 30-hour battery life",
+        "price": 250,
+        "stock": 10,
+        "category": { "id_category": 4 }
+      },
+      {
+        "name": "2TB External Hard Drive",
+        "description": "USB 3.1 portable drive",
+        "price": 130,
+        "stock": 20,
+        "category": { "id_category": 5 }
+      },
+      {
+        "name": "Wi-Fi 6 Router",
+        "description": "Dual-band gigabit wireless router",
+        "price": 110,
+        "stock": 18,
+        "category": { "id_category": 6 }
+      }
+    ]
+
+
 PUT (update):
   URL: http://localhost:8080/api/v1/product/update/{id}
   JSON Body:
