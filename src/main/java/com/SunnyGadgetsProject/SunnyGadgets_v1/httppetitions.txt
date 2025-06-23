@@ -160,6 +160,44 @@ POST (create):
     ]
   }
 
+  POST (create batch):
+    URL: http://localhost:8080/api/v1/provider/createBatch
+    JSON Body:
+
+    [
+      {
+        "salary": 2100000,
+        "name": "Juan Perez",
+        "email": "juan.perez@example.com",
+        "phone": "1234567890",
+        "productSet": [
+          {
+            "name": "Mouse RGB",
+            "description": "Mouse gamer with RGB and different level's of DPI",
+            "price": 45000,
+            "stock": 18,
+            "category": { "id_category": 5 }
+          },
+          {
+            "name": "Smartphone",
+            "description": "Modern smartphone",
+            "price": 800000,
+            "stock": 12,
+            "category": { "id_category": 5 }
+          }
+        ]
+      },
+      {
+        "salary": 1980000,
+        "name": "Mariana López",
+        "email": "mariana.lopez@example.com",
+        "phone": "3147852963",
+        "productSet": [
+          { "id_product": 1 },
+          { "id_product": 4 }
+        ]
+      }
+
 PUT (update):
   URL: http://localhost:8080/api/v1/provider/update/{id}
   JSON Body:
