@@ -144,14 +144,12 @@ POST (create):
     "phone": "1234567890",
     "productSet": [
       {
-        "id_product": 1,
-        "name": "Laptop",
+        "name": "Laptop lenovo",
         "description": "High-end laptop",
         "price": 1500,
         "stock": 10
       },
       {
-        "id_product": 2,
         "name": "Smartphone",
         "description": "Modern smartphone",
         "price": 800,
@@ -206,7 +204,13 @@ PUT (update):
     "name": "Juan Perez Updated",
     "email": "juan.updated@example.com",
     "phone": "1234567890",
-    "productSet": []
+    "productSet": [
+                "name": "Updated Mouse RGB",
+                "description": "Updated mouse gamer with RGB and different level's of DPI",
+                "price": 49000,
+                "stock": 11,
+                "category": { "id_category": 5 }
+    ]
   }
 
 DELETE (remove):
@@ -260,17 +264,15 @@ POST (create):
   {
     "total": 500,
     "seller": {
-      "id_seller": 1
+      "id_employee": 2
     },
-    "listdetailSale": [
-      {
-        "quantity": 2,
-        "unitPrice": 150
-      },
-      {
-        "quantity": 1,
-        "unitPrice": 200
-      }
+    "listdetailSale" : [
+        {
+            "quantity" : 1,
+            "product" : {
+            "id_product" : 1
+            }
+        }
     ]
   }
 
