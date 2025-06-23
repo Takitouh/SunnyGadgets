@@ -262,7 +262,9 @@ POST (create):
   URL: http://localhost:8080/api/v1/sale/create
   JSON Body:
   {
-    "total": 500,
+    "customer" : {
+      "id_customer" : 1
+    },
     "seller": {
       "id_employee": 2
     },
