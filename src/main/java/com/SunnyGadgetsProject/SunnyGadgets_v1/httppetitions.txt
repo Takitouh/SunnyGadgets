@@ -230,15 +230,6 @@ POST (create):
     "phone": "0987654321"
   }
 
-PUT (update):
-  URL: http://localhost:8080/api/v1/employee/update/{id}
-  JSON Body:
-  {
-    "salary": 2600,
-    "name": "Ana Gomez Updated",
-    "email": "ana.gomez.updated@example.com",
-    "phone": "0987654321"
-  }
 
 DELETE (remove):
   URL: http://localhost:8080/api/v1/employee/delete/{id}
