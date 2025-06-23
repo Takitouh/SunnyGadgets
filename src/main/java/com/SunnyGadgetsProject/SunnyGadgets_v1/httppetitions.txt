@@ -266,7 +266,7 @@ POST (create):
       "id_customer" : 1
     },
     "seller": {
-      "id_employee": 2
+      "id_employee": 1
     },
     "listdetailSale" : [
         {
@@ -282,19 +282,19 @@ PUT (update):
   URL: http://localhost:8080/api/v1/sale/update/{id}
   JSON Body:
   {
-    "total": 550,
-    "seller": {
-      "id_seller": 1
+    "customer" : {
+      "id_customer" : 2
     },
-    "listdetailSale": [
-      {
-        "quantity": 3,
-        "unitPrice": 150
-      },
-      {
-        "quantity": 1,
-        "unitPrice": 200
-      }
+    "seller": {
+      "id_employee": 2
+    },
+    "listdetailSale" : [
+        {
+            "quantity" : 2,
+            "product" : {
+            "id_product" : 3
+            }
+        }
     ]
   }
 
