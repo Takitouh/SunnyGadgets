@@ -233,13 +233,7 @@ GET (single):
 GET (all):
   URL: http://localhost:8080/api/v1/detailsale/get
 
-POST (create):
-  URL: http://localhost:8080/api/v1/detailsale/create
-  JSON Body:
-  {
-    "quantity": 3,
-    "unitPrice": 200
-  }
+
 
 PUT (update):
   URL: http://localhost:8080/api/v1/detailsale/update/{id}
