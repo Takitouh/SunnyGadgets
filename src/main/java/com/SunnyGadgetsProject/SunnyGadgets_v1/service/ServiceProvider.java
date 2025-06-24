@@ -76,7 +76,11 @@ public class ServiceProvider implements IServiceProvider {
 
     @Override
     public Optional<Provider> getProviderById(Long id) {
-        return repositoryProvider.findById(id);
+        Optional<Provider> provider = repositoryProvider.findById(id);
+        if (provider.isEmpty()) {
+            throw new EntityNotFoundException("Provider with id " + id + " not found");
+        }
+        return provider;
     }
 
     @Override
