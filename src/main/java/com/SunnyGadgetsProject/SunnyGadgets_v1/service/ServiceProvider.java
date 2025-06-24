@@ -87,7 +87,7 @@ public class ServiceProvider implements IServiceProvider {
     public List<Provider> allProviders() {
         List<Provider> providers = repositoryProvider.findAll();
         if (providers.isEmpty()) {
-            return null; //Exception not found
+            throw new EntityNotFoundException("No providers found"); //Exception not found
         }
         return providers;
     }
