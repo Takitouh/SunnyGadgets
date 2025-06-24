@@ -31,6 +31,11 @@ public class ServicePermission  implements  IServicePermission{
         return permissionRepository.save(permission);
     }
 
+    @Override
+    public List<Permission> createPermission(Set<Permission> permissions) {
+        return permissionRepository.saveAll(permissions);
+    }
+
 
     @Override
     public Permission updatePermission(Permission permission) {
