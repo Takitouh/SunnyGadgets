@@ -9,6 +9,7 @@ public interface IServiceRole {
     List<Role> allRoles();
     Optional<Role> getRoleById(Long id);
     Role createRole(Role role);
+    Role createRole(Set<Role> role);
     void deleteRole(Long id);
     Role updateRole(Role role);
 }
