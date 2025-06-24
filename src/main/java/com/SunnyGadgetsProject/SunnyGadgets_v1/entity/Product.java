@@ -26,6 +26,7 @@ public class Product {
     private int stock;
     @ManyToOne
     @JoinColumn(referencedColumnName = "id_category", nullable = false)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Category category;
 
     @ManyToMany(mappedBy = "productSet")
