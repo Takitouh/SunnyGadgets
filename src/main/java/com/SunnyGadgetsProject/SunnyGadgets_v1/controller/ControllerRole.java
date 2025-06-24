@@ -55,4 +55,27 @@ public class ControllerRole {
         Role newRole = roleService.createRole(role);
         return ResponseEntity.ok(newRole);
     }
+
+    @PostMapping("/createBatch")
+    public ResponseEntity<List<Role>> createRole(@RequestBody Set<Role> role) {
+        Set<Permission> permissionSet = new HashSet<>();
+        Permission readPermission;
+
+        // Recuperar la Permission/s por su ID
+        for (Role ro : role) {
+            for (Permission per : ro.getPermissions()) {
+                readPermission = permissionService.getPermissionById(per.getId()).orElse(null);
+                if (readPermission != null) {
+                    //si encuentro, guardo en la lista
+                    permissionSet.add(readPermission);
+                }
+            }
+
+
+            ro.setPermissions(permissionSet);
+        }
+
+        List<Role> newRole = roleService.createRole(role);
+        return ResponseEntity.ok(newRole);
+    }
 }
