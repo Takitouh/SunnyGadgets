@@ -72,7 +72,7 @@ public class ServiceCategory implements IServiceCategory {
 
         Optional<Category> categoryOptional = repositoryCategory.findById(id);
         if (categoryOptional.isEmpty()) {
-            return ; // Excepcion not found
+            throw new EntityNotFoundException("Category with id " + id + " not found") ; // Excepcion not found
         }
         logger.info("Category deleted: {}", categoryOptional.get());
         repositoryCategory.deleteById(id);
