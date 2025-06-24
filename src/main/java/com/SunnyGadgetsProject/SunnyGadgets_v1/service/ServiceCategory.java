@@ -39,7 +39,11 @@ public class ServiceCategory implements IServiceCategory {
 
     @Override
     public Optional<Category> getCategoryById(Long id) {
-        return repositoryCategory.findById(id);
+        Optional<Category> category = repositoryCategory.findById(id);
+        if (category.isEmpty()) {
+            throw new EntityNotFoundException("Category with id " + id + " not found"); //Excepcion Not Found
+        }
+        return category;
 
     }
 
