@@ -30,6 +30,7 @@ public class Product {
     private Category category;
 
     @ManyToMany(mappedBy = "productSet")
+    @JsonIgnore
     private Set<Provider> setProviders;
 
 }
