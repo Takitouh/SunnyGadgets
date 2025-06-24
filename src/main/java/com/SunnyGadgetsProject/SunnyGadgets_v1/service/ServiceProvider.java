@@ -45,7 +45,31 @@ public class ServiceProvider implements IServiceProvider {
 
     @Override
     public List<Provider> createProvider(List<Provider> providers) {
-        repositoryProvider.saveAll(providers);
+        Set<Product> products = new HashSet<>();
+        Product p;
+        for (Provider provider : providers) {
+            Iterator<Product> it = provider.getProductSet().iterator();
+
+            if (it.hasNext()) {
+                for (Product pr : provider.getProductSet()) {
+                    if (pr == null) {
+                        throw new EntityNotFoundException("Product is null");
+                    } else if (pr.getId_product() != null) {
+                        Optional<Product> product = repositoryProduct.findById(pr.getId_product());
+                        p = product.get();
+                    } else {
+                        p = pr;
+                    }
+                    products.add(p);
+                }
+            }
+            provider.setProductSet(products);
+            repositoryProvider.saveAndFlush(provider);
+            em.detach(provider);
+            products = new HashSet<>();
+        }
+
+        //repositoryProvider.saveAll(providers);
         logger.info("Providers created: {}", providers);
         return providers;
     }
