@@ -19,5 +19,16 @@ public class DetailSale {
     @Min(1)
     private long unitPrice;
 
+    private long subtotal;
+
+    @ManyToOne
+    @JoinColumn(name = "fk_sale", referencedColumnName = "id_sale")
+    @JsonIgnore
+    private Sale sale;
+
+    @ManyToOne
+    @JoinColumn(name = "fk_product", referencedColumnName = "id_product")
+    private Product product;
+
 
 }
