@@ -1,22 +1,29 @@
 package com.SunnyGadgetsProject.SunnyGadgets_v1.service;
 
+import com.SunnyGadgetsProject.SunnyGadgets_v1.entity.Product;
 import com.SunnyGadgetsProject.SunnyGadgets_v1.entity.Provider;
+import com.SunnyGadgetsProject.SunnyGadgets_v1.repository.IRepositoryProduct;
 import com.SunnyGadgetsProject.SunnyGadgets_v1.repository.IRepositoryProvider;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class ServiceProvider implements IServiceProvider {
 
     private static final Logger logger = LoggerFactory.getLogger(ServiceProvider.class);
     private final IRepositoryProvider repositoryProvider;
+    private final IRepositoryProduct repositoryProduct;
+    private final EntityManager em;
 
-    public ServiceProvider(IRepositoryProvider repositoryProvider) {
+    public ServiceProvider(IRepositoryProvider repositoryProvider, IRepositoryProduct repositoryProduct, EntityManager em) {
         this.repositoryProvider = repositoryProvider;
+        this.repositoryProduct = repositoryProduct;
+        this.em = em;
     }
 
     @Override
