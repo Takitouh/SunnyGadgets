@@ -56,7 +56,7 @@ public class ServiceCategory implements IServiceCategory {
     public Category updateCategory(Category category, Long id) {
         Optional<Category> categoryOptional = repositoryCategory.findById(id);
         if (categoryOptional.isEmpty()) {
-            return null; //Excepcion Not Found
+            throw new EntityNotFoundException("Category with id " + id + " not found"); //Excepcion Not Found
         }
         categoryOptional.get().setName(category.getName());
         categoryOptional.get().setDescription(category.getDescription());
