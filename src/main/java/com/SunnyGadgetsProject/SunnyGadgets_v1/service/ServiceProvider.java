@@ -96,7 +96,7 @@ public class ServiceProvider implements IServiceProvider {
     public Provider updateProvider(Provider provider, Long id) {
         Optional<Provider> providerOptional = repositoryProvider.findById(id);
         if (providerOptional.isEmpty()) {
-            return null; //Exception not found
+            throw new EntityNotFoundException("Provider with id " + id + " not found"); //Exception not found
         }
 
         providerOptional.get().setName(provider.getName());
