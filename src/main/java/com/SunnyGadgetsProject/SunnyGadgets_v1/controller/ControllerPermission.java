@@ -36,6 +36,13 @@ public class ControllerPermission {
         return ResponseEntity.ok(newPermission);
     }
 
+    @PostMapping("/createBatch")
+    public ResponseEntity<List<Permission>> createPermission(@RequestBody Set<Permission> permission) {
+        List<Permission> newPermission = permissionService.createPermission(permission);
+
+        return ResponseEntity.ok(newPermission);
+    }
+
 }
 
 
