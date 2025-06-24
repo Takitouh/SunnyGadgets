@@ -21,8 +21,8 @@ public class Product {
     @Nonnull @NotBlank
     private String description;
     @Min(1)
-    private int Price;
-    @Min(0)
+    private int price;
+    @Min(1)
     private int stock;
     @ManyToOne
     @JoinColumn(referencedColumnName = "id_category", nullable = false)
