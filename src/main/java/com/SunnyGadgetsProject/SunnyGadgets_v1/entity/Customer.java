@@ -34,6 +34,10 @@ public class Customer {
   @Email
   private String email;
 
+  @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "customer")
+  @JsonIgnore
+  private Set<Sale> sales;
+
   @Size(max = 10, min = 10) @NotBlank @Nonnull
   private String phone;
   @CreationTimestamp
