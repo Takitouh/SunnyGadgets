@@ -47,7 +47,7 @@ public class ServiceCategory implements IServiceCategory {
     public List<Category> allCategories() {
         List<Category> categories = repositoryCategory.findAll();
         if (categories.isEmpty()) {
-            return null; //Excepcion Not Found
+            throw new EntityNotFoundException("No categories found"); //Excepcion Not Found
         }
         return categories;
     }
