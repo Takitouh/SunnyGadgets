@@ -23,7 +23,7 @@ public class Employee{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id_employee;
 
-    @NotBlank @Nonnull
+     @Nonnull
     private Long salary;
 
     @NotBlank
