@@ -1,13 +1,16 @@
 package com.SunnyGadgetsProject.SunnyGadgets_v1.service;
 
-import com.SunnyGadgetsProject.SunnyGadgets_v1.entity.Sale;
+import com.SunnyGadgetsProject.SunnyGadgets_v1.entity.*;
+import com.SunnyGadgetsProject.SunnyGadgets_v1.repository.IRepositoryCustomer;
+import com.SunnyGadgetsProject.SunnyGadgets_v1.repository.IRepositoryProduct;
 import com.SunnyGadgetsProject.SunnyGadgets_v1.repository.IRepositorySale;
+import com.SunnyGadgetsProject.SunnyGadgets_v1.repository.IRepositorySeller;
+import jakarta.persistence.EntityNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class ServiceSale implements IServiceSale {
@@ -16,22 +19,31 @@ public class ServiceSale implements IServiceSale {
     private final IRepositorySale repositorySale;
     private final IRepositoryCustomer repositoryCustomer;
     private final IRepositoryProduct repositoryProduct;
+    private final IRepositorySeller repositorySeller;
 
 
-    public ServiceSale(IRepositorySale repositorySale, IRepositoryCustomer repositoryCustomer, IRepositoryProduct repositoryProduct) {
+    public ServiceSale(IRepositorySale repositorySale, IRepositoryCustomer repositoryCustomer, IRepositoryProduct repositoryProduct, IRepositorySeller repositorySeller) {
         this.repositorySale = repositorySale;
+        this.repositoryCustomer = repositoryCustomer;
+        this.repositoryProduct = repositoryProduct;
+        this.repositorySeller = repositorySeller;
     }
 
     @Override
     public Sale createSale(Sale sale) {
         Optional<Customer> optionalCustomer = repositoryCustomer.findById(sale.getCustomer().getId_customer());
+        Optional<Seller> optionalSeller = repositorySeller.findById(sale.getSeller().getId_employee());
         Set<Sale> sales = new HashSet<>();
         List<DetailSale> auxlistdetailSale = new ArrayList<>();
         long auxsubtotal = 0;
 
         if (optionalCustomer.isEmpty()){
             throw new RuntimeException("Customer not found");
+        } else if (optionalSeller.isEmpty()){
+            throw new RuntimeException("Seller not found");
         }
+        repositorySale.save(sale);
+
 
         long total = 0;
 
@@ -46,18 +58,25 @@ public class ServiceSale implements IServiceSale {
             ds.setUnitPrice(optionalProduct.get().getPrice());
             ds.setSubtotal(auxsubtotal);
             ds.setProduct(optionalProduct.get());
+            ds.setSale(sale);
             //Add all the items to other list
             auxlistdetailSale.add(ds);
+
 
             total += ds.getSubtotal();
 
         }
-        
+//        Seller seller = new Seller();
+//        seller.setName(optionalSeller.get().getName());
+        //sale.setSeller(seller);
+        //The solution is use DTO probably the best option
         sales.add(sale);
         optionalCustomer.get().setSales(sales);
+        optionalSeller.get().setSales(sales);
         //And assignate this new list to sale, also assignate the customer and total
         sale.setListdetailSale(auxlistdetailSale);
         sale.setCustomer(optionalCustomer.get());
+
         sale.setTotal(total);
 
         repositorySale.save(sale);
@@ -90,7 +109,7 @@ public class ServiceSale implements IServiceSale {
     public Sale updateSale(Sale sale, Long id) {
         Optional<Sale> saleOptional = repositorySale.findById(id);
         if (saleOptional.isEmpty()) {
-            return null; //Exception not found
+            throw new EntityNotFoundException("Sale not found"); //Exception not found
         }
 
         saleOptional.get().setListdetailSale(sale.getListdetailSale());
