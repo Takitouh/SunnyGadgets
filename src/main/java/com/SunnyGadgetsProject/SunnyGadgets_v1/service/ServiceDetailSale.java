@@ -19,21 +19,7 @@ public class ServiceDetailSale implements IServiceDetailSale {
         this.repositoryDetailSale = repositoryDetailSale;
     }
 
-    @Override
-    public DetailSale createDetailSale(DetailSale detailSale) {
-
-        repositoryDetailSale.save(detailSale);
-        logger.info("DetailSale created: {}", detailSale);
-        return detailSale;
-    }
-
-    @Override
-    public List<DetailSale> createDetailSale(List<DetailSale> detailSales) {
-
-        repositoryDetailSale.saveAll(detailSales);
-        logger.info("DetailSales created: {}", detailSales);
-        return detailSales;
-    }
+    
 
     @Override
     public Optional<DetailSale> getDetailSaleById(Long id) {

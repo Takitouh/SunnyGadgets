@@ -46,6 +46,10 @@ public class ServiceRole implements IServiceRole{
         return roleRepository.save(role);
     }
 
+    @Override
+    public List<Role> createRole(Set<Role> roles) {
+        return roleRepository.saveAll(roles);
+    }
 
 
     @Override

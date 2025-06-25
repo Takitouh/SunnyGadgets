@@ -2,6 +2,7 @@ package com.SunnyGadgetsProject.SunnyGadgets_v1.service;
 
 import com.SunnyGadgetsProject.SunnyGadgets_v1.entity.Category;
 import com.SunnyGadgetsProject.SunnyGadgets_v1.repository.IRepositoryCategory;
+import jakarta.persistence.EntityNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -39,7 +40,11 @@ public class ServiceCategory implements IServiceCategory {
 
     @Override
     public Optional<Category> getCategoryById(Long id) {
-        return repositoryCategory.findById(id);
+        Optional<Category> category = repositoryCategory.findById(id);
+        if (category.isEmpty()) {
+            throw new EntityNotFoundException("Category with id " + id + " not found"); //Excepcion Not Found
+        }
+        return category;
 
     }
 
@@ -47,7 +52,7 @@ public class ServiceCategory implements IServiceCategory {
     public List<Category> allCategories() {
         List<Category> categories = repositoryCategory.findAll();
         if (categories.isEmpty()) {
-            return null; //Excepcion Not Found
+            throw new EntityNotFoundException("No categories found"); //Excepcion Not Found
         }
         return categories;
     }
@@ -56,7 +61,7 @@ public class ServiceCategory implements IServiceCategory {
     public Category updateCategory(Category category, Long id) {
         Optional<Category> categoryOptional = repositoryCategory.findById(id);
         if (categoryOptional.isEmpty()) {
-            return null; //Excepcion Not Found
+            throw new EntityNotFoundException("Category with id " + id + " not found"); //Excepcion Not Found
         }
         categoryOptional.get().setName(category.getName());
         categoryOptional.get().setDescription(category.getDescription());
@@ -72,7 +77,7 @@ public class ServiceCategory implements IServiceCategory {
 
         Optional<Category> categoryOptional = repositoryCategory.findById(id);
         if (categoryOptional.isEmpty()) {
-            return ; // Excepcion not found
+            throw new EntityNotFoundException("Category with id " + id + " not found") ; // Excepcion not found
         }
         logger.info("Category deleted: {}", categoryOptional.get());
         repositoryCategory.deleteById(id);

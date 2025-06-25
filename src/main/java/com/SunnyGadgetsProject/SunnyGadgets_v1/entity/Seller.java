@@ -3,7 +3,7 @@ package com.SunnyGadgetsProject.SunnyGadgets_v1.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.List;
+import java.util.Set;
 
 @Entity @Getter
 @Setter
@@ -15,5 +15,5 @@ import java.util.List;
 public class Seller extends Employee {
 
     @OneToMany(mappedBy = "seller")
-    private List<Sale> sales;
+    private Set<Sale> sales;
 }

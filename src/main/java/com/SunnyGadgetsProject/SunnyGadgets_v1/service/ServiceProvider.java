@@ -1,48 +1,100 @@
 package com.SunnyGadgetsProject.SunnyGadgets_v1.service;
 
+import com.SunnyGadgetsProject.SunnyGadgets_v1.entity.Product;
 import com.SunnyGadgetsProject.SunnyGadgets_v1.entity.Provider;
+import com.SunnyGadgetsProject.SunnyGadgets_v1.repository.IRepositoryProduct;
 import com.SunnyGadgetsProject.SunnyGadgets_v1.repository.IRepositoryProvider;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class ServiceProvider implements IServiceProvider {
 
     private static final Logger logger = LoggerFactory.getLogger(ServiceProvider.class);
     private final IRepositoryProvider repositoryProvider;
+    private final IRepositoryProduct repositoryProduct;
+    private final EntityManager em;
 
-    public ServiceProvider(IRepositoryProvider repositoryProvider) {
+    public ServiceProvider(IRepositoryProvider repositoryProvider, IRepositoryProduct repositoryProduct, EntityManager em) {
         this.repositoryProvider = repositoryProvider;
+        this.repositoryProduct = repositoryProduct;
+        this.em = em;
     }
 
     @Override
     public Provider createProvider(Provider provider) {
-        repositoryProvider.save(provider);
+        Set<Product> products = new HashSet<>();
+        Product p;
+        for (Product pr : provider.getProductSet()) {
+            if (pr == null) {
+                throw new EntityNotFoundException("Product is null");
+            } else if (pr.getId_product() != null) {
+                Optional<Product> product = repositoryProduct.findById(pr.getId_product());
+                p = product.get();
+            } else {
+                p = pr;
+            }
+            products.add(p);
+        }
+
+        provider.setProductSet(products);
+        repositoryProvider.saveAndFlush(provider);
+        em.detach(provider);
+
         logger.info("Provider created: {}", provider);
         return provider;
     }
 
     @Override
     public List<Provider> createProvider(List<Provider> providers) {
-        repositoryProvider.saveAll(providers);
+        Set<Product> products = new HashSet<>();
+        Product p;
+        for (Provider provider : providers) {
+            Iterator<Product> it = provider.getProductSet().iterator();
+
+            if (it.hasNext()) {
+                for (Product pr : provider.getProductSet()) {
+                    if (pr == null) {
+                        throw new EntityNotFoundException("Product is null");
+                    } else if (pr.getId_product() != null) {
+                        Optional<Product> product = repositoryProduct.findById(pr.getId_product());
+                        p = product.get();
+                    } else {
+                        p = pr;
+                    }
+                    products.add(p);
+                }
+            }
+            provider.setProductSet(products);
+            repositoryProvider.saveAndFlush(provider);
+            em.detach(provider);
+            products = new HashSet<>();
+        }
+
+        //repositoryProvider.saveAll(providers);
         logger.info("Providers created: {}", providers);
         return providers;
     }
 
     @Override
     public Optional<Provider> getProviderById(Long id) {
-        return repositoryProvider.findById(id);
+        Optional<Provider> provider = repositoryProvider.findById(id);
+        if (provider.isEmpty()) {
+            throw new EntityNotFoundException("Provider with id " + id + " not found");
+        }
+        return provider;
     }
 
     @Override
     public List<Provider> allProviders() {
         List<Provider> providers = repositoryProvider.findAll();
         if (providers.isEmpty()) {
-            return null; //Exception not found
+            throw new EntityNotFoundException("No providers found"); //Exception not found
         }
         return providers;
     }
@@ -51,7 +103,7 @@ public class ServiceProvider implements IServiceProvider {
     public Provider updateProvider(Provider provider, Long id) {
         Optional<Provider> providerOptional = repositoryProvider.findById(id);
         if (providerOptional.isEmpty()) {
-            return null; //Exception not found
+            throw new EntityNotFoundException("Provider with id " + id + " not found"); //Exception not found
         }
 
         providerOptional.get().setName(provider.getName());

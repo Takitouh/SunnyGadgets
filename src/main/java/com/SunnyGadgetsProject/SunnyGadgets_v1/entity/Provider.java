@@ -15,7 +15,7 @@ import java.util.Set;
 
 public class Provider extends Employee {
 
-    @ManyToMany
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
             @JoinTable(name = "Orders", joinColumns = @JoinColumn(referencedColumnName = "id_provider"),
                     inverseJoinColumns = @JoinColumn(referencedColumnName = "id_product"))
 

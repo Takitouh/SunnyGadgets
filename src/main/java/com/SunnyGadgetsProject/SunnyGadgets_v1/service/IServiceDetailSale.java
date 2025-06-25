@@ -7,8 +7,7 @@ import java.util.Optional;
 
 public interface IServiceDetailSale {
 
-    DetailSale createDetailSale(DetailSale detailSale);
-    List<DetailSale> createDetailSale(List<DetailSale> detailSales);
+
     Optional<DetailSale> getDetailSaleById(Long id);
     List<DetailSale> allDetailSales();
     DetailSale updateDetailSale(DetailSale detailSale, Long id);

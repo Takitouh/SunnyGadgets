@@ -16,10 +16,14 @@ POST (create):
 POST (create batch):
   URL: http://localhost:8080/api/v1/category/createBatch
   JSON Body:
-  [
-    { "name": "Electronics", "description": "Modern electronic products" },
-    { "name": "Home", "description": "Household items and appliances" }
-  ]
+[
+  { "name": "Computers", "description": "Laptops, desktops, and components" },
+  { "name": "Peripherals", "description": "External devices like mice, keyboards, and monitors" },
+  { "name": "Mobile Devices", "description": "Smartphones, tablets, and accessories" },
+  { "name": "Audio", "description": "Headphones, speakers, and microphones" },
+  { "name": "Storage", "description": "Hard drives, SSDs, USB sticks, and memory cards" },
+  { "name": "Networking", "description": "Routers, modems, and network accessories" }
+]
 
 PUT (update):
   URL: http://localhost:8080/api/v1/category/update/{id}
@@ -54,6 +58,55 @@ POST (create):
       "description": "Modern electronic products"
     }
   }
+
+  POST (create batch):
+    URL: http://localhost:8080/api/v1/product/createBatch
+    JSON Body:
+    [
+      {
+        "name": "Gaming Laptop",
+        "description": "Intel i7, 16GB RAM, RTX 3060, 1TB SSD",
+        "price": 1800,
+        "stock": 8,
+        "category": { "id_category": 1 }
+      },
+      {
+        "name": "Mechanical Keyboard",
+        "description": "RGB backlit, blue switches",
+        "price": 120,
+        "stock": 25,
+        "category": { "id_category": 2 }
+      },
+      {
+        "name": "Smartphone",
+        "description": "6.7-inch OLED, 128GB, dual SIM",
+        "price": 900,
+        "stock": 15,
+        "category": { "id_category": 3 }
+      },
+      {
+        "name": "Noise-Canceling Headphones",
+        "description": "Wireless over-ear with 30-hour battery life",
+        "price": 250,
+        "stock": 10,
+        "category": { "id_category": 4 }
+      },
+      {
+        "name": "2TB External Hard Drive",
+        "description": "USB 3.1 portable drive",
+        "price": 130,
+        "stock": 20,
+        "category": { "id_category": 5 }
+      },
+      {
+        "name": "Wi-Fi 6 Router",
+        "description": "Dual-band gigabit wireless router",
+        "price": 110,
+        "stock": 18,
+        "category": { "id_category": 6 }
+      }
+    ]
+
 
 PUT (update):
   URL: http://localhost:8080/api/v1/product/update/{id}
@@ -91,14 +144,12 @@ POST (create):
     "phone": "1234567890",
     "productSet": [
       {
-        "id_product": 1,
-        "name": "Laptop",
+        "name": "Laptop lenovo",
         "description": "High-end laptop",
         "price": 1500,
         "stock": 10
       },
       {
-        "id_product": 2,
         "name": "Smartphone",
         "description": "Modern smartphone",
         "price": 800,
@@ -106,6 +157,44 @@ POST (create):
       }
     ]
   }
+
+  POST (create batch):
+    URL: http://localhost:8080/api/v1/provider/createBatch
+    JSON Body:
+
+    [
+      {
+        "salary": 2100000,
+        "name": "Juan Perez",
+        "email": "juan.perez@example.com",
+        "phone": "1234567890",
+        "productSet": [
+          {
+            "name": "Mouse RGB",
+            "description": "Mouse gamer with RGB and different level's of DPI",
+            "price": 45000,
+            "stock": 18,
+            "category": { "id_category": 5 }
+          },
+          {
+            "name": "Smartphone",
+            "description": "Modern smartphone",
+            "price": 800000,
+            "stock": 12,
+            "category": { "id_category": 5 }
+          }
+        ]
+      },
+      {
+        "salary": 1980000,
+        "name": "Mariana López",
+        "email": "mariana.lopez@example.com",
+        "phone": "3147852963",
+        "productSet": [
+          { "id_product": 1 },
+          { "id_product": 4 }
+        ]
+      }
 
 PUT (update):
   URL: http://localhost:8080/api/v1/provider/update/{id}
@@ -115,7 +204,13 @@ PUT (update):
     "name": "Juan Perez Updated",
     "email": "juan.updated@example.com",
     "phone": "1234567890",
-    "productSet": []
+    "productSet": [
+                "name": "Updated Mouse RGB",
+                "description": "Updated mouse gamer with RGB and different level's of DPI",
+                "price": 49000,
+                "stock": 11,
+                "category": { "id_category": 5 }
+    ]
   }
 
 DELETE (remove):
@@ -129,25 +224,7 @@ GET (single):
 GET (all):
   URL: http://localhost:8080/api/v1/employee/get
 
-POST (create):
-  URL: http://localhost:8080/api/v1/employee/create
-  JSON Body:
-  {
-    "salary": 2500,
-    "name": "Ana Gomez",
-    "email": "ana.gomez@example.com",
-    "phone": "0987654321"
-  }
 
-PUT (update):
-  URL: http://localhost:8080/api/v1/employee/update/{id}
-  JSON Body:
-  {
-    "salary": 2600,
-    "name": "Ana Gomez Updated",
-    "email": "ana.gomez.updated@example.com",
-    "phone": "0987654321"
-  }
 
 DELETE (remove):
   URL: http://localhost:8080/api/v1/employee/delete/{id}
@@ -160,13 +237,7 @@ GET (single):
 GET (all):
   URL: http://localhost:8080/api/v1/detailsale/get
 
-POST (create):
-  URL: http://localhost:8080/api/v1/detailsale/create
-  JSON Body:
-  {
-    "quantity": 3,
-    "unitPrice": 200
-  }
+
 
 PUT (update):
   URL: http://localhost:8080/api/v1/detailsale/update/{id}
@@ -191,19 +262,19 @@ POST (create):
   URL: http://localhost:8080/api/v1/sale/create
   JSON Body:
   {
-    "total": 500,
-    "seller": {
-      "id_seller": 1
+    "customer" : {
+      "id_customer" : 1
     },
-    "listdetailSale": [
-      {
-        "quantity": 2,
-        "unitPrice": 150
-      },
-      {
-        "quantity": 1,
-        "unitPrice": 200
-      }
+    "seller": {
+      "id_employee": 1
+    },
+    "listdetailSale" : [
+        {
+            "quantity" : 1,
+            "product" : {
+            "id_product" : 1
+            }
+        }
     ]
   }
 
@@ -211,19 +282,19 @@ PUT (update):
   URL: http://localhost:8080/api/v1/sale/update/{id}
   JSON Body:
   {
-    "total": 550,
-    "seller": {
-      "id_seller": 1
+    "customer" : {
+      "id_customer" : 2
     },
-    "listdetailSale": [
-      {
-        "quantity": 3,
-        "unitPrice": 150
-      },
-      {
-        "quantity": 1,
-        "unitPrice": 200
-      }
+    "seller": {
+      "id_employee": 2
+    },
+    "listdetailSale" : [
+        {
+            "quantity" : 2,
+            "product" : {
+            "id_product" : 3
+            }
+        }
     ]
   }
 

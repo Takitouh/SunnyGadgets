@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class ServicePermission  implements  IServicePermission{
@@ -29,6 +30,11 @@ public class ServicePermission  implements  IServicePermission{
     @Override
     public Permission createPermission(Permission permission) {
         return permissionRepository.save(permission);
+    }
+
+    @Override
+    public List<Permission> createPermission(Set<Permission> permissions) {
+        return permissionRepository.saveAll(permissions);
     }
 
 

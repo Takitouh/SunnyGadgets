@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 
 @RestController
@@ -33,6 +34,13 @@ public class ControllerPermission {
     @PostMapping("/create")
     public ResponseEntity<Permission> createPermission(@RequestBody Permission permission) {
         Permission newPermission = permissionService.createPermission(permission);
+        return ResponseEntity.ok(newPermission);
+    }
+
+    @PostMapping("/createBatch")
+    public ResponseEntity<List<Permission>> createPermission(@RequestBody Set<Permission> permission) {
+        List<Permission> newPermission = permissionService.createPermission(permission);
+
         return ResponseEntity.ok(newPermission);
     }
 
