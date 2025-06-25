@@ -3,7 +3,6 @@ package com.SunnyGadgetsProject.SunnyGadgets_v1.controller;
 import com.SunnyGadgetsProject.SunnyGadgets_v1.entity.DetailSale;
 import com.SunnyGadgetsProject.SunnyGadgets_v1.service.IServiceDetailSale;
 import jakarta.persistence.EntityNotFoundException;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -45,12 +44,8 @@ public class ControllerDetailSale {
         return ResponseEntity.ok(detailSales);
     }
 
-    @PostMapping("/create")
-    @PreAuthorize("hasAuthority('CREATE')")
-    public ResponseEntity<DetailSale> createDetailSale(@RequestBody DetailSale detailSale) {
-        serviceDetailSale.createDetailSale(detailSale);
 
-    
+
 
     @DeleteMapping("/delete/{id}")
     @PreAuthorize("hasAuthority('DELETE')")
