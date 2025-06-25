@@ -1,7 +1,6 @@
 package com.SunnyGadgetsProject.SunnyGadgets_v1.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Min;
 import lombok.*;
 import org.hibernate.annotations.CurrentTimestamp;
 
@@ -17,16 +16,22 @@ public class Sale {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id_sale;
+
     @CurrentTimestamp
     private Timestamp salecreatedAt;
-    @Min(1)
-    private int total;
+
+    private long total;
 
     @ManyToOne
-    @JoinColumn(referencedColumnName = "id_seller", nullable = false)
+    @JoinColumn(name = "fk_customer", referencedColumnName = "id_customer", nullable = false)
+
+    private Customer customer;
+
+    @ManyToOne
+    @JoinColumn(name = "fk_seller", referencedColumnName = "id_seller", nullable = false)
     private Seller seller;
 
-    @OneToMany
+    @OneToMany(mappedBy = "sale", cascade = CascadeType.ALL)
     private List<DetailSale> listdetailSale;
 
 }
