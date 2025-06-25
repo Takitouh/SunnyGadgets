@@ -9,6 +9,7 @@ public interface IServicePermission {
     List<Permission> allPermissions();
     Optional<Permission> getPermissionById(Long id);
     Permission createPermission(Permission permission);
+    List<Permission> createPermission(Set<Permission> permission);
     Permission updatePermission(Permission permission);
     void deletePermission(Long id);
 
