@@ -1,14 +1,17 @@
 package com.SunnyGadgetsProject.SunnyGadgets_v1.service;
 
 import com.SunnyGadgetsProject.SunnyGadgets_v1.entity.Category;
+import com.SunnyGadgetsProject.SunnyGadgets_v1.entity.Product;
 import com.SunnyGadgetsProject.SunnyGadgets_v1.repository.IRepositoryCategory;
 import jakarta.persistence.EntityNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class ServiceCategory implements IServiceCategory {
@@ -63,9 +66,12 @@ public class ServiceCategory implements IServiceCategory {
         if (categoryOptional.isEmpty()) {
             throw new EntityNotFoundException("Category with id " + id + " not found"); //Excepcion Not Found
         }
+        //Store the previous products and the new ones in a new Set
+        Set<Product> products = categoryOptional.get().getProductSet();
         categoryOptional.get().setName(category.getName());
         categoryOptional.get().setDescription(category.getDescription());
-        categoryOptional.get().setProductSet(category.getProductSet());
+        //And assign
+        categoryOptional.get().setProductSet(products);
         repositoryCategory.save(categoryOptional.get());
 
         logger.info("Category updated: {}", category);
