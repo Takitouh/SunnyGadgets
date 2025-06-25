@@ -1,5 +1,6 @@
 package com.SunnyGadgetsProject.SunnyGadgets_v1.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.annotation.Nonnull;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
@@ -11,12 +12,14 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.sql.Timestamp;
+import java.util.Set;
 
 @Getter
 @Setter
 @Entity
 @NoArgsConstructor
 @Table(name = "customers")
+
 public class Customer {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
