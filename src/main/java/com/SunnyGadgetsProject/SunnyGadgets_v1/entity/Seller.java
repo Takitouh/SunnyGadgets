@@ -15,5 +15,5 @@ import java.util.Set;
 public class Seller extends Employee {
 
     @OneToMany(mappedBy = "seller")
-    private List<Sale> sales;
+    private Set<Sale> sales;
 }
