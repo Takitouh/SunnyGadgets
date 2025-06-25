@@ -4,6 +4,7 @@ import com.SunnyGadgetsProject.SunnyGadgets_v1.entity.Permission;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 public interface IServicePermission {
     List<Permission> allPermissions();
