@@ -86,7 +86,56 @@ public class ServiceSale implements IServiceSale {
 
     @Override
     public List<Sale> createSale(List<Sale> sales) {
-        repositorySale.saveAll(sales);
+
+
+        for (Sale s : sales) {
+            Optional<Customer> optionalCustomer = repositoryCustomer.findById(s.getCustomer().getId_customer());
+            Optional<Seller> optionalSeller = repositorySeller.findById(s.getSeller().getId_employee());
+            List<DetailSale> auxlistdetailSale = new ArrayList<>();
+            Set<Sale> saleSet = new HashSet<>();
+            long auxsubtotal = 0;
+            long total = 0;
+
+
+            if (optionalCustomer.isEmpty()){
+                throw new RuntimeException("Customer not found");
+            } else if (optionalSeller.isEmpty()){
+                throw new RuntimeException("Seller not found");
+            }
+            repositorySale.save(s);
+
+            for (DetailSale ds : s.getListdetailSale()) {
+                Optional<Product> optionalProduct = repositoryProduct.findById(ds.getProduct().getId_product());
+                if (optionalProduct.isEmpty()) {
+                    throw new RuntimeException("Product not found");
+                }
+                //Calculate the subtotal with the unit price and the quantity
+                auxsubtotal = (long) optionalProduct.get().getPrice() * ds.getQuantity();
+                //We set the values for the items of the list detail sale
+                ds.setUnitPrice(optionalProduct.get().getPrice());
+                ds.setSubtotal(auxsubtotal);
+                ds.setProduct(optionalProduct.get());
+                ds.setSale(s);
+                //Add all the items to other list
+                auxlistdetailSale.add(ds);
+
+
+                total += ds.getSubtotal();
+
+            }
+
+            saleSet.add(s);
+            optionalCustomer.get().setSales(saleSet);
+            optionalSeller.get().setSales(saleSet);
+            //And assignate this new list to sale, also assignate the customer and total
+            s.setListdetailSale(auxlistdetailSale);
+            s.setCustomer(optionalCustomer.get());
+
+            s.setTotal(total);
+
+            repositorySale.save(s);
+        }
+
         logger.info("Sales created: {}", sales);
         return sales;
     }
