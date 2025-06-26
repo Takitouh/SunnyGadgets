@@ -51,7 +51,7 @@ public class ServiceProduct implements IServiceProduct {
     public Product updateProduct(Product product, Long id) {
         Optional<Product> productOptional = repositoryProduct.findById(id);
         if (productOptional.isEmpty()) {
-            return null; //Exception not found
+            throw new EntityNotFoundException("Product with id " + id + " not found"); //Exception not found
         }
 
         productOptional.get().setName(product.getName());
