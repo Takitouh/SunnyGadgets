@@ -74,7 +74,7 @@ public class ServiceCustomer implements IServiceCustomer {
     public void deleteCustomer(Long id) {
         Optional<Customer> customer = repositoryCustomer.findById(id);
         if (customer.isEmpty()) {
-            return; //Exception not found
+            throw new EntityNotFoundException("Customer with id " + id + " not found"); //Exception not found
         }
         repositoryCustomer.deleteById(id);
         logger.info("Customer deleted: {}", customer.get().getEmail());
