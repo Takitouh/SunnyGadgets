@@ -30,8 +30,7 @@ public class Employee{
     @Nonnull
     private String name;
     @Column(unique = true)
-    @Email
-    private String email;
+
 
     @Size(max = 10, min = 10) @NotBlank @Nonnull
     private String phone;
