@@ -2,7 +2,6 @@ package com.SunnyGadgetsProject.SunnyGadgets_v1.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Min;
 import lombok.*;
 
 @Entity

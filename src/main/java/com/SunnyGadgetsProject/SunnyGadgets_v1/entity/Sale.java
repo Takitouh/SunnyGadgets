@@ -2,7 +2,6 @@ package com.SunnyGadgetsProject.SunnyGadgets_v1.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.CurrentTimestamp;
 
 import java.sql.Timestamp;
 import java.util.List;

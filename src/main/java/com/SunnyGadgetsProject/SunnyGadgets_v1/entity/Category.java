@@ -1,8 +1,6 @@
 package com.SunnyGadgetsProject.SunnyGadgets_v1.entity;
 
-import jakarta.annotation.Nonnull;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
 import java.util.Set;
