@@ -2,6 +2,7 @@ package com.SunnyGadgetsProject.SunnyGadgets_v1.service;
 
 import com.SunnyGadgetsProject.SunnyGadgets_v1.entity.Customer;
 import com.SunnyGadgetsProject.SunnyGadgets_v1.repository.IRepositoryCustomer;
+import jakarta.persistence.EntityNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -50,20 +51,23 @@ public class ServiceCustomer implements IServiceCustomer {
 
     @Override
     public Customer updateCustomer(Customer customer, Long id) {
-        Optional<Customer> existingCustomer = repositoryCustomer.findById(id);
-        if (existingCustomer.isEmpty()) {
-            return customer; //Exception Not found
+        Optional<Customer> optionalCustomer = repositoryCustomer.findById(id);
+        if (optionalCustomer.isEmpty()) {
+            throw new EntityNotFoundException("Customer with id " + id + " not found"); //Exception Not found
         }
 
         // Actualizar solo campos permitidos (evitar sobrescribir campos sensibles como 'password')
-        Customer customerToUpdate = existingCustomer.get();
-        customerToUpdate.setName(customer.getName());
-        customerToUpdate.setEmail(customer.getEmail());
-        customerToUpdate.setAddress(customer.getAddress());
+        Customer cu = optionalCustomer.get();
+        cu.setName(customer.getName());
+        cu.setEmail(customer.getEmail());
+        cu.setAddress(customer.getAddress());
+        cu.setPhone(customer.getPhone());
+        cu.setAge(customer.getAge());
 
-        repositoryCustomer.save(customerToUpdate);
-        logger.info("Customer updated: {}", customerToUpdate.getName());
-        return customerToUpdate;
+
+        repositoryCustomer.save(cu);
+        logger.info("Customer updated: {}", cu.getName());
+        return cu;
     }
 
     @Override
