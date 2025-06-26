@@ -21,5 +21,8 @@ public class Provider extends Employee {
 
     private Set<Product> productSet;
 
+    private String company;
+
+    private String email;
 
 }
