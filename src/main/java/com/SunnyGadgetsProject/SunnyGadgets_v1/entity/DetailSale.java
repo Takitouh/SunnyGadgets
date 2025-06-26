@@ -15,7 +15,6 @@ public class DetailSale {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id_detailsale;
-    @Min(1)
     private int quantity;
 
     private long unitPrice;

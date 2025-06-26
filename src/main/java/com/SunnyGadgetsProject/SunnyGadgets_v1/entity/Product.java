@@ -18,21 +18,17 @@ public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id_product;
-    @Nonnull @NotBlank
     private String name;
-    @Nonnull @NotBlank
     private String description;
-    @Min(1)
     private int price;
-    @Min(1)
     private int stock;
     @ManyToOne
     @JoinColumn(referencedColumnName = "id_category", nullable = false)
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    //@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Category category;
 
     @ManyToMany(mappedBy = "productSet")
-    @JsonIgnore
+    //@JsonIgnore
     private Set<Provider> setProviders;
 
 }

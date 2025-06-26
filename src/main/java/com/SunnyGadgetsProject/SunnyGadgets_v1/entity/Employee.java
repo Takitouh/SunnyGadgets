@@ -22,21 +22,10 @@ public class Employee{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id_employee;
-
-     @Nonnull
     private Long salary;
-
-    @NotBlank
-    @Nonnull
     private String name;
-    @Column(unique = true)
-
-
-    @Size(max = 10, min = 10) @NotBlank @Nonnull
     private String phone;
-    @CreationTimestamp
     private Timestamp creationDate;
-    @UpdateTimestamp
     private Timestamp modificationDate;
 
 }

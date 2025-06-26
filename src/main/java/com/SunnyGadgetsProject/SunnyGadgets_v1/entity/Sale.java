@@ -17,7 +17,6 @@ public class Sale {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id_sale;
 
-    @CurrentTimestamp
     private Timestamp salecreatedAt;
 
     private long total;

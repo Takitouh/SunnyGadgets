@@ -15,9 +15,7 @@ public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id_category;
-    @NotBlank @Nonnull
     private String name;
-    @NotBlank @Nonnull
     private String description;
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
     Set<Product> productSet;
