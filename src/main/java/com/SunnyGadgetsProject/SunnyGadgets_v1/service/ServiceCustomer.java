@@ -44,7 +44,7 @@ public class ServiceCustomer implements IServiceCustomer {
     public List<Customer> allCustomers() {
         List<Customer> customers = repositoryCustomer.findAll();
         if (customers.isEmpty()) {
-            return null; //Exception not found
+            throw new EntityNotFoundException("Customers not found"); //Exception not found
         }
         return customers;
     }
