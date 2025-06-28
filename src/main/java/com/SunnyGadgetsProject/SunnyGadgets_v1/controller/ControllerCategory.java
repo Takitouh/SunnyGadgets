@@ -1,9 +1,10 @@
 package com.SunnyGadgetsProject.SunnyGadgets_v1.controller;
 
 
+import com.SunnyGadgetsProject.SunnyGadgets_v1.dto.CategoryCreateDTO;
+import com.SunnyGadgetsProject.SunnyGadgets_v1.dto.CategoryResponseDTO;
 import com.SunnyGadgetsProject.SunnyGadgets_v1.entity.Category;
 import com.SunnyGadgetsProject.SunnyGadgets_v1.service.IServiceCategory;
-import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -11,10 +12,9 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
-@EnableMethodSecurity(prePostEnabled = true)
+@EnableMethodSecurity()
 @PreAuthorize("denyAll()")
 @RequestMapping("/api/v1/category")
 public class ControllerCategory {
@@ -26,35 +26,26 @@ public class ControllerCategory {
 
     @GetMapping("/get/{id}")
     @PreAuthorize("hasAuthority('READ')")
-    public ResponseEntity<Category> getCategory(@PathVariable Long id) {
-        Optional<Category> categoryOptional = serviceCategory.getCategoryById(id);
-        if (categoryOptional.isEmpty()){
-            throw new EntityNotFoundException("Category with ID " + id + " not found");
-        }
-        return ResponseEntity.ok(categoryOptional.get());    }
+    public ResponseEntity<CategoryResponseDTO> getCategory(@PathVariable Long id) {
+        return ResponseEntity.ok(serviceCategory.getCategoryById(id));
+    }
 
     @GetMapping("/get")
     @PreAuthorize("hasAuthority('READ')")
-    public ResponseEntity<List<Category>> getAllCategories() {
-        List<Category> categories = serviceCategory.allCategories();
-        if (categories.isEmpty()){
-            throw new EntityNotFoundException("Category list is empty");
-        }
-        return ResponseEntity.ok(categories);    }
+    public ResponseEntity<List<CategoryResponseDTO>> getAllCategories() {
+        return ResponseEntity.ok(serviceCategory.allCategories());
+    }
 
     @PostMapping("/create")
     @PreAuthorize("hasAuthority('CREATE')")
-    public ResponseEntity<Category> createCategory(@RequestBody Category category) {
-        serviceCategory.createCategory(category);
-
-        return new ResponseEntity<>(category, HttpStatus.CREATED);    }
+    public ResponseEntity<CategoryResponseDTO> createCategory(@RequestBody CategoryCreateDTO category) {
+        return new ResponseEntity<>(serviceCategory.createCategory(category), HttpStatus.CREATED);
+    }
 
     @PostMapping("/createBatch")
     @PreAuthorize("hasAuthority('CREATE')")
-    public ResponseEntity<List<Category>> createCategories(@RequestBody List<Category> categories) {
-        serviceCategory.createCategory(categories);
-
-        return new ResponseEntity<>(categories, HttpStatus.CREATED);
+    public ResponseEntity<List<CategoryResponseDTO>> createCategories(@RequestBody List<CategoryCreateDTO> categories) {
+        return new ResponseEntity<>(serviceCategory.createCategory(categories), HttpStatus.CREATED);
     }
 
     @DeleteMapping("/delete/{id}")
