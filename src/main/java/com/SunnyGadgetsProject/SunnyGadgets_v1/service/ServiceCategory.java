@@ -1,12 +1,16 @@
 package com.SunnyGadgetsProject.SunnyGadgets_v1.service;
 
+import com.SunnyGadgetsProject.SunnyGadgets_v1.dto.CategoryCreateDTO;
+import com.SunnyGadgetsProject.SunnyGadgets_v1.dto.CategoryResponseDTO;
 import com.SunnyGadgetsProject.SunnyGadgets_v1.entity.Category;
+import com.SunnyGadgetsProject.SunnyGadgets_v1.mapper.CategoryMapper;
 import com.SunnyGadgetsProject.SunnyGadgets_v1.repository.IRepositoryCategory;
 import jakarta.persistence.EntityNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -14,43 +18,58 @@ import java.util.Optional;
 public class ServiceCategory implements IServiceCategory {
 
     private static final Logger logger = LoggerFactory.getLogger(ServiceCategory.class);
+    private final CategoryMapper categoryMapper;
 
     //I will use the constructor method for DI because I read it's a better practice
-    IRepositoryCategory repositoryCategory;
+    private final IRepositoryCategory repositoryCategory;
 
-    public ServiceCategory(IRepositoryCategory repositoryCategory) {
+    public ServiceCategory(IRepositoryCategory repositoryCategory, CategoryMapper categoryMapper) {
         this.repositoryCategory = repositoryCategory;
+        this.categoryMapper = categoryMapper;
     }
 
     @Override
-    public Category createCategory(Category category) {
-
-         repositoryCategory.save(category);
-        logger.info("Category created: {}", category);
-        return category;
+    public CategoryResponseDTO createCategory(CategoryCreateDTO category) {
+        Category c = categoryMapper.toEntity(category);
+        c = repositoryCategory.save(c);
+        CategoryResponseDTO responseDTO = categoryMapper.toDto(c);
+        logger.info("Category created: {}", c);
+        return responseDTO;
     }
 
     @Override
-    public List<Category> createCategory(List<Category> categories) {
+    public List<CategoryResponseDTO> createCategory(List<CategoryCreateDTO> categories) {
+        List<Category> categoryList = new ArrayList<>();
+        List<CategoryResponseDTO> categoryDTOList = new ArrayList<>();
+        for (CategoryCreateDTO category : categories) {
+            categoryList.add(categoryMapper.toEntity(category));
+        }
+        repositoryCategory.saveAll(categoryList);
+        for (Category c : categoryList) {
+            categoryDTOList.add(categoryMapper.toDto(c));
+        }
 
-        repositoryCategory.saveAll(categories);
         logger.info("Category's created: {}", categories);
-        return categories;
+        return categoryDTOList;
     }
 
     @Override
-    public Optional<Category> getCategoryById(Long id) {
-        Optional<Category> category = repositoryCategory.findById(id);
-        if (category.isEmpty()) {
+    public CategoryResponseDTO getCategoryById(Long id) {
+        Category category = repositoryCategory.findById(id).orElseThrow(EntityNotFoundException::new);
+
+        CategoryResponseDTO categoryR = categoryMapper.toDto(category);
+        if (category == null) {
             throw new EntityNotFoundException("Category with id " + id + " not found"); //Excepcion Not Found
         }
-        return category;
-
+        return categoryR;
     }
 
     @Override
-    public List<Category> allCategories() {
-        List<Category> categories = repositoryCategory.findAll();
+    public List<CategoryResponseDTO> allCategories() {
+        List<CategoryResponseDTO> categories = new ArrayList<>();
+        for (Category c : repositoryCategory.findAll()) {
+            categories.add(categoryMapper.toDto(c));
+        }
         if (categories.isEmpty()) {
             throw new EntityNotFoundException("No categories found"); //Excepcion Not Found
         }
@@ -78,7 +97,7 @@ public class ServiceCategory implements IServiceCategory {
 
         Optional<Category> categoryOptional = repositoryCategory.findById(id);
         if (categoryOptional.isEmpty()) {
-            throw new EntityNotFoundException("Category with id " + id + " not found") ; // Excepcion not found
+            throw new EntityNotFoundException("Category with id " + id + " not found"); // Excepcion not found
         }
         logger.info("Category deleted: {}", categoryOptional.get());
         repositoryCategory.deleteById(id);
