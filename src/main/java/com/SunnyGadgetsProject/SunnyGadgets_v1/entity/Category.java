@@ -12,7 +12,7 @@ import java.util.Set;
 public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id_category;
+    private Long idCategory;
     private String name;
     private String description;
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
