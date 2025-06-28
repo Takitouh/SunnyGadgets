@@ -8,7 +8,7 @@ import java.util.Set;
 @Entity
 @Getter @Setter
 @NoArgsConstructor
-@Table(name = "categorys")
+@Table(name = "categories")
 public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

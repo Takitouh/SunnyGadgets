@@ -14,6 +14,7 @@ import java.util.Set;
 @Getter @Setter @NoArgsConstructor @AllArgsConstructor
 public class CategoryCreateDTO {
 
+    private Long idCategory;
     @NotBlank(message = "Name can't be blank or null") @Nonnull
     private String name;
 
