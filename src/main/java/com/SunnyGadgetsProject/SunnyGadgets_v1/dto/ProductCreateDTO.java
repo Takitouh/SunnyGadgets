@@ -1,7 +1,6 @@
 package com.SunnyGadgetsProject.SunnyGadgets_v1.dto;
 
 import jakarta.annotation.Nonnull;
-import jakarta.validation.Valid;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

@@ -1,18 +1,11 @@
 package com.SunnyGadgetsProject.SunnyGadgets_v1.dto;
 
-import com.SunnyGadgetsProject.SunnyGadgets_v1.entity.Product;
-import jakarta.annotation.Nonnull;
-import jakarta.persistence.*;
-import jakarta.validation.Valid;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 
-import java.sql.Timestamp;
 import java.util.HashSet;
 import java.util.Set;
 @Getter @Setter @NoArgsConstructor @AllArgsConstructor
