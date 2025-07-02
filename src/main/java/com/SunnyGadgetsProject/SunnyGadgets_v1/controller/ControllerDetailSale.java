@@ -1,7 +1,6 @@
 package com.SunnyGadgetsProject.SunnyGadgets_v1.controller;
 
 import com.SunnyGadgetsProject.SunnyGadgets_v1.entity.DetailSale;
-import com.SunnyGadgetsProject.SunnyGadgets_v1.mapper.CategoryMapper;
 import com.SunnyGadgetsProject.SunnyGadgets_v1.service.IServiceDetailSale;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.ResponseEntity;

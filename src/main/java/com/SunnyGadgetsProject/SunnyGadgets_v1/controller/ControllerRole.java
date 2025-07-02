@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Set;
+
 @RestController
 @RequestMapping("/api/v1/roles")
 public class ControllerRole {
@@ -31,47 +32,11 @@ public class ControllerRole {
 
     @PostMapping("/create")
     public ResponseEntity<RoleResponseDTO> createRole(@RequestBody RoleCreateDTO role) {
-//        Set<Permission> permissionList = new HashSet<>();
-//        Permission readPermission;
-//
-//        // Recuperar la Permission/s por su ID
-//        for (Permission per : role.getPermissions()) {
-//            readPermission = permissionService.getPermissionById(per.getId()).orElse(null);
-//            if (readPermission != null) {
-//                //si encuentro, guardo en la lista
-//                permissionList.add(readPermission);
-//            }
-//        }
-//
-//        role.setPermissions(permissionList);
-//
-//        Role newRole = roleService.createRole(role);
-//        return ResponseEntity.ok(newRole);
         return new ResponseEntity<>(roleService.createRole(role), HttpStatus.CREATED);
     }
 
     @PostMapping("/createBatch")
     public ResponseEntity<List<RoleResponseDTO>> createRole(@RequestBody Set<RoleCreateDTO> role) {
-//        Set<Permission> permissionSet = new HashSet<>();
-//        Permission readPermission;
-//
-//        // Recuperar la Permission/s por su ID
-//        for (Role ro : role) {
-//            for (Permission per : ro.getPermissions()) {
-//                readPermission = permissionService.getPermissionById(per.getId()).orElse(null);
-//                if (readPermission != null) {
-//                    //si encuentro, guardo en la lista
-//                    permissionSet.add(readPermission);
-//                }
-//            }
-//
-//
-//            ro.setPermissions(permissionSet);
-//        }
-//
-//        List<Role> newRole = roleService.createRole(role);
-//        return ResponseEntity.ok(newRole);
-
         return ResponseEntity.ok(roleService.createRole(role));
     }
 }
