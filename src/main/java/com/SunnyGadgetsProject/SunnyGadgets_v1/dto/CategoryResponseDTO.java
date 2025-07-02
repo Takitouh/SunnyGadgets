@@ -1,3 +1,5 @@
 package com.SunnyGadgetsProject.SunnyGadgets_v1.dto;
 
-public record CategoryResponseDTO(Long idCategory, String name, String description) {}
+import java.util.Set;
+
+public record CategoryResponseDTO(Long idCategory, String name, String description, Set<ProductResponseDTO> productSet) {}

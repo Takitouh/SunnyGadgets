@@ -1,5 +1,9 @@
 package com.SunnyGadgetsProject.SunnyGadgets_v1.dto;
 
-public record UserSecResponseDTO(String user, String password, boolean account_not_expired, boolean account_not_locked,
-                                 boolean credentials_not_expired, boolean enabled) {
+import com.SunnyGadgetsProject.SunnyGadgets_v1.entity.Role;
+
+import java.util.Set;
+
+public record UserSecResponseDTO(Long idUser, String username, String password, Set<Role> roles, boolean accountNotExpired, boolean accountNotLocked,
+                                 boolean credentialsNotExpired, boolean enabled) {
 }

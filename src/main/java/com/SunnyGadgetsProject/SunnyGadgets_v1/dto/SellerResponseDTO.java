@@ -1,9 +1,8 @@
 package com.SunnyGadgetsProject.SunnyGadgets_v1.dto;
 
-import java.util.Date;
+import java.sql.Timestamp;
 import java.util.Set;
 
-public record SellerResponseDTO(String name, String phoneNumber, long salary,
-                                String createdAt, String updatedAt, long comission,
-                                Date hireDate, Set<SaleResponseDTO> sales) {
+public record SellerResponseDTO(Long idSeller, String name, String phoneNumber, long salary,
+                                Timestamp createdAt, Timestamp updatedAt, long commission, Set<SaleResponseDTO> sales) {
 }

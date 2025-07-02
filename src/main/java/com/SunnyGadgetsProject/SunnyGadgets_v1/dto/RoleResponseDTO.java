@@ -1,4 +1,6 @@
 package com.SunnyGadgetsProject.SunnyGadgets_v1.dto;
 
-public record RoleResponseDTO(String role) {
+import java.util.Set;
+
+public record RoleResponseDTO(Long idRole, String role, Set<PermissionResponseDTO> permissions) {
 }
