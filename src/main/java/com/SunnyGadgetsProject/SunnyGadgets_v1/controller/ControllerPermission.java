@@ -3,17 +3,12 @@ package com.SunnyGadgetsProject.SunnyGadgets_v1.controller;
 
 import com.SunnyGadgetsProject.SunnyGadgets_v1.dto.PermissionCreateDTO;
 import com.SunnyGadgetsProject.SunnyGadgets_v1.dto.PermissionResponseDTO;
-import com.SunnyGadgetsProject.SunnyGadgets_v1.entity.Permission;
-import com.SunnyGadgetsProject.SunnyGadgets_v1.mapper.CategoryMapper;
-import com.SunnyGadgetsProject.SunnyGadgets_v1.mapper.PermissionMapper;
 import com.SunnyGadgetsProject.SunnyGadgets_v1.service.IServicePermission;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 
 

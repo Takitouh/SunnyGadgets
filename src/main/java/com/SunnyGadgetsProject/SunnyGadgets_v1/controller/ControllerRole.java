@@ -2,7 +2,6 @@ package com.SunnyGadgetsProject.SunnyGadgets_v1.controller;
 
 import com.SunnyGadgetsProject.SunnyGadgets_v1.dto.RoleCreateDTO;
 import com.SunnyGadgetsProject.SunnyGadgets_v1.dto.RoleResponseDTO;
-import com.SunnyGadgetsProject.SunnyGadgets_v1.service.IServicePermission;
 import com.SunnyGadgetsProject.SunnyGadgets_v1.service.IServiceRole;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,11 +14,9 @@ import java.util.Set;
 public class ControllerRole {
 
     private final IServiceRole roleService;
-    private final IServicePermission permissionService;
 
-    public ControllerRole(IServiceRole roleService, IServicePermission permissionService) {
+    public ControllerRole(IServiceRole roleService) {
         this.roleService = roleService;
-        this.permissionService = permissionService;
     }
 
     @GetMapping("/get")

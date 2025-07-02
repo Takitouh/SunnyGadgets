@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@EnableMethodSecurity(prePostEnabled = true)
+@EnableMethodSecurity()
 @PreAuthorize("denyAll()")
 @RequestMapping("/api/v1/customer")
 public class ControllerCustomer {

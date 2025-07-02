@@ -14,17 +14,15 @@ import java.util.Optional;
 
 
 @RestController
-@EnableMethodSecurity(prePostEnabled = true)
+@EnableMethodSecurity()
 @PreAuthorize("denyAll()")
 @RequestMapping("/api/v1/detailsale")
 public class ControllerDetailSale {
 
     private final IServiceDetailSale serviceDetailSale;
-    private final CategoryMapper categoryMapper;
 
-    public ControllerDetailSale(IServiceDetailSale serviceDetailSale, CategoryMapper categoryMapper) {
+    public ControllerDetailSale(IServiceDetailSale serviceDetailSale) {
         this.serviceDetailSale = serviceDetailSale;
-        this.categoryMapper = categoryMapper;
     }
 
     @GetMapping("/get/{id}")
