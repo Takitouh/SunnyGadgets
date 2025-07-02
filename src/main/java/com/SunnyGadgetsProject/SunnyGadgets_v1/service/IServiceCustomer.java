@@ -5,7 +5,6 @@ import com.SunnyGadgetsProject.SunnyGadgets_v1.dto.CustomerResponseDTO;
 import com.SunnyGadgetsProject.SunnyGadgets_v1.entity.Customer;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface IServiceCustomer {
     CustomerResponseDTO createCustomer(CustomerCreateDTO userSunnyGadgets);

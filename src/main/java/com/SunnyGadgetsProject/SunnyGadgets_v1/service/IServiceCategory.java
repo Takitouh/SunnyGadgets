@@ -5,7 +5,6 @@ import com.SunnyGadgetsProject.SunnyGadgets_v1.dto.CategoryResponseDTO;
 import com.SunnyGadgetsProject.SunnyGadgets_v1.entity.Category;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface IServiceCategory {
     CategoryResponseDTO createCategory(CategoryCreateDTO category);

@@ -5,7 +5,6 @@ import com.SunnyGadgetsProject.SunnyGadgets_v1.dto.RoleResponseDTO;
 import com.SunnyGadgetsProject.SunnyGadgets_v1.entity.Role;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 
 public interface IServiceRole {

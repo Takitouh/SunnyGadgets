@@ -2,12 +2,9 @@ package com.SunnyGadgetsProject.SunnyGadgets_v1.service;
 
 import com.SunnyGadgetsProject.SunnyGadgets_v1.dto.ProviderCreateDTO;
 import com.SunnyGadgetsProject.SunnyGadgets_v1.dto.ProviderResponseDTO;
-import com.SunnyGadgetsProject.SunnyGadgets_v1.entity.Product;
 import com.SunnyGadgetsProject.SunnyGadgets_v1.entity.Provider;
 
 import java.util.List;
-import java.util.Optional;
-import java.util.Set;
 
 public interface IServiceProvider {
     ProviderResponseDTO createProvider(ProviderCreateDTO provider);

@@ -5,7 +5,6 @@ import com.SunnyGadgetsProject.SunnyGadgets_v1.dto.ProductResponseDTO;
 import com.SunnyGadgetsProject.SunnyGadgets_v1.entity.Product;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface IServiceProduct {
     ProductResponseDTO createProduct(ProductCreateDTO product);

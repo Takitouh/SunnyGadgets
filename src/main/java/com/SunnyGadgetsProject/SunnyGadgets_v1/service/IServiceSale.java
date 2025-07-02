@@ -5,7 +5,6 @@ import com.SunnyGadgetsProject.SunnyGadgets_v1.dto.SaleResponseDTO;
 import com.SunnyGadgetsProject.SunnyGadgets_v1.entity.Sale;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface IServiceSale {
     SaleResponseDTO createSale(SaleCreateDTO sale);
