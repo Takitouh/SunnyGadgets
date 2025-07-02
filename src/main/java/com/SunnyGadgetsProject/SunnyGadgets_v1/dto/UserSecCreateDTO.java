@@ -28,6 +28,7 @@ public class UserSecCreateDTO {
     @NotNull
     private Boolean accountNotLocked;
 
-    @NotEmpty(message = "The user must have at least one role") @Valid
-    private Set<RoleCreateDTO> roles = new HashSet<>();
+
+    private Set<@NotNull Long> existingRolesIds = new HashSet<>();
+
 }

@@ -16,5 +16,7 @@ public class RoleCreateDTO {
     @NotNull @NotBlank(message = "The name of the role can't be blank or null")
     private String role;
     @NotEmpty(message = "The role must have at least one permission") @Valid
-    private Set<@NotNull Long> permissions = new HashSet<>();
+    private Set<@NotNull Long> permissionsIds = new HashSet<>();
+
+
 }

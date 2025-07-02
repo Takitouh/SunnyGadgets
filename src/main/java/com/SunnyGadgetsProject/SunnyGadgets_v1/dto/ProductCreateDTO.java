@@ -21,13 +21,11 @@ public class ProductCreateDTO {
     private long price;
     @PositiveOrZero(message = "The stock can't be negative")
     private int stock;
-    @NotEmpty(message = "The product must have at least one category")
-    private Set<@NotNull Long>  idCategories = new HashSet<>();
+    @NotNull(message = "The product must have at least one category")
+    private Long  idCategory;
 
-    private Set<@NotNull Long> existingProvidersIds = new HashSet<>();
+    private Set<Long> existingProvidersIds = new HashSet<>();
 
-    @Valid
-    private Set<ProviderCreateDTO> newProviders;
 
     /*
      In the service we will check if at least one provider was sent

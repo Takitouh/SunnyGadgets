@@ -17,9 +17,9 @@ public class DetailSaleCreateDTO {
 
     private long subtotal;
 
-    @Valid @NotNull
-    private SaleCreateDTO sale;
+//    @Valid @NotNull
+//    private SaleCreateDTO sale;
 
     @Valid @NotNull
-    private ProductCreateDTO product;
+    private Long product;
 }

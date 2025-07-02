@@ -24,16 +24,11 @@ public class ProviderCreateDTO {
     private String name;
 
     @Size(max = 10, min = 10, message = "The length of the phone is invalid")
-    private String phone;
-    @CreationTimestamp
-    private Timestamp creationDate;
-    @UpdateTimestamp
-    private Timestamp modificationDate;
+    private String phoneNumber;
 
-    private Set<@NotNull Long> existentProductsIds = new HashSet<>();
-    @Valid
-    private Set<ProductCreateDTO> newProducts = new HashSet<>();
-
+    private Set<Long> existentProductsIds = new HashSet<>();
+//    @Valid
+//    private Set<ProductCreateDTO> newProducts = new HashSet<>();
     /*
      In the service we will check if at least one product was sent
      */
