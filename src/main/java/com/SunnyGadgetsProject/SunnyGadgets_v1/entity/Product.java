@@ -12,13 +12,13 @@ import java.util.Set;
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id_product;
+    private Long idProduct;
     private String name;
     private String description;
     private int price;
     private int stock;
     @ManyToOne
-    @JoinColumn(referencedColumnName = "id_category", nullable = false)
+    @JoinColumn(referencedColumnName = "idCategory", nullable = false)
     //@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Category category;
 
