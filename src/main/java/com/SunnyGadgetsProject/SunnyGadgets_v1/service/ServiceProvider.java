@@ -1,7 +1,10 @@
 package com.SunnyGadgetsProject.SunnyGadgets_v1.service;
 
+import com.SunnyGadgetsProject.SunnyGadgets_v1.dto.ProviderCreateDTO;
+import com.SunnyGadgetsProject.SunnyGadgets_v1.dto.ProviderResponseDTO;
 import com.SunnyGadgetsProject.SunnyGadgets_v1.entity.Product;
 import com.SunnyGadgetsProject.SunnyGadgets_v1.entity.Provider;
+import com.SunnyGadgetsProject.SunnyGadgets_v1.mapper.ProviderMapper;
 import com.SunnyGadgetsProject.SunnyGadgets_v1.repository.IRepositoryProduct;
 import com.SunnyGadgetsProject.SunnyGadgets_v1.repository.IRepositoryProvider;
 import jakarta.persistence.EntityManager;
@@ -19,84 +22,61 @@ public class ServiceProvider implements IServiceProvider {
     private final IRepositoryProvider repositoryProvider;
     private final IRepositoryProduct repositoryProduct;
     private final EntityManager em;
+    private final ProviderMapper providerMapper;
 
-    public ServiceProvider(IRepositoryProvider repositoryProvider, IRepositoryProduct repositoryProduct, EntityManager em) {
+    public ServiceProvider(IRepositoryProvider repositoryProvider, IRepositoryProduct repositoryProduct, EntityManager em, ProviderMapper providerMapper) {
         this.repositoryProvider = repositoryProvider;
         this.repositoryProduct = repositoryProduct;
         this.em = em;
+        this.providerMapper = providerMapper;
     }
 
     @Override
-    public Provider createProvider(Provider provider) {
-        Set<Product> products = new HashSet<>();
-        Product p;
-        for (Product pr : provider.getProductSet()) {
-            if (pr == null) {
-                throw new EntityNotFoundException("Product is null");
-            } else if (pr.getId_product() != null) {
-                Optional<Product> product = repositoryProduct.findById(pr.getId_product());
-                p = product.get();
-            } else {
-                p = pr;
-            }
-            products.add(p);
+    public ProviderResponseDTO createProvider(ProviderCreateDTO provider) {
+        if (provider.getExistentProductsIds().isEmpty()) {
+            throw new EntityNotFoundException("The provider must have at least one product");
         }
-
-        provider.setProductSet(products);
-        repositoryProvider.saveAndFlush(provider);
-        em.detach(provider);
-
+        Provider providerEntity = providerMapper.toEntity(provider);
+        repositoryProvider.save(providerEntity);
         logger.info("Provider created: {}", provider);
-        return provider;
+        return providerMapper.toDto(providerEntity);
     }
 
     @Override
-    public List<Provider> createProvider(List<Provider> providers) {
-        Set<Product> products = new HashSet<>();
-        Product p;
-        for (Provider provider : providers) {
-            Iterator<Product> it = provider.getProductSet().iterator();
-
-            if (it.hasNext()) {
-                for (Product pr : provider.getProductSet()) {
-                    if (pr == null) {
-                        throw new EntityNotFoundException("Product is null");
-                    } else if (pr.getId_product() != null) {
-                        Optional<Product> product = repositoryProduct.findById(pr.getId_product());
-                        p = product.get();
-                    } else {
-                        p = pr;
-                    }
-                    products.add(p);
-                }
+    public List<ProviderResponseDTO> createProvider(List<ProviderCreateDTO> providers) {
+        List<ProviderResponseDTO> responses = new ArrayList<>();
+        for (ProviderCreateDTO provider : providers) {
+            if (provider.getExistentProductsIds().isEmpty()) {
+                throw new EntityNotFoundException("The provider must have at least one product");
             }
-            provider.setProductSet(products);
-            repositoryProvider.saveAndFlush(provider);
-            em.detach(provider);
-            products = new HashSet<>();
+            Provider providerEntity = providerMapper.toEntity(provider);
+            repositoryProvider.save(providerEntity);
+            responses.add(providerMapper.toDto(providerEntity));
+            logger.info("Provider created: {}", provider);
         }
-
-        //repositoryProvider.saveAll(providers);
-        logger.info("Providers created: {}", providers);
-        return providers;
+        return responses;
     }
 
     @Override
-    public Optional<Provider> getProviderById(Long id) {
+    public ProviderResponseDTO getProviderById(Long id) {
         Optional<Provider> provider = repositoryProvider.findById(id);
         if (provider.isEmpty()) {
             throw new EntityNotFoundException("Provider with id " + id + " not found");
         }
-        return provider;
+        return providerMapper.toDto(provider.get());
     }
 
     @Override
-    public List<Provider> allProviders() {
+    public List<ProviderResponseDTO> allProviders() {
+        List<ProviderResponseDTO> providerResponseDTOList = new ArrayList<>();
         List<Provider> providers = repositoryProvider.findAll();
         if (providers.isEmpty()) {
             throw new EntityNotFoundException("No providers found"); //Exception not found
         }
-        return providers;
+        for (Provider provider : providers) {
+            providerResponseDTOList.add(providerMapper.toDto(provider));
+        }
+        return providerResponseDTOList;
     }
 
     @Override
@@ -108,7 +88,7 @@ public class ServiceProvider implements IServiceProvider {
 
         providerOptional.get().setName(provider.getName());
         providerOptional.get().setEmail(provider.getEmail());
-        providerOptional.get().setPhone(provider.getPhone());
+        providerOptional.get().setPhoneNumber(provider.getPhoneNumber());
         providerOptional.get().setSalary(provider.getSalary());
         providerOptional.get().setProductSet(provider.getProductSet());
 
@@ -127,4 +107,16 @@ public class ServiceProvider implements IServiceProvider {
         logger.info("Provider deleted: {}", providerOptional.get());
         repositoryProvider.deleteById(id);
     }
+
+    //Method for recover existent products for a provider
+
+//    public Set<Product> recoverProductsById(Set<Long> ids) {
+//        Set<Product> products = new HashSet<>();
+//        Product p;
+//        for (Long id : ids) {
+//            p = repositoryProduct.findById(id).orElseThrow(() -> new EntityNotFoundException("The ID'S doesn't match with any product"));
+//            products.add(p);
+//        }
+//        return products;
+//    }
 }

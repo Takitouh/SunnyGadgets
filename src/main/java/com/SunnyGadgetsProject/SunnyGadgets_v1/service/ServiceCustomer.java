@@ -1,11 +1,16 @@
 package com.SunnyGadgetsProject.SunnyGadgets_v1.service;
 
+import com.SunnyGadgetsProject.SunnyGadgets_v1.dto.CustomerCreateDTO;
+import com.SunnyGadgetsProject.SunnyGadgets_v1.dto.CustomerResponseDTO;
 import com.SunnyGadgetsProject.SunnyGadgets_v1.entity.Customer;
+import com.SunnyGadgetsProject.SunnyGadgets_v1.mapper.CustomerMapper;
 import com.SunnyGadgetsProject.SunnyGadgets_v1.repository.IRepositoryCustomer;
 import jakarta.persistence.EntityNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -14,37 +19,53 @@ public class ServiceCustomer implements IServiceCustomer {
 
     private static final Logger logger = LoggerFactory.getLogger(ServiceCustomer.class);
     private final IRepositoryCustomer repositoryCustomer;
+    private final CustomerMapper customerMapper;
 
     // Inyección de dependencias por constructor
-    public ServiceCustomer(IRepositoryCustomer repositoryCustomer) {
+
+    public ServiceCustomer(IRepositoryCustomer repositoryCustomer, CustomerMapper customerMapper) {
         this.repositoryCustomer = repositoryCustomer;
+        this.customerMapper = customerMapper;
     }
 
     @Override
-    public Customer createCustomer(Customer customer) {
-
-        repositoryCustomer.save(customer);
-        logger.info("Customer created: {}", customer.getEmail());
-        return customer;
+    public CustomerResponseDTO createCustomer(CustomerCreateDTO customer) {
+        Customer cu = customerMapper.toEntity(customer);
+        cu = repositoryCustomer.save(cu);
+        CustomerResponseDTO responseDTO = customerMapper.toDto(cu);
+        logger.info("Customer created: {}", customer.getName());
+        return responseDTO;
     }
 
     @Override
-    public List<Customer> createCustomer(List<Customer> customers) {
-        repositoryCustomer.saveAll(customers);
+    public List<CustomerResponseDTO> createCustomer(List<CustomerCreateDTO> customers) {
+        List<Customer> customerList = new ArrayList<>();
+        List<CustomerResponseDTO> customerDTOList = new ArrayList<>();
+        for (CustomerCreateDTO cu : customers) {
+            customerList.add(customerMapper.toEntity(cu));
+        }
+        repositoryCustomer.saveAll(customerList);
+        for (Customer cu : customerList) {
+            customerDTOList.add(customerMapper.toDto(cu));
+        }
         logger.info("Customer's created: {}", customers);
-        return customers;
+        return customerDTOList;
     }
 
     @Override
-    public Optional<Customer> getCustomerById(Long id) {
-        return repositoryCustomer.findById(id);
+    public CustomerResponseDTO getCustomerById(Long id) {
+        Customer customer = repositoryCustomer.findById(id).orElseThrow(EntityNotFoundException::new);
+        return customerMapper.toDto(customer);
     }
 
     @Override
-    public List<Customer> allCustomers() {
-        List<Customer> customers = repositoryCustomer.findAll();
+    public List<CustomerResponseDTO> allCustomers() {
+        List<CustomerResponseDTO> customers = new ArrayList<>();
+        for (Customer c : repositoryCustomer.findAll()) {
+            customers.add(customerMapper.toDto(c));
+        }
         if (customers.isEmpty()) {
-            throw new EntityNotFoundException("Customers not found"); //Exception not found
+            throw new EntityNotFoundException("No customer's found"); //Exception Not Found
         }
         return customers;
     }
@@ -61,7 +82,7 @@ public class ServiceCustomer implements IServiceCustomer {
         cu.setName(customer.getName());
         cu.setEmail(customer.getEmail());
         cu.setAddress(customer.getAddress());
-        cu.setPhone(customer.getPhone());
+        cu.setPhoneNumber(customer.getPhoneNumber());
         cu.setAge(customer.getAge());
 
 

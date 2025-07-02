@@ -58,11 +58,10 @@ public class ServiceEmployee implements IServiceEmployee {
 
         employeeOptional.get().setSalary(employee.getSalary());
         employeeOptional.get().setName(employee.getName());
-        employeeOptional.get().setEmail(employee.getEmail());
-        employeeOptional.get().setPhone(employee.getPhone());
+        employeeOptional.get().setPhoneNumber(employee.getPhoneNumber());
         //Aca hay que revisar como se actualiza la fecha de modificacion
         //Testear
-        employeeOptional.get().setModificationDate(employee.getModificationDate());
+        employeeOptional.get().setUpdatedAt(employee.getUpdatedAt());
 
 
         repositoryEmployee.save(employeeOptional.get());

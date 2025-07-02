@@ -57,11 +57,7 @@ public class ServiceCategory implements IServiceCategory {
     public CategoryResponseDTO getCategoryById(Long id) {
         Category category = repositoryCategory.findById(id).orElseThrow(EntityNotFoundException::new);
 
-        CategoryResponseDTO categoryR = categoryMapper.toDto(category);
-        if (category == null) {
-            throw new EntityNotFoundException("Category with id " + id + " not found"); //Excepcion Not Found
-        }
-        return categoryR;
+        return categoryMapper.toDto(category);
     }
 
     @Override
