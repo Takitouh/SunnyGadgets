@@ -1,8 +1,9 @@
 package com.SunnyGadgetsProject.SunnyGadgets_v1.controller;
 
+import com.SunnyGadgetsProject.SunnyGadgets_v1.dto.SaleCreateDTO;
+import com.SunnyGadgetsProject.SunnyGadgets_v1.dto.SaleResponseDTO;
 import com.SunnyGadgetsProject.SunnyGadgets_v1.entity.Sale;
 import com.SunnyGadgetsProject.SunnyGadgets_v1.service.IServiceSale;
-import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -10,14 +11,14 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
-@EnableMethodSecurity(prePostEnabled = true)
+@EnableMethodSecurity()
 @PreAuthorize("denyAll()")
 @RequestMapping("/api/v1/sale")
 public class ControllerSale {
     private final IServiceSale serviceSale;
+
 
     public ControllerSale(IServiceSale serviceSale) {
         this.serviceSale = serviceSale;
@@ -25,38 +26,26 @@ public class ControllerSale {
 
     @GetMapping("/get/{id}")
     @PreAuthorize("hasAuthority('READ')")
-    public ResponseEntity<Sale> getSale(@PathVariable Long id) {
-        Optional<Sale> saleOptional = serviceSale.getSaleById(id);
-        if (saleOptional.isEmpty()){
-            throw new EntityNotFoundException("Sale with ID " + id + " not found");
-        }
-        return ResponseEntity.ok(saleOptional.get());
+    public ResponseEntity<SaleResponseDTO> getSale(@PathVariable Long id) {
+        return ResponseEntity.ok(serviceSale.getSaleById(id));
     }
 
     @GetMapping("/get")
     @PreAuthorize("hasAuthority('READ')")
-    public ResponseEntity<List<Sale>> getAllSales() {
-        List<Sale> sales = serviceSale.allSales();
-        if (sales.isEmpty()){
-            throw new EntityNotFoundException("Sale list is empty");
-        }
-        return ResponseEntity.ok(sales);
+    public ResponseEntity<List<SaleResponseDTO>> getAllSales() {
+        return ResponseEntity.ok(serviceSale.allSales());
     }
 
     @PostMapping("/create")
     @PreAuthorize("hasAuthority('CREATE')")
-    public ResponseEntity<Sale> createSale(@RequestBody Sale sale) {
-        serviceSale.createSale(sale);
-
-        return new ResponseEntity<>(sale, HttpStatus.CREATED);
+    public ResponseEntity<SaleResponseDTO> createSale(@RequestBody SaleCreateDTO sale) {
+        return new ResponseEntity<>(serviceSale.createSale(sale), HttpStatus.CREATED);
     }
 
     @PostMapping("/createBatch")
     @PreAuthorize("hasAuthority('CREATE')")
-    public ResponseEntity<List<Sale>> createSales(@RequestBody List<Sale> sales) {
-        serviceSale.createSale(sales);
-
-        return new ResponseEntity<>(sales, HttpStatus.CREATED);
+    public ResponseEntity<List<SaleResponseDTO>> createSales(@RequestBody List<SaleCreateDTO> sales) {
+        return new ResponseEntity<>(serviceSale.createSale(sales), HttpStatus.CREATED);
     }
 
     @DeleteMapping("/delete/{id}")
