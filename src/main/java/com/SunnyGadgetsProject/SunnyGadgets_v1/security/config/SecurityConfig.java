@@ -66,9 +66,9 @@ public UserDetailsService userDetailsService() {
                                         "/swagger-ui.html"
                                 ).permitAll()
                                 .requestMatchers(
-                                "api/v1/permissions/**",
-                                "api/v1/roles/**",
-                                "api/v1/usersec/**"
+                                "/api/v1/permissions/**",
+                                "/api/v1/roles/**",
+                                "/api/v1/usersec/**"
                         ).permitAll().anyRequest().authenticated()
                 )
                 .formLogin(form -> form
