@@ -1,9 +1,14 @@
 package com.SunnyGadgetsProject.SunnyGadgets_v1.controller;
 
+import com.SunnyGadgetsProject.SunnyGadgets_v1.dto.UserSecCreateDTO;
+import com.SunnyGadgetsProject.SunnyGadgets_v1.dto.UserSecResponseDTO;
 import com.SunnyGadgetsProject.SunnyGadgets_v1.entity.Role;
 import com.SunnyGadgetsProject.SunnyGadgets_v1.entity.UserSec;
+import com.SunnyGadgetsProject.SunnyGadgets_v1.mapper.CategoryMapper;
+import com.SunnyGadgetsProject.SunnyGadgets_v1.mapper.UserMapper;
 import com.SunnyGadgetsProject.SunnyGadgets_v1.service.IServiceRole;
 import com.SunnyGadgetsProject.SunnyGadgets_v1.service.IServiceUserSec;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,40 +31,18 @@ public class ControllerUserSec {
     }
 
     @GetMapping("/get")
-    public ResponseEntity<List<UserSec>> getAllUsers() {
-        List<UserSec> users = userService.allUsers();
-        return ResponseEntity.ok(users);
+    public ResponseEntity<List<UserSecResponseDTO>> getAllUsers() {
+        return ResponseEntity.ok(userService.allUsers());
     }
 
     @GetMapping("/get/{id}")
-    public ResponseEntity<UserSec> getUserById(@PathVariable Long id) {
-        Optional<UserSec> user = userService.getUserById(id);
-        return user.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    public ResponseEntity<UserSecResponseDTO> getUserById(@PathVariable Long id) {
+        return ResponseEntity.ok(userService.getUserById(id));
     }
 
     @PostMapping("/create")
-    public ResponseEntity<UserSec> createUser(@RequestBody UserSec userSec) {
+    public ResponseEntity<UserSecResponseDTO> createUser(@RequestBody UserSecCreateDTO userSec) {
+        return new ResponseEntity<>(userService.createUser(userSec), HttpStatus.CREATED);
 
-        Set<Role> roleList = new HashSet<>();
-        Role readRole;
-
-        userSec.setPassword(userService.encryptPassword(userSec.getPassword()));
-
-        // Recuperar la Permission/s por su ID
-        for (Role role : userSec.getRoles()){
-            readRole = roleService.getRoleById(role.getId()).orElse(null);
-            if (readRole != null) {
-                //si encuentro, guardo en la lista
-                roleList.add(readRole);
-            }
-        }
-
-        if (!roleList.isEmpty()) {
-            userSec.setRoles(roleList);
-
-            UserSec newUser = userService.createUser(userSec);
-            return ResponseEntity.ok(newUser);
-        }
-        return ResponseEntity.notFound().build();
     }
 }
