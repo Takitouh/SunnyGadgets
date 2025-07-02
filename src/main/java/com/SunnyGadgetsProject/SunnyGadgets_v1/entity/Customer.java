@@ -2,6 +2,8 @@ package com.SunnyGadgetsProject.SunnyGadgets_v1.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.sql.Timestamp;
 import java.util.Set;
@@ -15,7 +17,7 @@ import java.util.Set;
 public class Customer {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id_customer;
+  private Long idCustomer;
 
   private int age;
   private String address;
@@ -23,10 +25,13 @@ public class Customer {
   private String email;
 
   @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "customer")
-  private Set<Sale> sales;
+  private Set<Sale> purchases;
 
-  private String phone;
-  private Timestamp creationDate;
-  private Timestamp modificationDate;
+  private String phoneNumber;
+
+  @CreationTimestamp
+  private Timestamp createdAt;
+  @UpdateTimestamp
+  private Timestamp updatedAt;
 
 }
