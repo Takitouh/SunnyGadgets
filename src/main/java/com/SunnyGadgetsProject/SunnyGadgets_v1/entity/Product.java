@@ -15,7 +15,7 @@ public class Product {
     private Long idProduct;
     private String name;
     private String description;
-    private int price;
+    private long price;
     private int stock;
     @ManyToOne
     @JoinColumn(referencedColumnName = "idCategory", nullable = false)
