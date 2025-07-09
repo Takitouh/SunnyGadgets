@@ -89,7 +89,7 @@ public class ServiceSeller implements IServiceSeller {
     public void deleteSeller(Long id) {
         Optional<Seller> sellerOptional = repositorySeller.findById(id);
         if (sellerOptional.isEmpty()) {
-            return; //Exception not found
+            throw new EntityNotFoundException("Seller with ID " + id + " not found"); //Exception not found
         }
         logger.info("Seller deleted: {}", sellerOptional.get());
         repositorySeller.deleteById(id);
