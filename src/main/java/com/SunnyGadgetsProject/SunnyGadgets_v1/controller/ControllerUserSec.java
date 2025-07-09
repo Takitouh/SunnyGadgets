@@ -34,4 +34,10 @@ public class ControllerUserSec {
         return new ResponseEntity<>(userService.createUser(userSec), HttpStatus.CREATED);
 
     }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<UserSecResponseDTO> deleteUser(@PathVariable Long id) {
+        userService.deleteUser(id);
+        return ResponseEntity.noContent().build();
+    }
 }
