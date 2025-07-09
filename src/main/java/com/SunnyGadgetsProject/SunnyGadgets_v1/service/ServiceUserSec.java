@@ -65,6 +65,11 @@ public class ServiceUserSec implements IServiceUserSec{
 
     @Override
     public void deleteUser(Long id) {
+        Optional<UserSec> userOptional = userRepository.findById(id);
+        if (userOptional.isEmpty()) {
+            throw new EntityNotFoundException("User with ID " + id + " not found"); //Exception not found
+        }
+        logger.info("User deleted: {}", userOptional.get());
         userRepository.deleteById(id);
     }
 
