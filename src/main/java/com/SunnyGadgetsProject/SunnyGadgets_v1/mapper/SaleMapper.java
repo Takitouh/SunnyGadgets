@@ -17,7 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.util.ArrayList;
 import java.util.List;
 
-@Mapper(componentModel = "spring", uses = {DetaiSaleMapper.class})
+@Mapper(componentModel = "spring", uses = {DetailSaleMapper.class})
 
 public abstract class SaleMapper {
     @Autowired
