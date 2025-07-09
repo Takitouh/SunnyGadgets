@@ -71,24 +71,26 @@ public class ServiceCustomer implements IServiceCustomer {
     }
 
     @Override
-    public Customer updateCustomer(Customer customer, Long id) {
+    public CustomerResponseDTO updateCustomer(CustomerCreateDTO customer, Long id) {
         Optional<Customer> optionalCustomer = repositoryCustomer.findById(id);
         if (optionalCustomer.isEmpty()) {
             throw new EntityNotFoundException("Customer with id " + id + " not found"); //Exception Not found
         }
 
-        // Actualizar solo campos permitidos (evitar sobrescribir campos sensibles como 'password')
-        Customer cu = optionalCustomer.get();
-        cu.setName(customer.getName());
-        cu.setEmail(customer.getEmail());
-        cu.setAddress(customer.getAddress());
-        cu.setPhoneNumber(customer.getPhoneNumber());
-        cu.setAge(customer.getAge());
 
 
-        repositoryCustomer.save(cu);
-        logger.info("Customer updated: {}", cu.getName());
-        return cu;
+        optionalCustomer.get().setName(customer.getName());
+        optionalCustomer.get().setEmail(customer.getEmail());
+        optionalCustomer.get().setAddress(customer.getAddress());
+        optionalCustomer.get().setPhoneNumber(customer.getPhoneNumber());
+        optionalCustomer.get().setAge(customer.getAge());
+
+
+        repositoryCustomer.save(optionalCustomer.get());
+
+        logger.info("Customer updated: {}", optionalCustomer.get().getName());
+
+        return customerMapper.toDto(optionalCustomer.get());
     }
 
     @Override

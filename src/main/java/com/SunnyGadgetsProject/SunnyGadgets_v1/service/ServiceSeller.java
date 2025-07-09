@@ -69,20 +69,21 @@ public class ServiceSeller implements IServiceSeller {
     }
 
     @Override
-    public Seller updateSeller(Seller seller, Long id) {
+    public SellerResponseDTO updateSeller(SellerCreateDTO seller, Long id) {
         Optional<Seller> sellerOptional = repositorySeller.findById(id);
         if (sellerOptional.isEmpty()) {
-            return null; //Exception not found
+            throw new EntityNotFoundException("Seller with ID " + id + " not found"); //Exception not found
         }
-
-        sellerOptional.get().setName(seller.getName());
-        sellerOptional.get().setPhoneNumber(seller.getPhoneNumber());
-        sellerOptional.get().setSales(seller.getSales());
-        sellerOptional.get().setSalary(seller.getSalary());
+        Seller s = sellerMapper.toEntity(seller);
+        sellerOptional.get().setName(s.getName());
+        sellerOptional.get().setPhoneNumber(s.getPhoneNumber());
+        sellerOptional.get().setSales(s.getSales());
+        sellerOptional.get().setSalary(s.getSalary());
+        sellerOptional.get().setCommission(s.getCommission());
 
         repositorySeller.save(sellerOptional.get());
         logger.info("Seller updated: {}", seller);
-        return seller;
+        return sellerMapper.toDto(sellerOptional.get());
     }
 
     @Override

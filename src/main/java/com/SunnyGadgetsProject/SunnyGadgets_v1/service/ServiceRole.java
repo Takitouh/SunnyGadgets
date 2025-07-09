@@ -8,13 +8,15 @@ import com.SunnyGadgetsProject.SunnyGadgets_v1.mapper.RoleMapper;
 import com.SunnyGadgetsProject.SunnyGadgets_v1.repository.IRepositoryPermission;
 import com.SunnyGadgetsProject.SunnyGadgets_v1.repository.IRepositoryRole;
 import jakarta.persistence.EntityNotFoundException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
 
 @Service
 public class ServiceRole implements IServiceRole{
-
+    private final Logger logger = LoggerFactory.getLogger(ServiceRole.class);
     private final IRepositoryRole roleRepository;
     private final IRepositoryPermission permissionRepository;
     private final RoleMapper roleMapper;
@@ -34,18 +36,58 @@ public class ServiceRole implements IServiceRole{
         if (roles.isEmpty()) {
             throw new EntityNotFoundException("No roles found"); //Excepcion Not Found
         }
+        logger.info("Get all roles from repository");
         return roles;
     }
 
     @Override
     public RoleResponseDTO getRoleById(Long id) {
         Role role = roleRepository.findById(id).orElseThrow(EntityNotFoundException::new);
+        logger.info("Get role from repository");
         return roleMapper.toDto(role);
     }
 
     @Override
     public RoleResponseDTO createRole(RoleCreateDTO role) {
-       // Set<Permission> managedPermissions = new HashSet<>();
+        RoleResponseDTO roleResponseDTO = proccessRole(role);
+        logger.info("Created role");
+        return roleResponseDTO;
+    }
+
+    @Override
+    public List<RoleResponseDTO> createRole(Set<RoleCreateDTO> roles) {
+        List<RoleResponseDTO> roleResponseDTOs = new ArrayList<>();
+        for (RoleCreateDTO role : roles) {
+            roleResponseDTOs.add(proccessRole(role));
+        }
+        logger.info("Created list of role");
+        return roleResponseDTOs;
+    }
+
+
+    @Override
+    public RoleResponseDTO updateRole(RoleCreateDTO role, Long id) {
+        Role roleEntity = roleRepository.findById(id).orElseThrow(EntityNotFoundException::new);
+        Set<Permission> rolePermissions = new HashSet<>();
+        for (Long idPermission : role.getPermissionsIds()){
+            rolePermissions.add(permissionRepository.findById(idPermission).orElseThrow(EntityNotFoundException::new));
+        }
+        roleEntity.setPermissions(rolePermissions);
+        roleEntity.setRole(role.getRole());
+        //Persist
+        roleRepository.save(roleEntity);
+        //Map the entity to DTO for response
+        logger.info("Update role from repository");
+        return roleMapper.toDto(roleEntity);
+    }
+
+    @Override
+    public void deleteRole(Long id) {
+        logger.info("Delete role from repository");
+        roleRepository.deleteById(id);
+    }
+
+    private RoleResponseDTO proccessRole(RoleCreateDTO role) {
         Role roleEntity;
         RoleResponseDTO roleResponseDTO;
         Set<Permission> rolePermissions = new HashSet<>();
@@ -68,25 +110,8 @@ public class ServiceRole implements IServiceRole{
         roleEntity.setPermissions(rolePermissions);
         //Persist
         roleRepository.save(roleEntity);
-        //Map the entity to DTO for response
         roleResponseDTO = roleMapper.toDto(roleEntity);
-
         return roleResponseDTO;
     }
 
-    @Override
-    public List<RoleResponseDTO> createRole(Set<RoleCreateDTO> roles) {
-        return null;//roleRepository.saveAll(roles);
-    }
-
-
-    @Override
-    public Role updateRole(Role role) {
-        return roleRepository.save(role);
-    }
-
-    @Override
-    public void deleteRole(Long id) {
-        roleRepository.deleteById(id);
-    }
 }

@@ -2,6 +2,7 @@ package com.SunnyGadgetsProject.SunnyGadgets_v1.service;
 
 import com.SunnyGadgetsProject.SunnyGadgets_v1.dto.UserSecCreateDTO;
 import com.SunnyGadgetsProject.SunnyGadgets_v1.dto.UserSecResponseDTO;
+import com.SunnyGadgetsProject.SunnyGadgets_v1.entity.Seller;
 import com.SunnyGadgetsProject.SunnyGadgets_v1.entity.UserSec;
 import com.SunnyGadgetsProject.SunnyGadgets_v1.mapper.UserMapper;
 import com.SunnyGadgetsProject.SunnyGadgets_v1.repository.IRepositoryUserSec;
@@ -74,8 +75,24 @@ public class ServiceUserSec implements IServiceUserSec{
     }
 
     @Override
-    public void updateUser(UserSec userSec, Long id) {
-        return; //createUser(userSec);
+    public UserSecResponseDTO updateUser(UserSecCreateDTO userSec, Long id) {
+        Optional<UserSec> userOptional = userRepository.findById(id);
+        if (userOptional.isEmpty()) {
+            throw new EntityNotFoundException("User not found");
+        }
+        UserSec user = userMapper.toEntity(userSec);
+        userOptional.get().setUsername(userSec.getUsername());
+        userOptional.get().setAccountNotLocked(userSec.getAccountNotLocked());
+        userOptional.get().setCredentialsNotExpired(userSec.getCredentialsNotExpired());
+        userOptional.get().setAccountNotExpired(userSec.getAccountNotExpired());
+        userOptional.get().setEnabled(userSec.getEnabled());
+        userOptional.get().setPassword(encryptPassword(userSec.getPassword()));
+        userOptional.get().setRoles(user.getRoles());
+        userRepository.save(userOptional.get());
+
+        logger.info("User updated: {}", user);
+
+        return userMapper.toDto(userOptional.get());
     }
 
     @Override

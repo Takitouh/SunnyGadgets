@@ -1,11 +1,15 @@
 package com.SunnyGadgetsProject.SunnyGadgets_v1.service;
 
+import com.SunnyGadgetsProject.SunnyGadgets_v1.dto.EmployeeResponseDTO;
 import com.SunnyGadgetsProject.SunnyGadgets_v1.entity.Employee;
+import com.SunnyGadgetsProject.SunnyGadgets_v1.mapper.EmployeeMapper;
 import com.SunnyGadgetsProject.SunnyGadgets_v1.repository.IRepositoryEmployee;
+import jakarta.persistence.EntityNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -15,65 +19,37 @@ public class ServiceEmployee implements IServiceEmployee {
     private static final Logger logger = LoggerFactory.getLogger(ServiceEmployee.class);
 
     private final IRepositoryEmployee repositoryEmployee;
+    private final EmployeeMapper employeeMapper;
 
-    public ServiceEmployee(IRepositoryEmployee repositoryEmployee) {
+    public ServiceEmployee(IRepositoryEmployee repositoryEmployee, EmployeeMapper employeeMapper) {
         this.repositoryEmployee = repositoryEmployee;
+        this.employeeMapper = employeeMapper;
     }
 
     @Override
-    public Employee createEmployee(Employee employee) {
-        repositoryEmployee.save(employee);
-        logger.info("Employee created: {}", employee);
-        return employee;
+    public EmployeeResponseDTO getEmployeeById(Long id) {
+        return employeeMapper.toDto(repositoryEmployee.findById(id).orElseThrow(EntityNotFoundException::new));
     }
 
     @Override
-    public List<Employee> createEmployee(List<Employee> employees) {
-        repositoryEmployee.saveAll(employees);
-        logger.info("Employee's created: {}", employees);
-        return employees;
-    }
-
-    @Override
-    public Optional<Employee> getEmployeeById(Long id) {
-        return repositoryEmployee.findById(id);
-    }
-
-    @Override
-    public List<Employee> allEmployee() {
-        List<Employee> employees = repositoryEmployee.findAll();
-        if (employees.isEmpty()) {
-            return null; //Exception not found
+    public List<EmployeeResponseDTO> allEmployee() {
+        List<EmployeeResponseDTO> employeeResponseDTOS = new ArrayList<>();
+        for (Employee e : repositoryEmployee.findAll()) {
+            employeeResponseDTOS.add(employeeMapper.toDto(e));
         }
-        return employees;
-    }
-
-    @Override
-    public Employee updateEmployee(Employee employee, Long id) {
-        Optional<Employee> employeeOptional = repositoryEmployee.findById(id);
-        if (employeeOptional.isEmpty()) {
-            return null; //Exception not found
+        if (employeeResponseDTOS.isEmpty()) {
+            throw new EntityNotFoundException("No employee's found"); //Excepcion Not Found
         }
-
-
-        employeeOptional.get().setSalary(employee.getSalary());
-        employeeOptional.get().setName(employee.getName());
-        employeeOptional.get().setPhoneNumber(employee.getPhoneNumber());
-        //Aca hay que revisar como se actualiza la fecha de modificacion
-        //Testear
-        employeeOptional.get().setUpdatedAt(employee.getUpdatedAt());
-
-
-        repositoryEmployee.save(employeeOptional.get());
-        logger.info("Employee updated: {}",  employeeOptional.get());
-        return employeeOptional.get();
+        return employeeResponseDTOS;
     }
+
+
 
     @Override
     public void deleteEmployee(Long id) {
         Optional<Employee> employeeOptional = repositoryEmployee.findById(id);
         if (employeeOptional.isEmpty()) {
-            return ; //Exception not found
+            throw new EntityNotFoundException("Employee with ID " + id + " not found") ; //Exception not found
         }
         logger.info("Employee deleted: {}", employeeOptional.get());
         repositoryEmployee.deleteById(id);

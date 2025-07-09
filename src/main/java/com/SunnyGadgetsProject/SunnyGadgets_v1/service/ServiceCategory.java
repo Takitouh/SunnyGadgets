@@ -3,16 +3,16 @@ package com.SunnyGadgetsProject.SunnyGadgets_v1.service;
 import com.SunnyGadgetsProject.SunnyGadgets_v1.dto.CategoryCreateDTO;
 import com.SunnyGadgetsProject.SunnyGadgets_v1.dto.CategoryResponseDTO;
 import com.SunnyGadgetsProject.SunnyGadgets_v1.entity.Category;
+import com.SunnyGadgetsProject.SunnyGadgets_v1.entity.Product;
 import com.SunnyGadgetsProject.SunnyGadgets_v1.mapper.CategoryMapper;
 import com.SunnyGadgetsProject.SunnyGadgets_v1.repository.IRepositoryCategory;
+import com.SunnyGadgetsProject.SunnyGadgets_v1.repository.IRepositoryProduct;
 import jakarta.persistence.EntityNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class ServiceCategory implements IServiceCategory {
@@ -22,10 +22,12 @@ public class ServiceCategory implements IServiceCategory {
 
     //I will use the constructor method for DI because I read it's a better practice
     private final IRepositoryCategory repositoryCategory;
+    private final IRepositoryProduct repositoryProduct;
 
-    public ServiceCategory(IRepositoryCategory repositoryCategory, CategoryMapper categoryMapper) {
-        this.repositoryCategory = repositoryCategory;
+    public ServiceCategory(CategoryMapper categoryMapper, IRepositoryCategory repositoryCategory, IRepositoryProduct repositoryProduct) {
         this.categoryMapper = categoryMapper;
+        this.repositoryCategory = repositoryCategory;
+        this.repositoryProduct = repositoryProduct;
     }
 
     @Override
@@ -73,19 +75,27 @@ public class ServiceCategory implements IServiceCategory {
     }
 
     @Override
-    public Category updateCategory(Category category, Long id) {
+    public CategoryResponseDTO updateCategory(CategoryCreateDTO category, Long id) {
         Optional<Category> categoryOptional = repositoryCategory.findById(id);
         if (categoryOptional.isEmpty()) {
-            throw new EntityNotFoundException("Category with id " + id + " not found"); //Excepcion Not Found
+            throw new EntityNotFoundException("Category with id " + id + " not found"); //Exception Not Found
+        }
+
+        Set<Product> productSet = new HashSet<>();
+        Product product;
+        for(Long idProduct : category.getExistingProductIds()){
+            product = repositoryProduct.findById(idProduct).orElseThrow(EntityNotFoundException::new);
+            productSet.add(product);
         }
 
         categoryOptional.get().setName(category.getName());
         categoryOptional.get().setDescription(category.getDescription());
-        categoryOptional.get().setProductSet(category.getProductSet());
+        categoryOptional.get().setProductSet(productSet);
         repositoryCategory.save(categoryOptional.get());
 
         logger.info("Category updated: {}", category);
-        return category;
+
+        return categoryMapper.toDto(categoryOptional.get());
     }
 
     @Override

@@ -2,18 +2,18 @@ package com.SunnyGadgetsProject.SunnyGadgets_v1.service;
 
 import com.SunnyGadgetsProject.SunnyGadgets_v1.dto.*;
 import com.SunnyGadgetsProject.SunnyGadgets_v1.entity.Category;
-import com.SunnyGadgetsProject.SunnyGadgets_v1.entity.Customer;
 import com.SunnyGadgetsProject.SunnyGadgets_v1.entity.Product;
+import com.SunnyGadgetsProject.SunnyGadgets_v1.entity.Provider;
 import com.SunnyGadgetsProject.SunnyGadgets_v1.mapper.ProductMapper;
+import com.SunnyGadgetsProject.SunnyGadgets_v1.repository.IRepositoryCategory;
 import com.SunnyGadgetsProject.SunnyGadgets_v1.repository.IRepositoryProduct;
+import com.SunnyGadgetsProject.SunnyGadgets_v1.repository.IRepositoryProvider;
 import jakarta.persistence.EntityNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class ServiceProduct implements IServiceProduct {
@@ -21,11 +21,15 @@ public class ServiceProduct implements IServiceProduct {
     private static final Logger logger = LoggerFactory.getLogger(ServiceProduct.class);
     private final IRepositoryProduct repositoryProduct;
     private final ProductMapper productMapper;
+    private final IRepositoryCategory repositoryCategory;
+    private final IRepositoryProvider repositoryProvider;
 
 
-    public ServiceProduct(IRepositoryProduct repositoryProduct, ProductMapper productMapper) {
+    public ServiceProduct(IRepositoryProduct repositoryProduct, ProductMapper productMapper, IRepositoryCategory repositoryCategory, IRepositoryProvider repositoryProvider) {
         this.repositoryProduct = repositoryProduct;
         this.productMapper = productMapper;
+        this.repositoryCategory = repositoryCategory;
+        this.repositoryProvider = repositoryProvider;
     }
 
     @Override
@@ -36,16 +40,6 @@ public class ServiceProduct implements IServiceProduct {
         logger.info("Product created: {}", product);
         return responseDTO;
     }
-
-    /*   Arreglar esto
-         "idProduct": 2,
-        "name": "Mechanical Keyboard",
-        "description": "RGB backlit, blue switches",
-        "price": 120,
-        "stock": 25,
-        "categoryResponseDTO": null,
-        "setProviders": null
-     */
 
     @Override
     public List<ProductResponseDTO> createProduct(List<ProductCreateDTO> products) {
@@ -65,6 +59,7 @@ public class ServiceProduct implements IServiceProduct {
     @Override
     public ProductResponseDTO getProductById(Long id) {
         Product product = repositoryProduct.findById(id).orElseThrow(EntityNotFoundException::new);
+        logger.info("Product found: {}", product);
         return productMapper.toDto(product);
     }
 
@@ -75,35 +70,41 @@ public class ServiceProduct implements IServiceProduct {
             productResponseDTOS.add(productMapper.toDto(pr));
         }
         if (productResponseDTOS.isEmpty()) {
-            throw new EntityNotFoundException("No product's found"); //Excepcion Not Found
+            throw new EntityNotFoundException("No product's found"); //Exception Not Found
         }
+        logger.info("Get all products from repository");
         return productResponseDTOS;
     }
 
     @Override
-    public Product updateProduct(Product product, Long id) {
+    public ProductResponseDTO updateProduct(ProductCreateDTO product, Long id) {
         Optional<Product> productOptional = repositoryProduct.findById(id);
         if (productOptional.isEmpty()) {
             throw new EntityNotFoundException("Product with id " + id + " not found"); //Exception not found
         }
+        Set<Provider> providers = new HashSet<>();
+        for (Long idP : product.getExistingProvidersIds()){
+            providers.add(repositoryProvider.findById(idP).orElseThrow(EntityNotFoundException::new));
+        }
 
+        Category category = repositoryCategory.findById(product.getIdCategory()).orElseThrow(EntityNotFoundException::new);
         productOptional.get().setName(product.getName());
         productOptional.get().setDescription(product.getDescription());
         productOptional.get().setPrice(product.getPrice());
         productOptional.get().setStock(product.getStock());
-        productOptional.get().setSetProviders(product.getSetProviders());
-        productOptional.get().setCategory(product.getCategory());
+        productOptional.get().setSetProviders(providers);
+        productOptional.get().setCategory(category);
 
         repositoryProduct.save(productOptional.get());
         logger.info("Product updated: {}",  product);
-        return productOptional.get();
+        return productMapper.toDto(productOptional.get());
     }
 
     @Override
     public void deleteProduct(Long id) {
         Optional<Product> productOptional = repositoryProduct.findById(id);
         if (productOptional.isEmpty()) {
-            return; //Exception not found
+            throw new EntityNotFoundException("Product with ID " + id + " not found"); //Exception not found
         }
         logger.info("Product deleted: {}", productOptional.get());
         repositoryProduct.deleteById(id);
