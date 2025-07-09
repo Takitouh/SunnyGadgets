@@ -2,7 +2,6 @@ package com.SunnyGadgetsProject.SunnyGadgets_v1.service;
 
 import com.SunnyGadgetsProject.SunnyGadgets_v1.dto.RoleCreateDTO;
 import com.SunnyGadgetsProject.SunnyGadgets_v1.dto.RoleResponseDTO;
-import com.SunnyGadgetsProject.SunnyGadgets_v1.entity.Role;
 
 import java.util.List;
 import java.util.Set;
@@ -13,5 +12,5 @@ public interface IServiceRole {
     RoleResponseDTO createRole(RoleCreateDTO role);
     List<RoleResponseDTO> createRole(Set<RoleCreateDTO> role);
     void deleteRole(Long id);
-    Role updateRole(Role role);
+    RoleResponseDTO updateRole(RoleCreateDTO role, Long id);
 }

@@ -2,7 +2,6 @@ package com.SunnyGadgetsProject.SunnyGadgets_v1.service;
 
 import com.SunnyGadgetsProject.SunnyGadgets_v1.dto.CustomerCreateDTO;
 import com.SunnyGadgetsProject.SunnyGadgets_v1.dto.CustomerResponseDTO;
-import com.SunnyGadgetsProject.SunnyGadgets_v1.entity.Customer;
 
 import java.util.List;
 
@@ -11,7 +10,7 @@ public interface IServiceCustomer {
     List<CustomerResponseDTO> createCustomer(List<CustomerCreateDTO> userSunnyGadgetsCustomer);
     CustomerResponseDTO getCustomerById(Long id);
     List<CustomerResponseDTO> allCustomers();
-    Customer updateCustomer(Customer userSunnyGadgetsCustomer, Long id);
+    CustomerResponseDTO updateCustomer(CustomerCreateDTO userSunnyGadgetsCustomer, Long id);
     void deleteCustomer(Long id);
 
 }
