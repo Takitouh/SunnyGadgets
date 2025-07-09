@@ -3,7 +3,6 @@ package com.SunnyGadgetsProject.SunnyGadgets_v1.controller;
 
 import com.SunnyGadgetsProject.SunnyGadgets_v1.dto.CategoryCreateDTO;
 import com.SunnyGadgetsProject.SunnyGadgets_v1.dto.CategoryResponseDTO;
-import com.SunnyGadgetsProject.SunnyGadgets_v1.entity.Category;
 import com.SunnyGadgetsProject.SunnyGadgets_v1.service.IServiceCategory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -50,16 +49,15 @@ public class ControllerCategory {
 
     @DeleteMapping("/delete/{id}")
     @PreAuthorize("hasAuthority('DELETE')")
-    public ResponseEntity<Category> deleteCategory(@PathVariable Long id) {
+    public ResponseEntity<CategoryResponseDTO> deleteCategory(@PathVariable Long id) {
         serviceCategory.deleteCategory(id);
         return ResponseEntity.noContent().build();
     }
 
     @PutMapping("/update/{id}")
     @PreAuthorize("hasAuthority('UPDATE')")
-    public ResponseEntity<Category> updateCategory(@RequestBody Category category, @PathVariable Long id) {
-        serviceCategory.updateCategory(category, id);
-        return ResponseEntity.ok(category);
+    public ResponseEntity<CategoryResponseDTO> updateCategory(@RequestBody CategoryCreateDTO category, @PathVariable Long id) {
+        return ResponseEntity.ok(serviceCategory.updateCategory(category, id));
     }
 }
 

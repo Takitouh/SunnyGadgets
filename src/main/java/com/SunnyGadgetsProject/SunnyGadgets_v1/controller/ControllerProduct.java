@@ -57,9 +57,8 @@ public class ControllerProduct {
 
     @PutMapping("/update/{id}")
     @PreAuthorize("hasAuthority('UPDATE')")
-    public ResponseEntity<Product> updateProduct(@RequestBody Product product, @PathVariable Long id) {
-        serviceProduct.updateProduct(product, id);
-        return ResponseEntity.ok(product);
+    public ResponseEntity<ProductResponseDTO> updateProduct(@RequestBody ProductCreateDTO product, @PathVariable Long id) {
+        return ResponseEntity.ok(serviceProduct.updateProduct(product, id));
     }
 }
 

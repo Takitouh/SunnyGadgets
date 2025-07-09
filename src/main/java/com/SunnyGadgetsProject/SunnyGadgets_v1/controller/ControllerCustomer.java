@@ -2,7 +2,6 @@ package com.SunnyGadgetsProject.SunnyGadgets_v1.controller;
 
 import com.SunnyGadgetsProject.SunnyGadgets_v1.dto.CustomerCreateDTO;
 import com.SunnyGadgetsProject.SunnyGadgets_v1.dto.CustomerResponseDTO;
-import com.SunnyGadgetsProject.SunnyGadgets_v1.entity.Customer;
 import com.SunnyGadgetsProject.SunnyGadgets_v1.service.IServiceCustomer;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -52,14 +51,14 @@ public class ControllerCustomer {
 
     @DeleteMapping("/delete/{id}")
     @PreAuthorize("hasAuthority('DELETE')")
-    public ResponseEntity<Customer> deleteCustomer(@PathVariable Long id) {
+    public ResponseEntity<CustomerResponseDTO> deleteCustomer(@PathVariable Long id) {
         serviceCustomer.deleteCustomer(id);
         return ResponseEntity.noContent().build();
     }
 
     @PutMapping("/update/{id}")
     @PreAuthorize("hasAuthority('UPDATE')")
-    public ResponseEntity<Customer> updateCustomer(@RequestBody Customer customer, @PathVariable Long id) {
+    public ResponseEntity<CustomerResponseDTO> updateCustomer(@RequestBody CustomerCreateDTO customer, @PathVariable Long id) {
         return ResponseEntity.ok(serviceCustomer.updateCustomer(customer, id));
     }
 }

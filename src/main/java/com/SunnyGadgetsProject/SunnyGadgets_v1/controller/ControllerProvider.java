@@ -57,8 +57,7 @@ public class ControllerProvider {
 
     @PutMapping("/update/{id}")
     @PreAuthorize("hasAuthority('UPDATE')")
-    public ResponseEntity<Provider> updateProvider(@RequestBody Provider provider, @PathVariable Long id) {
-        serviceProvider.updateProvider(provider, id);
-        return ResponseEntity.ok(provider);
+    public ResponseEntity<ProviderResponseDTO> updateProvider(@RequestBody ProviderCreateDTO provider, @PathVariable Long id) {
+        return ResponseEntity.ok(serviceProvider.updateProvider(provider, id));
     }
 }

@@ -57,8 +57,7 @@ public class ControllerSale {
 
     @PutMapping("/update/{id}")
     @PreAuthorize("hasAuthority('UPDATE')")
-    public ResponseEntity<Sale> updateSale(@RequestBody Sale sale, @PathVariable Long id) {
-        serviceSale.updateSale(sale, id);
-        return ResponseEntity.ok(sale);
+    public ResponseEntity<SaleResponseDTO> updateSale(@RequestBody SaleCreateDTO sale, @PathVariable Long id) {
+        return ResponseEntity.ok(serviceSale.updateSale(sale, id));
     }
 }
