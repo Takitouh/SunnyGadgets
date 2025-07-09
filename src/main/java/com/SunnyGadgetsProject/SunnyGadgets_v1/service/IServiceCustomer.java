@@ -1,16 +1,16 @@
 package com.SunnyGadgetsProject.SunnyGadgets_v1.service;
 
-import com.SunnyGadgetsProject.SunnyGadgets_v1.entity.Customer;
+import com.SunnyGadgetsProject.SunnyGadgets_v1.dto.CustomerCreateDTO;
+import com.SunnyGadgetsProject.SunnyGadgets_v1.dto.CustomerResponseDTO;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface IServiceCustomer {
-    Customer createCustomer(Customer userSunnyGadgets);
-    List<Customer> createCustomer(List<Customer> userSunnyGadgetsCustomer);
-    Optional<Customer> getCustomerById(Long id);
-    List<Customer> allCustomers();
-    Customer updateCustomer(Customer userSunnyGadgetsCustomer, Long id);
+    CustomerResponseDTO createCustomer(CustomerCreateDTO userSunnyGadgets);
+    List<CustomerResponseDTO> createCustomer(List<CustomerCreateDTO> userSunnyGadgetsCustomer);
+    CustomerResponseDTO getCustomerById(Long id);
+    List<CustomerResponseDTO> allCustomers();
+    CustomerResponseDTO updateCustomer(CustomerCreateDTO userSunnyGadgetsCustomer, Long id);
     void deleteCustomer(Long id);
 
 }

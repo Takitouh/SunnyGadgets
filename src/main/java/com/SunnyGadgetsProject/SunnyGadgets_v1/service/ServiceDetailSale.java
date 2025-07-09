@@ -1,63 +1,45 @@
 package com.SunnyGadgetsProject.SunnyGadgets_v1.service;
 
+import com.SunnyGadgetsProject.SunnyGadgets_v1.dto.DetailSaleResponseDTO;
 import com.SunnyGadgetsProject.SunnyGadgets_v1.entity.DetailSale;
+import com.SunnyGadgetsProject.SunnyGadgets_v1.mapper.DetailSaleMapper;
 import com.SunnyGadgetsProject.SunnyGadgets_v1.repository.IRepositoryDetailSale;
+import jakarta.persistence.EntityNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class ServiceDetailSale implements IServiceDetailSale {
 
     private static final Logger logger = LoggerFactory.getLogger(ServiceDetailSale.class);
     private final IRepositoryDetailSale repositoryDetailSale;
+    private final DetailSaleMapper detailSaleMapper;
 
-    public ServiceDetailSale(IRepositoryDetailSale repositoryDetailSale) {
+    public ServiceDetailSale(IRepositoryDetailSale repositoryDetailSale, DetailSaleMapper detailSaleMapper) {
         this.repositoryDetailSale = repositoryDetailSale;
-    }
-
-    
-
-    @Override
-    public Optional<DetailSale> getDetailSaleById(Long id) {
-        return repositoryDetailSale.findById(id);
+        this.detailSaleMapper = detailSaleMapper;
     }
 
     @Override
-    public List<DetailSale> allDetailSales() {
-        List<DetailSale> detailSales = repositoryDetailSale.findAll();
-        if (detailSales.isEmpty()) {
-            return null; //Exception not found
+    public DetailSaleResponseDTO getDetailSaleById(Long id) {
+        logger.info("Retrieving detailSale by id: " + id);
+        return detailSaleMapper.toDto(repositoryDetailSale.findById(id).orElseThrow(EntityNotFoundException::new));
+    }
+
+    @Override
+    public List<DetailSaleResponseDTO> allDetailSales() {
+        List<DetailSaleResponseDTO> detailSaleResponseDTOS = new ArrayList<>();
+        for (DetailSale ds : repositoryDetailSale.findAll()) {
+            detailSaleResponseDTOS.add(detailSaleMapper.toDto(ds));
         }
-        return detailSales;
-    }
-
-    @Override
-    public DetailSale updateDetailSale(DetailSale detailSale, Long id) {
-        Optional<DetailSale> detailSaleOptional = repositoryDetailSale.findById(id);
-        if (detailSaleOptional.isEmpty()) {
-            return null; //Exception not found
+        if (detailSaleResponseDTOS.isEmpty()) {
+            throw new EntityNotFoundException("No detail sales found"); //Excepcion Not Found
         }
-
-        // Update the fields
-        detailSaleOptional.get().setQuantity(detailSale.getQuantity());
-        detailSaleOptional.get().setUnitPrice(detailSale.getUnitPrice());
-
-        repositoryDetailSale.save(detailSaleOptional.get());
-        logger.info("DetailSale updated: {}", detailSale);
-        return detailSale;
-    }
-
-    @Override
-    public void deleteDetailSale(Long id) {
-        Optional<DetailSale> detailSaleOptional = repositoryDetailSale.findById(id);
-        if (detailSaleOptional.isEmpty()) {
-            return; //Exception not found
-        }
-        logger.info("DetailSale deleted: {}", detailSaleOptional.get());
-        repositoryDetailSale.deleteById(id);
+        logger.info("Retrieving detailSale list");
+        return detailSaleResponseDTOS;
     }
 }

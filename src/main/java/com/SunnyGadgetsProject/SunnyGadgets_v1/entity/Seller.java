@@ -9,11 +9,14 @@ import java.util.Set;
 @Setter
 @NoArgsConstructor
 @DiscriminatorValue(value = "SELLER")
-@PrimaryKeyJoinColumn(name = "id_seller")
+@PrimaryKeyJoinColumn(name = "idSeller")
 @Table(name = "sellers")
 
 public class Seller extends Employee {
 
     @OneToMany(mappedBy = "seller")
     private Set<Sale> sales;
+
+    private long commission;
+
 }

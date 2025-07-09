@@ -1,16 +1,16 @@
 package com.SunnyGadgetsProject.SunnyGadgets_v1.service;
 
-import com.SunnyGadgetsProject.SunnyGadgets_v1.entity.Sale;
+import com.SunnyGadgetsProject.SunnyGadgets_v1.dto.SaleCreateDTO;
+import com.SunnyGadgetsProject.SunnyGadgets_v1.dto.SaleResponseDTO;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface IServiceSale {
-    Sale createSale(Sale sale);
-    List<Sale> createSale(List<Sale> sales);
-    Optional<Sale> getSaleById(Long id);
-    List<Sale> allSales();
-    Sale updateSale(Sale sale, Long id);
+    SaleResponseDTO createSale(SaleCreateDTO sale);
+    List<SaleResponseDTO> createSale(List<SaleCreateDTO> sales);
+    SaleResponseDTO getSaleById(Long id);
+    List<SaleResponseDTO> allSales();
+    SaleResponseDTO updateSale(SaleCreateDTO sale, Long id);
     void deleteSale(Long id);
 
 }

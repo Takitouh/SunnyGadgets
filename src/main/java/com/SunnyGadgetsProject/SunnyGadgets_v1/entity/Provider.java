@@ -10,16 +10,19 @@ import java.util.Set;
 @Setter
 @NoArgsConstructor
 @DiscriminatorValue(value = "PROVIDER")
-@PrimaryKeyJoinColumn(name = "id_provider")
+@PrimaryKeyJoinColumn(name = "idProvider")
 @Table(name = "providers")
 
 public class Provider extends Employee {
 
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-            @JoinTable(name = "Orders", joinColumns = @JoinColumn(referencedColumnName = "id_provider"),
-                    inverseJoinColumns = @JoinColumn(referencedColumnName = "id_product"))
+            @JoinTable(name = "Orders", joinColumns = @JoinColumn(referencedColumnName = "idProvider"),
+                    inverseJoinColumns = @JoinColumn(referencedColumnName = "idProduct"))
 
     private Set<Product> productSet;
 
+    private String company;
+
+    private String email;
 
 }

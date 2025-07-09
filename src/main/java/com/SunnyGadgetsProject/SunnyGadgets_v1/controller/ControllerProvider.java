@@ -1,8 +1,9 @@
 package com.SunnyGadgetsProject.SunnyGadgets_v1.controller;
 
+import com.SunnyGadgetsProject.SunnyGadgets_v1.dto.ProviderCreateDTO;
+import com.SunnyGadgetsProject.SunnyGadgets_v1.dto.ProviderResponseDTO;
 import com.SunnyGadgetsProject.SunnyGadgets_v1.entity.Provider;
 import com.SunnyGadgetsProject.SunnyGadgets_v1.service.IServiceProvider;
-import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -10,14 +11,14 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
-@EnableMethodSecurity(prePostEnabled = true)
+@EnableMethodSecurity()
 @PreAuthorize("denyAll()")
 @RequestMapping("/api/v1/provider")
 public class ControllerProvider {
     private final IServiceProvider serviceProvider;
+
 
     public ControllerProvider(IServiceProvider serviceProvider) {
         this.serviceProvider = serviceProvider;
@@ -25,38 +26,26 @@ public class ControllerProvider {
 
     @GetMapping("/get/{id}")
     @PreAuthorize("hasAuthority('READ')")
-    public ResponseEntity<Provider> getProvider(@PathVariable Long id) {
-        Optional<Provider> providerOptional = serviceProvider.getProviderById(id);
-        if (providerOptional.isEmpty()){
-            throw new EntityNotFoundException("Provider with ID " + id + " not found");
-        }
-        return ResponseEntity.ok(providerOptional.get());
+    public ResponseEntity<ProviderResponseDTO> getProvider(@PathVariable Long id) {
+        return ResponseEntity.ok(serviceProvider.getProviderById(id));
     }
 
     @GetMapping("/get")
     @PreAuthorize("hasAuthority('READ')")
-    public ResponseEntity<List<Provider>> getAllProviders() {
-        List<Provider> providers = serviceProvider.allProviders();
-        if (providers.isEmpty()){
-            throw new EntityNotFoundException("Provider list is empty");
-        }
-        return ResponseEntity.ok(providers);
+    public ResponseEntity<List<ProviderResponseDTO>> getAllProviders() {
+        return ResponseEntity.ok(serviceProvider.allProviders());
     }
 
     @PostMapping("/create")
     @PreAuthorize("hasAuthority('CREATE')")
-    public ResponseEntity<Provider> createProvider(@RequestBody Provider provider) {
-        serviceProvider.createProvider(provider);
-
-        return new ResponseEntity<>(provider, HttpStatus.CREATED);
+    public ResponseEntity<ProviderResponseDTO> createProvider(@RequestBody ProviderCreateDTO provider) {
+        return new ResponseEntity<>(serviceProvider.createProvider(provider), HttpStatus.CREATED);
     }
 
     @PostMapping("/createBatch")
     @PreAuthorize("hasAuthority('CREATE')")
-    public ResponseEntity<List<Provider>> createProviders(@RequestBody List<Provider> providers) {
-        serviceProvider.createProvider(providers);
-
-        return new ResponseEntity<>(providers, HttpStatus.CREATED);
+    public ResponseEntity<List<ProviderResponseDTO>> createProviders(@RequestBody List<ProviderCreateDTO> providers) {
+        return new ResponseEntity<>(serviceProvider.createProvider(providers), HttpStatus.CREATED);
     }
 
     @DeleteMapping("/delete/{id}")
@@ -68,8 +57,7 @@ public class ControllerProvider {
 
     @PutMapping("/update/{id}")
     @PreAuthorize("hasAuthority('UPDATE')")
-    public ResponseEntity<Provider> updateProvider(@RequestBody Provider provider, @PathVariable Long id) {
-        serviceProvider.updateProvider(provider, id);
-        return ResponseEntity.ok(provider);
+    public ResponseEntity<ProviderResponseDTO> updateProvider(@RequestBody ProviderCreateDTO provider, @PathVariable Long id) {
+        return ResponseEntity.ok(serviceProvider.updateProvider(provider, id));
     }
 }

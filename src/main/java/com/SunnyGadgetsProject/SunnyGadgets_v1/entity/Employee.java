@@ -1,10 +1,6 @@
 package com.SunnyGadgetsProject.SunnyGadgets_v1.entity;
 
-import jakarta.annotation.Nonnull;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -21,23 +17,13 @@ import java.sql.Timestamp;
 public class Employee{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id_employee;
-
-     @Nonnull
+    private Long idEmployee;
     private Long salary;
-
-    @NotBlank
-    @Nonnull
     private String name;
-    @Column(unique = true)
-    @Email
-    private String email;
-
-    @Size(max = 10, min = 10) @NotBlank @Nonnull
-    private String phone;
+    private String phoneNumber;
     @CreationTimestamp
-    private Timestamp creationDate;
+    private Timestamp createdAt;
     @UpdateTimestamp
-    private Timestamp modificationDate;
+    private Timestamp updatedAt;
 
 }

@@ -1,10 +1,12 @@
 package com.SunnyGadgetsProject.SunnyGadgets_v1.service;
 
+import com.SunnyGadgetsProject.SunnyGadgets_v1.dto.ProviderCreateDTO;
+import com.SunnyGadgetsProject.SunnyGadgets_v1.dto.ProviderResponseDTO;
 import com.SunnyGadgetsProject.SunnyGadgets_v1.entity.Product;
 import com.SunnyGadgetsProject.SunnyGadgets_v1.entity.Provider;
+import com.SunnyGadgetsProject.SunnyGadgets_v1.mapper.ProviderMapper;
 import com.SunnyGadgetsProject.SunnyGadgets_v1.repository.IRepositoryProduct;
 import com.SunnyGadgetsProject.SunnyGadgets_v1.repository.IRepositoryProvider;
-import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,104 +20,86 @@ public class ServiceProvider implements IServiceProvider {
     private static final Logger logger = LoggerFactory.getLogger(ServiceProvider.class);
     private final IRepositoryProvider repositoryProvider;
     private final IRepositoryProduct repositoryProduct;
-    private final EntityManager em;
 
-    public ServiceProvider(IRepositoryProvider repositoryProvider, IRepositoryProduct repositoryProduct, EntityManager em) {
+    private final ProviderMapper providerMapper;
+
+    public ServiceProvider(IRepositoryProvider repositoryProvider, IRepositoryProduct repositoryProduct, ProviderMapper providerMapper) {
         this.repositoryProvider = repositoryProvider;
         this.repositoryProduct = repositoryProduct;
-        this.em = em;
+        this.providerMapper = providerMapper;
     }
 
     @Override
-    public Provider createProvider(Provider provider) {
-        Set<Product> products = new HashSet<>();
-        Product p;
-        for (Product pr : provider.getProductSet()) {
-            if (pr == null) {
-                throw new EntityNotFoundException("Product is null");
-            } else if (pr.getId_product() != null) {
-                Optional<Product> product = repositoryProduct.findById(pr.getId_product());
-                p = product.get();
-            } else {
-                p = pr;
-            }
-            products.add(p);
+    public ProviderResponseDTO createProvider(ProviderCreateDTO provider) {
+        if (provider.getExistentProductsIds().isEmpty()) {
+            throw new EntityNotFoundException("The provider must have at least one product");
         }
-
-        provider.setProductSet(products);
-        repositoryProvider.saveAndFlush(provider);
-        em.detach(provider);
-
+        Provider providerEntity = providerMapper.toEntity(provider);
+        repositoryProvider.save(providerEntity);
         logger.info("Provider created: {}", provider);
-        return provider;
+        return providerMapper.toDto(providerEntity);
     }
 
     @Override
-    public List<Provider> createProvider(List<Provider> providers) {
-        Set<Product> products = new HashSet<>();
-        Product p;
-        for (Provider provider : providers) {
-            Iterator<Product> it = provider.getProductSet().iterator();
-
-            if (it.hasNext()) {
-                for (Product pr : provider.getProductSet()) {
-                    if (pr == null) {
-                        throw new EntityNotFoundException("Product is null");
-                    } else if (pr.getId_product() != null) {
-                        Optional<Product> product = repositoryProduct.findById(pr.getId_product());
-                        p = product.get();
-                    } else {
-                        p = pr;
-                    }
-                    products.add(p);
-                }
+    public List<ProviderResponseDTO> createProvider(List<ProviderCreateDTO> providers) {
+        List<ProviderResponseDTO> responses = new ArrayList<>();
+        for (ProviderCreateDTO provider : providers) {
+            if (provider.getExistentProductsIds().isEmpty()) {
+                throw new EntityNotFoundException("The provider must have at least one product");
             }
-            provider.setProductSet(products);
-            repositoryProvider.saveAndFlush(provider);
-            em.detach(provider);
-            products = new HashSet<>();
+            Provider providerEntity = providerMapper.toEntity(provider);
+            repositoryProvider.save(providerEntity);
+            responses.add(providerMapper.toDto(providerEntity));
+            logger.info("List of providers created: {}", provider);
         }
-
-        //repositoryProvider.saveAll(providers);
-        logger.info("Providers created: {}", providers);
-        return providers;
+        return responses;
     }
 
     @Override
-    public Optional<Provider> getProviderById(Long id) {
+    public ProviderResponseDTO getProviderById(Long id) {
         Optional<Provider> provider = repositoryProvider.findById(id);
         if (provider.isEmpty()) {
             throw new EntityNotFoundException("Provider with id " + id + " not found");
         }
-        return provider;
+        logger.info("Get provider by id: {}", id);
+        return providerMapper.toDto(provider.get());
     }
 
     @Override
-    public List<Provider> allProviders() {
+    public List<ProviderResponseDTO> allProviders() {
+        List<ProviderResponseDTO> providerResponseDTOList = new ArrayList<>();
         List<Provider> providers = repositoryProvider.findAll();
         if (providers.isEmpty()) {
             throw new EntityNotFoundException("No providers found"); //Exception not found
         }
-        return providers;
+        for (Provider provider : providers) {
+            providerResponseDTOList.add(providerMapper.toDto(provider));
+        }
+        logger.info("All providers found");
+        return providerResponseDTOList;
     }
 
     @Override
-    public Provider updateProvider(Provider provider, Long id) {
+    public ProviderResponseDTO updateProvider(ProviderCreateDTO provider, Long id) {
         Optional<Provider> providerOptional = repositoryProvider.findById(id);
         if (providerOptional.isEmpty()) {
             throw new EntityNotFoundException("Provider with id " + id + " not found"); //Exception not found
         }
+        Set<Product> products = new HashSet<>();
+        for (Long idProduct : provider.getExistentProductsIds()) {
+            products.add(repositoryProduct.findById(idProduct).orElseThrow(EntityNotFoundException::new));
+        }
 
         providerOptional.get().setName(provider.getName());
         providerOptional.get().setEmail(provider.getEmail());
-        providerOptional.get().setPhone(provider.getPhone());
+        providerOptional.get().setPhoneNumber(provider.getPhoneNumber());
         providerOptional.get().setSalary(provider.getSalary());
-        providerOptional.get().setProductSet(provider.getProductSet());
-
+        providerOptional.get().setProductSet(products);
+        providerOptional.get().setCompany(provider.getCompany());
 
         repositoryProvider.save(providerOptional.get());
         logger.info("Provider updated: {}", provider);
-        return provider;
+        return providerMapper.toDto(providerOptional.get());
     }
 
     @Override

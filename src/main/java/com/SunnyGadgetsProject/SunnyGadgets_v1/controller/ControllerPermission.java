@@ -1,14 +1,16 @@
 package com.SunnyGadgetsProject.SunnyGadgets_v1.controller;
 
 
+import com.SunnyGadgetsProject.SunnyGadgets_v1.dto.PermissionCreateDTO;
+import com.SunnyGadgetsProject.SunnyGadgets_v1.dto.PermissionResponseDTO;
 import com.SunnyGadgetsProject.SunnyGadgets_v1.entity.Permission;
 import com.SunnyGadgetsProject.SunnyGadgets_v1.service.IServicePermission;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.SunnyGadgetsProject.SunnyGadgets_v1.service.ServicePermission;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 
 
@@ -16,34 +18,44 @@ import java.util.Set;
 @RequestMapping("/api/v1/permissions")
 public class ControllerPermission {
 
-    @Autowired
-    private IServicePermission permissionService;
+    private final IServicePermission permissionService;
+    private final ServicePermission servicePermission;
+
+    public ControllerPermission(IServicePermission permissionService, ServicePermission servicePermission) {
+        this.permissionService = permissionService;
+        this.servicePermission = servicePermission;
+    }
 
     @GetMapping("/get")
-    public ResponseEntity<List<Permission>> getAllPermissions() {
-        List<Permission> permissions = permissionService.allPermissions();
-        return ResponseEntity.ok(permissions);
+    public ResponseEntity<List<PermissionResponseDTO>> getAllPermissions() {
+        return ResponseEntity.ok(permissionService.allPermissions());
     }
 
     @GetMapping("/get/{id}")
-    public ResponseEntity<Permission> getPermissionById(@PathVariable Long id) {
-        Optional<Permission> permission = permissionService.getPermissionById(id);
-        return permission.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    public ResponseEntity<PermissionResponseDTO> getPermissionById(@PathVariable Long id) {
+        return ResponseEntity.ok(permissionService.getPermissionById(id));
     }
 
     @PostMapping("/create")
-    public ResponseEntity<Permission> createPermission(@RequestBody Permission permission) {
-        Permission newPermission = permissionService.createPermission(permission);
-        return ResponseEntity.ok(newPermission);
+    public ResponseEntity<PermissionResponseDTO> createPermission(@RequestBody PermissionCreateDTO permission) {
+        return new ResponseEntity<>(permissionService.createPermission(permission), HttpStatus.CREATED);
     }
 
     @PostMapping("/createBatch")
-    public ResponseEntity<List<Permission>> createPermission(@RequestBody Set<Permission> permission) {
-        List<Permission> newPermission = permissionService.createPermission(permission);
-
-        return ResponseEntity.ok(newPermission);
+    public ResponseEntity<List<PermissionResponseDTO>> createPermission(@RequestBody Set<PermissionCreateDTO> permission) {
+        return new ResponseEntity<>(permissionService.createPermission(permission), HttpStatus.CREATED);
     }
 
+    @DeleteMapping("/delete")
+    public ResponseEntity<Permission> deletePermission(@PathVariable Long id) {
+        servicePermission.deletePermission(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("/update/{id}")
+    public ResponseEntity<PermissionResponseDTO> updatePermission(@PathVariable Long id, @RequestBody PermissionCreateDTO permission) {
+        return ResponseEntity.ok(servicePermission.updatePermission(permission, id));
+    }
 }
 
 

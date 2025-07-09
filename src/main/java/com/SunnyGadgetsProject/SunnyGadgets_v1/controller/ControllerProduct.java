@@ -1,9 +1,10 @@
 package com.SunnyGadgetsProject.SunnyGadgets_v1.controller;
 
 
+import com.SunnyGadgetsProject.SunnyGadgets_v1.dto.ProductCreateDTO;
+import com.SunnyGadgetsProject.SunnyGadgets_v1.dto.ProductResponseDTO;
 import com.SunnyGadgetsProject.SunnyGadgets_v1.entity.Product;
 import com.SunnyGadgetsProject.SunnyGadgets_v1.service.IServiceProduct;
-import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -11,10 +12,9 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
-@EnableMethodSecurity(prePostEnabled = true)
+@EnableMethodSecurity()
 @PreAuthorize("denyAll()")
 @RequestMapping("/api/v1/product")
 public class ControllerProduct {
@@ -26,38 +26,26 @@ public class ControllerProduct {
 
     @GetMapping("/get/{id}")
     @PreAuthorize("hasAuthority('READ')")
-    public ResponseEntity<Product> getProduct(@PathVariable Long id) {
-        Optional<Product> productOptional = serviceProduct.getProductById(id);
-        if (productOptional.isEmpty()){
-            throw new EntityNotFoundException("Product with ID " + id + " not found");
-        }
-        return ResponseEntity.ok(productOptional.get());
+    public ResponseEntity<ProductResponseDTO> getProduct(@PathVariable Long id) {
+        return ResponseEntity.ok(serviceProduct.getProductById(id));
     }
 
     @GetMapping("/get")
     @PreAuthorize("hasAuthority('READ')")
-    public ResponseEntity<List<Product>> getAllProducts() {
-        List<Product> products = serviceProduct.allProducts();
-        if (products.isEmpty()){
-            throw new EntityNotFoundException("Products list is empty");
-        }
-        return ResponseEntity.ok(products);
+    public ResponseEntity<List<ProductResponseDTO>> getAllProducts() {
+        return ResponseEntity.ok(serviceProduct.allProducts());
     }
 
     @PostMapping("/create")
     @PreAuthorize("hasAuthority('CREATE')")
-    public ResponseEntity<Product> createProduct(@RequestBody Product product) {
-        serviceProduct.createProduct(product);
-
-        return new ResponseEntity<>(product, HttpStatus.CREATED);
+    public ResponseEntity<ProductResponseDTO> createProduct(@RequestBody ProductCreateDTO product) {
+        return new ResponseEntity<>(serviceProduct.createProduct(product), HttpStatus.CREATED);
     }
 
     @PostMapping("/createBatch")
     @PreAuthorize("hasAuthority('CREATE')")
-    public ResponseEntity<List<Product>> createProducts(@RequestBody List<Product> products) {
-        serviceProduct.createProduct(products);
-
-        return new ResponseEntity<>(products, HttpStatus.CREATED);
+    public ResponseEntity<List<ProductResponseDTO>> createProducts(@RequestBody List<ProductCreateDTO> products) {
+        return new ResponseEntity<>(serviceProduct.createProduct(products), HttpStatus.CREATED);
     }
 
     @DeleteMapping("/delete/{id}")
@@ -69,9 +57,8 @@ public class ControllerProduct {
 
     @PutMapping("/update/{id}")
     @PreAuthorize("hasAuthority('UPDATE')")
-    public ResponseEntity<Product> updateProduct(@RequestBody Product product, @PathVariable Long id) {
-        serviceProduct.updateProduct(product, id);
-        return ResponseEntity.ok(product);
+    public ResponseEntity<ProductResponseDTO> updateProduct(@RequestBody ProductCreateDTO product, @PathVariable Long id) {
+        return ResponseEntity.ok(serviceProduct.updateProduct(product, id));
     }
 }
 

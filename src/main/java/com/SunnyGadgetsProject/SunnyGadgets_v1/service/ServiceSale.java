@@ -1,10 +1,9 @@
 package com.SunnyGadgetsProject.SunnyGadgets_v1.service;
 
+import com.SunnyGadgetsProject.SunnyGadgets_v1.dto.*;
 import com.SunnyGadgetsProject.SunnyGadgets_v1.entity.*;
-import com.SunnyGadgetsProject.SunnyGadgets_v1.repository.IRepositoryCustomer;
-import com.SunnyGadgetsProject.SunnyGadgets_v1.repository.IRepositoryProduct;
-import com.SunnyGadgetsProject.SunnyGadgets_v1.repository.IRepositorySale;
-import com.SunnyGadgetsProject.SunnyGadgets_v1.repository.IRepositorySeller;
+import com.SunnyGadgetsProject.SunnyGadgets_v1.mapper.SaleMapper;
+import com.SunnyGadgetsProject.SunnyGadgets_v1.repository.*;
 import jakarta.persistence.EntityNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,163 +19,200 @@ public class ServiceSale implements IServiceSale {
     private final IRepositoryCustomer repositoryCustomer;
     private final IRepositoryProduct repositoryProduct;
     private final IRepositorySeller repositorySeller;
+    private final SaleMapper saleMapper;
+    private final IRepositoryDetailSale repositoryDetailSale;
 
 
-    public ServiceSale(IRepositorySale repositorySale, IRepositoryCustomer repositoryCustomer, IRepositoryProduct repositoryProduct, IRepositorySeller repositorySeller) {
+    public ServiceSale(IRepositorySale repositorySale, IRepositoryCustomer repositoryCustomer, IRepositoryProduct repositoryProduct, IRepositorySeller repositorySeller, SaleMapper saleMapper, IRepositoryDetailSale repositoryDetailSale) {
         this.repositorySale = repositorySale;
         this.repositoryCustomer = repositoryCustomer;
         this.repositoryProduct = repositoryProduct;
         this.repositorySeller = repositorySeller;
+        this.saleMapper = saleMapper;
+        this.repositoryDetailSale = repositoryDetailSale;
     }
 
     @Override
-    public Sale createSale(Sale sale) {
-        Optional<Customer> optionalCustomer = repositoryCustomer.findById(sale.getCustomer().getId_customer());
-        Optional<Seller> optionalSeller = repositorySeller.findById(sale.getSeller().getId_employee());
-        Set<Sale> sales = new HashSet<>();
-        List<DetailSale> auxlistdetailSale = new ArrayList<>();
-        long auxsubtotal = 0;
+    public SaleResponseDTO createSale(SaleCreateDTO sale) {
+        Sale sEntity = processSale(sale);
 
-        if (optionalCustomer.isEmpty()){
+        SaleResponseDTO responseDTO = saleMapper.toDto(sEntity);
+
+        repositorySale.save(sEntity);
+        logger.info("Sale and detail sale created: {}", sEntity);
+        return responseDTO;
+    }
+
+    @Override
+    public List<SaleResponseDTO> createSale(List<SaleCreateDTO> sales) {
+        List<SaleResponseDTO> responseDTOs = new ArrayList<>();
+        DetailSale readdetailSale;
+        List<DetailSale> listdetailSale;
+        for (SaleCreateDTO s : sales) {
+            listdetailSale = new ArrayList<>();
+            Sale sEntity = processSale(s);
+            for (DetailSale ds : sEntity.getListdetailSale()) {
+                //Instantiate a new DetailSale
+                readdetailSale = new DetailSale();
+                //Assign the object of the list<DetailSale> of sale
+                readdetailSale = ds;
+                //Set its sale to sEntity
+                ds.setSale(sEntity);
+                listdetailSale.add(readdetailSale);
+            }
+            sEntity.setListdetailSale(listdetailSale);
+            responseDTOs.add(saleMapper.toDto(sEntity));
+            repositorySale.save(sEntity);
+        }
+        logger.info("Sales created: {}", sales);
+        return responseDTOs;
+    }
+
+    @Override
+    public SaleResponseDTO getSaleById(Long id) {
+        Sale sale = repositorySale.findById(id).orElseThrow(EntityNotFoundException::new);
+        return saleMapper.toDto(sale);
+    }
+
+    @Override
+    public List<SaleResponseDTO> allSales() {
+        List<SaleResponseDTO> sales = new ArrayList<>();
+        for (Sale s : repositorySale.findAll()) {
+            sales.add(saleMapper.toDto(s));
+        }
+        if (sales.isEmpty()) {
+            throw new EntityNotFoundException("No sales found"); //Exception Not Found
+        }
+        return sales;
+    }
+
+    @Override
+    public SaleResponseDTO updateSale(SaleCreateDTO sale, Long id) {
+        Sale saleEntity = repositorySale.findById(id).orElseThrow(EntityNotFoundException::new);
+        //Variables for get the objects relationated with our sale
+        Optional<Customer> optionalCustomer = repositoryCustomer.findById(sale.getIdCustomer());
+        Optional<Seller> optionalSeller = repositorySeller.findById(sale.getIdSeller());
+        //Two Set<> for recover all the sales of Customer and Seller
+        //We recover the Sale's that could have the seller or customer
+        Set<Sale> salesCustomer = optionalCustomer.map(Customer::getPurchases).orElse(new HashSet<>());
+        Set<Sale> salesSeller = optionalSeller.map(Seller::getSales).orElse(new HashSet<>());
+
+        if (optionalCustomer.isEmpty()) {
             throw new RuntimeException("Customer not found");
-        } else if (optionalSeller.isEmpty()){
+        } else if (optionalSeller.isEmpty()) {
             throw new RuntimeException("Seller not found");
         }
-        repositorySale.save(sale);
-
-
+        //List<> to iterate across the DetailSale of the sale and calculate the total, subtotal, establish the other
+        //attributes of detailsale
+        List<DetailSale> auxlistdetailSale = new ArrayList<>();
+        DetailSale auxdetailSale;
         long total = 0;
+        long auxsubtotal;
 
-        for (DetailSale ds : sale.getListdetailSale()){
-            Optional<Product> optionalProduct = repositoryProduct.findById(ds.getProduct().getId_product());
-            if (optionalProduct.isEmpty()){
-                throw new RuntimeException("Product not found");
-            }
-            //Calculate the subtotal with the unit price and the quantity
-            auxsubtotal = (long) optionalProduct.get().getPrice() * ds.getQuantity();
-            //We set the values for the items of the list detail sale
-            ds.setUnitPrice(optionalProduct.get().getPrice());
-            ds.setSubtotal(auxsubtotal);
-            ds.setProduct(optionalProduct.get());
-            ds.setSale(sale);
-            //Add all the items to other list
-            auxlistdetailSale.add(ds);
-
-
-            total += ds.getSubtotal();
-
-        }
-//        Seller seller = new Seller();
-//        seller.setName(optionalSeller.get().getName());
-        //sale.setSeller(seller);
-        //The solution is use DTO probably the best option
-        sales.add(sale);
-        optionalCustomer.get().setSales(sales);
-        optionalSeller.get().setSales(sales);
-        //And assignate this new list to sale, also assignate the customer and total
-        sale.setListdetailSale(auxlistdetailSale);
-        sale.setCustomer(optionalCustomer.get());
-
-        sale.setTotal(total);
-
-        repositorySale.save(sale);
-        logger.info("Sale and detail sale created: {}", sale);
-        return sale;
-    }
-
-    @Override
-    public List<Sale> createSale(List<Sale> sales) {
-
-
-        for (Sale s : sales) {
-            Optional<Customer> optionalCustomer = repositoryCustomer.findById(s.getCustomer().getId_customer());
-            Optional<Seller> optionalSeller = repositorySeller.findById(s.getSeller().getId_employee());
-            List<DetailSale> auxlistdetailSale = new ArrayList<>();
-            Set<Sale> saleSet = new HashSet<>();
-            long auxsubtotal = 0;
-            long total = 0;
-
-
-            if (optionalCustomer.isEmpty()){
-                throw new RuntimeException("Customer not found");
-            } else if (optionalSeller.isEmpty()){
-                throw new RuntimeException("Seller not found");
-            }
-            repositorySale.save(s);
-
-            for (DetailSale ds : s.getListdetailSale()) {
-                Optional<Product> optionalProduct = repositoryProduct.findById(ds.getProduct().getId_product());
+        for (DetailSaleCreateDTO ds : sale.getListdetailSale()) {
+            for (DetailSale dsE : saleEntity.getListdetailSale()) {
+                auxdetailSale = repositoryDetailSale.findById(dsE.getId_detailsale()).orElseThrow(EntityNotFoundException::new);
+                Optional<Product> optionalProduct = repositoryProduct.findById(ds.getProduct());
                 if (optionalProduct.isEmpty()) {
                     throw new RuntimeException("Product not found");
                 }
                 //Calculate the subtotal with the unit price and the quantity
-                auxsubtotal = (long) optionalProduct.get().getPrice() * ds.getQuantity();
+                auxsubtotal = optionalProduct.get().getPrice() * ds.getQuantity();
                 //We set the values for the items of the list detail sale
-                ds.setUnitPrice(optionalProduct.get().getPrice());
-                ds.setSubtotal(auxsubtotal);
-                ds.setProduct(optionalProduct.get());
-                ds.setSale(s);
+                auxdetailSale.setUnitPrice(optionalProduct.get().getPrice());
+                auxdetailSale.setSubtotal(auxsubtotal);
+                auxdetailSale.setProduct(optionalProduct.get());
+                auxdetailSale.setQuantity(ds.getQuantity());
+                auxdetailSale.setSale(saleEntity);
                 //Add all the items to other list
-                auxlistdetailSale.add(ds);
-
-
-                total += ds.getSubtotal();
-
+                auxlistdetailSale.add(auxdetailSale);
+                //Sum the total
+                total += auxdetailSale.getSubtotal();
             }
-
-            saleSet.add(s);
-            optionalCustomer.get().setSales(saleSet);
-            optionalSeller.get().setSales(saleSet);
-            //And assignate this new list to sale, also assignate the customer and total
-            s.setListdetailSale(auxlistdetailSale);
-            s.setCustomer(optionalCustomer.get());
-
-            s.setTotal(total);
-
-            repositorySale.save(s);
         }
-
-        logger.info("Sales created: {}", sales);
-        return sales;
-    }
-
-    @Override
-    public Optional<Sale> getSaleById(Long id) {
-        return repositorySale.findById(id);
-    }
-
-    @Override
-    public List<Sale> allSales() {
-        List<Sale> sales = repositorySale.findAll();
-        if (sales.isEmpty()) {
-            return null; //Exception not found
-        }
-        return sales;
-    }
-
-    @Override
-    public Sale updateSale(Sale sale, Long id) {
-        Optional<Sale> saleOptional = repositorySale.findById(id);
-        if (saleOptional.isEmpty()) {
-            throw new EntityNotFoundException("Sale not found"); //Exception not found
-        }
-
-        saleOptional.get().setListdetailSale(sale.getListdetailSale());
-        saleOptional.get().setTotal(sale.getTotal());
-        saleOptional.get().setSeller(sale.getSeller());
-
-        repositorySale.save(saleOptional.get());
+        /*
+        Parece que esta funcionando bien, lo unico seria hacer una refactorizacion luego para mejorar la calidad de codigo
+         */
+        //Add the new sale and establish the corresponding Set<> to Customer and Seller
+        salesCustomer.add(saleEntity);
+        salesSeller.add(saleEntity);
+        optionalCustomer.get().setPurchases(salesCustomer);
+        optionalSeller.get().setSales(salesSeller);
+        //And assignate this new list to sale, also assignate the customer and total
+        saleEntity.setListdetailSale(auxlistdetailSale);
+        saleEntity.setCustomer(optionalCustomer.get());
+        //Update the customer with its new purchase
+        //repositoryCustomer.save(optionalCustomer.get());
+        saleEntity.setSeller(optionalSeller.get());
+        saleEntity.setTotal(total);
+        repositorySale.save(saleEntity);
         logger.info("Sale updated: {}", sale);
-        return saleOptional.get();
+        return saleMapper.toDto(saleEntity);
     }
 
     @Override
     public void deleteSale(Long id) {
         Optional<Sale> saleOptional = repositorySale.findById(id);
         if (saleOptional.isEmpty()) {
-            return; //Exception not found
+            throw new EntityNotFoundException("Sale not found"); //Exception not found
         }
         logger.info("Sale deleted: {}", saleOptional.get());
         repositorySale.deleteById(id);
+    }
+
+    public Sale processSale(SaleCreateDTO sale) {
+        Sale saleEntity = saleMapper.toEntity(sale);
+        //Variables for get the objects relationated with our sale
+        Optional<Customer> optionalCustomer = repositoryCustomer.findById(sale.getIdCustomer());
+        Optional<Seller> optionalSeller = repositorySeller.findById(sale.getIdSeller());
+        //Two Set<> for recover all the sales of Customer and Seller
+        //We recover the Sale's that could have the seller or customer
+        Set<Sale> salesCustomer = optionalCustomer.map(Customer::getPurchases).orElse(new HashSet<>());
+        Set<Sale> salesSeller = optionalSeller.map(Seller::getSales).orElse(new HashSet<>());
+
+
+        if (optionalCustomer.isEmpty()) {
+            throw new RuntimeException("Customer not found");
+        } else if (optionalSeller.isEmpty()) {
+            throw new RuntimeException("Seller not found");
+        }
+        //Save because we need that hibernate give him an ID
+        repositorySale.save(saleEntity);
+        //List<> to iterate across the DetailSale of the sale and calculate the total, subtotal, establish the other
+        //attributes of detailsale
+        List<DetailSale> auxlistdetailSale = new ArrayList<>();
+        long total = 0;
+        long auxsubtotal;
+
+        for (DetailSale ds : saleEntity.getListdetailSale()) {
+            Optional<Product> optionalProduct = repositoryProduct.findById(ds.getProduct().getIdProduct());
+            if (optionalProduct.isEmpty()) {
+                throw new RuntimeException("Product not found");
+            }
+            //Calculate the subtotal with the unit price and the quantity
+            auxsubtotal = optionalProduct.get().getPrice() * ds.getQuantity();
+            //We set the values for the items of the list detail sale
+            ds.setUnitPrice(optionalProduct.get().getPrice());
+            ds.setSubtotal(auxsubtotal);
+            ds.setProduct(optionalProduct.get());
+            ds.setSale(saleEntity);
+            //Add all the items to other list
+            auxlistdetailSale.add(ds);
+            //Sum the total
+            total += ds.getSubtotal();
+        }
+        //Add the new sale and establish the corresponding Set<> to Customer and Seller
+        salesCustomer.add(saleEntity);
+        salesSeller.add(saleEntity);
+        optionalCustomer.get().setPurchases(salesCustomer);
+        optionalSeller.get().setSales(salesSeller);
+        //And assignate this new list to sale, also assignate the customer and total
+        saleEntity.setListdetailSale(auxlistdetailSale);
+        saleEntity.setCustomer(optionalCustomer.get());
+        //Update the customer with its new purchase
+        repositoryCustomer.save(optionalCustomer.get());
+        saleEntity.setSeller(optionalSeller.get());
+        saleEntity.setTotal(total);
+        return saleEntity;
     }
 }

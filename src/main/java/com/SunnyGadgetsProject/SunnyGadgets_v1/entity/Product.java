@@ -1,11 +1,6 @@
 package com.SunnyGadgetsProject.SunnyGadgets_v1.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import jakarta.annotation.Nonnull;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
 import java.util.Set;
@@ -17,22 +12,18 @@ import java.util.Set;
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id_product;
-    @Nonnull @NotBlank
+    private Long idProduct;
     private String name;
-    @Nonnull @NotBlank
     private String description;
-    @Min(1)
-    private int price;
-    @Min(1)
+    private long price;
     private int stock;
     @ManyToOne
-    @JoinColumn(referencedColumnName = "id_category", nullable = false)
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JoinColumn(referencedColumnName = "idCategory", nullable = false)
+    //@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Category category;
 
     @ManyToMany(mappedBy = "productSet")
-    @JsonIgnore
+    //@JsonIgnore
     private Set<Provider> setProviders;
 
 }

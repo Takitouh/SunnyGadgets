@@ -43,8 +43,9 @@ public UserDetailsService userDetailsService() {
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
     }
+
     @Bean
-    public AuthenticationProvider authenticationProvider(UserDetailsService userDetailsService){
+    public AuthenticationProvider authenticationProvider(UserDetailsService userDetailsService) {
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
         provider.setPasswordEncoder(passwordEncoder());
         provider.setUserDetailsService(userDetailsService);
@@ -63,21 +64,12 @@ public UserDetailsService userDetailsService() {
                 .authorizeHttpRequests(authorizeRequests -> authorizeRequests.requestMatchers(
                                         "/v3/api-docs/**",
                                         "/swagger-ui/**",
-                                        "/swagger-ui.html"
-                                ).permitAll()
-                                .requestMatchers(
-                                "api/v1/permissions/**",
-                                "api/v1/roles/**",
-                                "api/v1/usersec/**"
-                        ).permitAll().anyRequest().authenticated()
+                                        "/swagger-ui.html",
+                                        "/api/v1/permissions/**",
+                                        "/api/v1/roles/**",
+                                        "/api/v1/usersec/**"
+                                ).permitAll().anyRequest().authenticated()
                 )
-                .formLogin(form -> form
-                .loginPage("/login")
-                .loginProcessingUrl("/login")
-                .defaultSuccessUrl("/api/v1/category/get", true)  // <— aquí
-                .permitAll()
-        )
-                .logout(logout -> logout.logoutSuccessUrl("/lobby"))
                 .build();
     }
 }

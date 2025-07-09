@@ -1,16 +1,16 @@
 package com.SunnyGadgetsProject.SunnyGadgets_v1.service;
 
-import com.SunnyGadgetsProject.SunnyGadgets_v1.entity.Category;
+import com.SunnyGadgetsProject.SunnyGadgets_v1.dto.CategoryCreateDTO;
+import com.SunnyGadgetsProject.SunnyGadgets_v1.dto.CategoryResponseDTO;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface IServiceCategory {
-    Category createCategory(Category category);
-    List<Category> createCategory(List<Category> categories);
-    Optional<Category> getCategoryById(Long id);
-    List<Category> allCategories();
-    Category updateCategory(Category category, Long id);
+    CategoryResponseDTO createCategory(CategoryCreateDTO category);
+    List<CategoryResponseDTO> createCategory(List<CategoryCreateDTO> categories);
+    CategoryResponseDTO getCategoryById(Long id);
+    List<CategoryResponseDTO> allCategories();
+    CategoryResponseDTO updateCategory(CategoryCreateDTO category, Long id);
     void deleteCategory(Long id);
 
 }

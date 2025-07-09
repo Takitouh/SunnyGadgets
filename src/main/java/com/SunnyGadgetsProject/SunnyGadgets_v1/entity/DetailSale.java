@@ -2,7 +2,6 @@ package com.SunnyGadgetsProject.SunnyGadgets_v1.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Min;
 import lombok.*;
 
 @Entity
@@ -10,12 +9,10 @@ import lombok.*;
 @Setter
 @NoArgsConstructor
 @Table(name = "detailsales")
-
 public class DetailSale {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id_detailsale;
-    @Min(1)
+    private Long id_detailsale;
     private int quantity;
 
     private long unitPrice;
@@ -23,12 +20,12 @@ public class DetailSale {
     private long subtotal;
 
     @ManyToOne
-    @JoinColumn(name = "fk_sale", referencedColumnName = "id_sale")
+    @JoinColumn(name = "fkSale", referencedColumnName = "idSale")
     @JsonIgnore
     private Sale sale;
 
     @ManyToOne
-    @JoinColumn(name = "fk_product", referencedColumnName = "id_product")
+    @JoinColumn(name = "fkProduct", referencedColumnName = "idProduct")
     private Product product;
 
 

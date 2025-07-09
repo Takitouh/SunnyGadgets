@@ -18,7 +18,7 @@ import java.util.Set;
 public class UserSec {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long idUser;
     @Column(unique = true)
     private String username;
     private String password;

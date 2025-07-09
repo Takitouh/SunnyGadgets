@@ -15,23 +15,22 @@ import java.util.List;
 public class Sale {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id_sale;
-
+    private Long idSale;
     @CurrentTimestamp
     private Timestamp salecreatedAt;
 
     private long total;
 
     @ManyToOne
-    @JoinColumn(name = "fk_customer", referencedColumnName = "id_customer", nullable = false)
+    @JoinColumn(name = "fkCustomer", referencedColumnName = "idCustomer", nullable = false)
 
     private Customer customer;
 
     @ManyToOne
-    @JoinColumn(name = "fk_seller", referencedColumnName = "id_seller", nullable = false)
+    @JoinColumn(name = "fkSeller", referencedColumnName = "idSeller", nullable = false)
     private Seller seller;
 
-    @OneToMany(mappedBy = "sale", cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "sale")
     private List<DetailSale> listdetailSale;
 
 }

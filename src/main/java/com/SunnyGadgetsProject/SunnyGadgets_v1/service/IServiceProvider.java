@@ -1,16 +1,16 @@
 package com.SunnyGadgetsProject.SunnyGadgets_v1.service;
 
-import com.SunnyGadgetsProject.SunnyGadgets_v1.entity.Provider;
+import com.SunnyGadgetsProject.SunnyGadgets_v1.dto.ProviderCreateDTO;
+import com.SunnyGadgetsProject.SunnyGadgets_v1.dto.ProviderResponseDTO;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface IServiceProvider {
-    Provider createProvider(Provider provider);
-    List<Provider> createProvider(List<Provider> providers);
-    Optional<Provider> getProviderById(Long id);
-    List<Provider> allProviders();
-    Provider updateProvider(Provider provider, Long id);
+    ProviderResponseDTO createProvider(ProviderCreateDTO provider);
+    List<ProviderResponseDTO> createProvider(List<ProviderCreateDTO> providers);
+    ProviderResponseDTO getProviderById(Long id);
+    List<ProviderResponseDTO> allProviders();
+    ProviderResponseDTO updateProvider(ProviderCreateDTO provider, Long id);
     void deleteProvider(Long id);
 
 }
