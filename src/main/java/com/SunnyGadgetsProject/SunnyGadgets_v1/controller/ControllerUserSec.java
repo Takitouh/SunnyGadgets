@@ -35,6 +35,11 @@ public class ControllerUserSec {
 
     }
 
+    @PutMapping("/update/{id}")
+    public ResponseEntity<UserSecResponseDTO> updateUser(@PathVariable Long id, @RequestBody UserSecCreateDTO userSec) {
+        return ResponseEntity.ok(userService.updateUser(userSec, id));
+    }
+
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<UserSecResponseDTO> deleteUser(@PathVariable Long id) {
         userService.deleteUser(id);
