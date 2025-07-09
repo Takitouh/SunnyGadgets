@@ -71,13 +71,6 @@ public UserDetailsService userDetailsService() {
                                 "/api/v1/usersec/**"
                         ).permitAll().anyRequest().authenticated()
                 )
-                .formLogin(form -> form
-                .loginPage("/login")
-                .loginProcessingUrl("/login")
-                .defaultSuccessUrl("/api/v1/category/get", true)  // <— aquí
-                .permitAll()
-        )
-                .logout(logout -> logout.logoutSuccessUrl("/lobby"))
                 .build();
     }
 }
