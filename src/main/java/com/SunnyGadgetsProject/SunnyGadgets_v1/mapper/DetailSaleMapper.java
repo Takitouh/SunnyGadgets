@@ -11,6 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 public abstract class DetaiSaleMapper {
     @Autowired
     protected IRepositoryProduct repositoryProduct;
+    // CreateDTO -> Entity
+    public abstract DetailSale toEntity(DetailSaleCreateDTO detailSaleCreateDTO);
+
     // Entity → ResponseDTO
 
     public abstract DetailSaleResponseDTO toDto(DetailSale detailSale);
