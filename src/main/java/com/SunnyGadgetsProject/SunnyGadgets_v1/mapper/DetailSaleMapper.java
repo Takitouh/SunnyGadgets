@@ -13,6 +13,8 @@ public abstract class DetailSaleMapper {
     @Autowired
     protected IRepositoryProduct repositoryProduct;
     // CreateDTO -> Entity
+    @Mapping(target = "id_detailsale", ignore = true)
+    @Mapping(target = "sale", ignore = true)
     public abstract DetailSale toEntity(DetailSaleCreateDTO detailSaleCreateDTO);
 
     // Entity → ResponseDTO
