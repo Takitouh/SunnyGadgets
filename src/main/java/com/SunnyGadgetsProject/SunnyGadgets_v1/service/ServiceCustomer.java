@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 
@@ -31,6 +32,7 @@ public class ServiceCustomer implements IServiceCustomer {
     @Override
     public CustomerResponseDTO createCustomer(CustomerCreateDTO customer) {
         Customer cu = customerMapper.toEntity(customer);
+        cu.setPurchases(new HashSet<>());
         cu = repositoryCustomer.save(cu);
         CustomerResponseDTO responseDTO = customerMapper.toDto(cu);
         logger.info("Customer created: {}", customer.getName());
@@ -41,8 +43,11 @@ public class ServiceCustomer implements IServiceCustomer {
     public List<CustomerResponseDTO> createCustomer(List<CustomerCreateDTO> customers) {
         List<Customer> customerList = new ArrayList<>();
         List<CustomerResponseDTO> customerDTOList = new ArrayList<>();
+        Customer customer;
         for (CustomerCreateDTO cu : customers) {
-            customerList.add(customerMapper.toEntity(cu));
+            customer = customerMapper.toEntity(cu);
+            customer.setPurchases(new HashSet<>());
+            customerList.add(customer);
         }
         repositoryCustomer.saveAll(customerList);
         for (Customer cu : customerList) {
@@ -84,6 +89,7 @@ public class ServiceCustomer implements IServiceCustomer {
         optionalCustomer.get().setAddress(customer.getAddress());
         optionalCustomer.get().setPhoneNumber(customer.getPhoneNumber());
         optionalCustomer.get().setAge(customer.getAge());
+
 
 
         repositoryCustomer.save(optionalCustomer.get());
