@@ -6,4 +6,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface IRepositoryProduct extends JpaRepository<Product, Long> {
+    //Query's
+    List<NameDescriptionPriceProductDTO> findByPriceGreaterThanEqual(long price);
 }

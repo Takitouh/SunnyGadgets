@@ -109,4 +109,11 @@ public class ServiceProduct implements IServiceProduct {
         logger.info("Product deleted: {}", productOptional.get());
         repositoryProduct.deleteById(id);
     }
+
+    @Override
+    public List<NameDescriptionPriceProductDTO> findProductsByPrice(long price) {
+        return repositoryProduct.findByPriceGreaterThanEqual(price);
+    }
+
+
 }

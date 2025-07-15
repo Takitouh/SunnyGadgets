@@ -13,4 +13,6 @@ public interface IServiceProduct {
     ProductResponseDTO updateProduct(ProductCreateDTO product, Long id);
     void deleteProduct(Long id);
 
+    //Query's
+    List<NameDescriptionPriceProductDTO> findProductsByPrice(long price);
 }
