@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,6 +30,7 @@ public class ServiceSeller implements IServiceSeller {
     @Override
     public SellerResponseDTO createSeller(SellerCreateDTO seller) {
         Seller s = sellerMapper.toEntity(seller);
+        s.setSales(new HashSet<>());
         s = repositorySeller.save(s);
         SellerResponseDTO responseDTO = sellerMapper.toDto(s);
         logger.info("Seller created: {}", seller);
@@ -39,8 +41,11 @@ public class ServiceSeller implements IServiceSeller {
     public List<SellerResponseDTO> createSeller(List<SellerCreateDTO> sellers) {
         List<Seller> sellerList = new ArrayList<>();
         List<SellerResponseDTO> sellerDTOList = new ArrayList<>();
+        Seller sellerEntity;
         for (SellerCreateDTO seller : sellers) {
-            sellerList.add(sellerMapper.toEntity(seller));
+            sellerEntity = sellerMapper.toEntity(seller);
+            sellerEntity.setSales(new HashSet<>());
+            sellerList.add(sellerEntity);
         }
         repositorySeller.saveAll(sellerList);
         for (Seller s : sellerList) {
