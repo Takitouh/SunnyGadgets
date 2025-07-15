@@ -52,13 +52,8 @@ public class ServiceSale implements IServiceSale {
             listdetailSale = new ArrayList<>();
             Sale sEntity = processSale(s);
             for (DetailSale ds : sEntity.getListdetailSale()) {
-                //Instantiate a new DetailSale
-                readdetailSale = new DetailSale();
-                //Assign the object of the list<DetailSale> of sale
-                readdetailSale = ds;
-                //Set its sale to sEntity
                 ds.setSale(sEntity);
-                listdetailSale.add(readdetailSale);
+                listdetailSale.add(ds);
             }
             sEntity.setListdetailSale(listdetailSale);
             responseDTOs.add(saleMapper.toDto(sEntity));
@@ -133,11 +128,13 @@ public class ServiceSale implements IServiceSale {
         /*
         Parece que esta funcionando bien, lo unico seria hacer una refactorizacion luego para mejorar la calidad de codigo
          */
-        //Add the new sale and establish the corresponding Set<> to Customer and Seller
+        //Add the new sale and establish the corresponding Set<Sale> to Customer and Seller
         salesCustomer.add(saleEntity);
         salesSeller.add(saleEntity);
         optionalCustomer.get().setPurchases(salesCustomer);
         optionalSeller.get().setSales(salesSeller);
+        //All sellers will receive 1% of comission of all sales
+        optionalSeller.get().setCommission((long) (total*0.1));
         //And assignate this new list to sale, also assignate the customer and total
         saleEntity.setListdetailSale(auxlistdetailSale);
         saleEntity.setCustomer(optionalCustomer.get());
@@ -206,6 +203,8 @@ public class ServiceSale implements IServiceSale {
         salesSeller.add(saleEntity);
         optionalCustomer.get().setPurchases(salesCustomer);
         optionalSeller.get().setSales(salesSeller);
+        //All sellers will receive 10% of comission of sales
+        optionalSeller.get().setCommission((long) (total*0.1));
         //And assignate this new list to sale, also assignate the customer and total
         saleEntity.setListdetailSale(auxlistdetailSale);
         saleEntity.setCustomer(optionalCustomer.get());
