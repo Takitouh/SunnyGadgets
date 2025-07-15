@@ -60,5 +60,12 @@ public class ControllerProduct {
     public ResponseEntity<ProductResponseDTO> updateProduct(@RequestBody ProductCreateDTO product, @PathVariable Long id) {
         return ResponseEntity.ok(serviceProduct.updateProduct(product, id));
     }
+
+    @GetMapping("/find-product/{price}")
+    @PreAuthorize("hasAuthority('READ')")
+    public ResponseEntity<List<NameDescriptionPriceProductDTO>> findProductsByPrice(@PathVariable long price) {
+        return ResponseEntity.ok(serviceProduct.findProductsByPrice(price));
+    }
+
 }
 
