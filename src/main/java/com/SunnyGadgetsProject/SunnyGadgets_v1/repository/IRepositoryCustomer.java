@@ -6,5 +6,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface IRepositoryCustomer extends JpaRepository<Customer, Long> {
-
+    //Query's
+    List<NameCustomerDTO> findCustomersByAgeGreaterThanEqual(Integer age);
 }

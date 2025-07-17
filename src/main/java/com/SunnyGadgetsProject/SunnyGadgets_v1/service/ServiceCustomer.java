@@ -108,4 +108,12 @@ public class ServiceCustomer implements IServiceCustomer {
         repositoryCustomer.deleteById(id);
         logger.info("Customer deleted: {}", customer.get().getEmail());
     }
+
+    @Override
+    public List<NameCustomerDTO> findCustomersByAgeGreaterThanEqual(Integer age) {
+        if (age <= 0) {
+            throw new EntityNotFoundException("Invalid age: " + age);
+        }
+        return repositoryCustomer.findCustomersByAgeGreaterThanEqual(age);
+    }
 }

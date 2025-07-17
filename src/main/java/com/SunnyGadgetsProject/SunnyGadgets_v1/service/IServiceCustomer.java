@@ -12,5 +12,6 @@ public interface IServiceCustomer {
     List<CustomerResponseDTO> allCustomers();
     CustomerResponseDTO updateCustomer(CustomerCreateDTO userSunnyGadgetsCustomer, Long id);
     void deleteCustomer(Long id);
-
+    //Query's
+    List<NameCustomerDTO> findCustomersByAgeGreaterThanEqual(Integer age);
 }
