@@ -12,4 +12,7 @@ import java.util.List;
 public interface IRepositoryProduct extends JpaRepository<Product, Long> {
     //Query's
     List<NameDescriptionPriceProductDTO> findByPriceGreaterThanEqual(long price);
+    @Query(value = "SELECT p.name, p.description, p.price FROM products p INNER JOIN categories c ON c.id_category = p.category_id_category WHERE UPPER(c.name) = UPPER(:category)"
+            ,nativeQuery = true)
+    List<NameDescriptionPriceProductDTO> findByCategory(@Param("category") String category);
 }
