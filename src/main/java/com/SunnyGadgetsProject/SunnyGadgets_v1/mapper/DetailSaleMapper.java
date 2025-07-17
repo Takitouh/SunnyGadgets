@@ -6,6 +6,7 @@ import com.SunnyGadgetsProject.SunnyGadgets_v1.entity.DetailSale;
 import com.SunnyGadgetsProject.SunnyGadgets_v1.entity.Product;
 import com.SunnyGadgetsProject.SunnyGadgets_v1.repository.IRepositoryProduct;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @Mapper(componentModel = "spring", uses = {ProductMapper.class})
