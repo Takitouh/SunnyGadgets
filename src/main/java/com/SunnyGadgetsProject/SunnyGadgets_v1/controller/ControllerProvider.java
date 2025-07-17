@@ -60,4 +60,10 @@ public class ControllerProvider {
     public ResponseEntity<ProviderResponseDTO> updateProvider(@RequestBody ProviderCreateDTO provider, @PathVariable Long id) {
         return ResponseEntity.ok(serviceProvider.updateProvider(provider, id));
     }
+
+    @GetMapping("/get/salaries")
+    @PreAuthorize("hasAuthority('READ')")
+    public ResponseEntity<List<NameTotalSalarySeller>> getAllSalaryProviders() {
+        return ResponseEntity.ok(serviceProvider.getProvidersSalary());
+    }
 }

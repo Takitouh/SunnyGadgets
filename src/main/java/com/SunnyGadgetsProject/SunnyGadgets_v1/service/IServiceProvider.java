@@ -13,4 +13,7 @@ public interface IServiceProvider {
     ProviderResponseDTO updateProvider(ProviderCreateDTO provider, Long id);
     void deleteProvider(Long id);
 
+    //Methods for use query's of repository
+    List<NameTotalSalarySeller> getProvidersSalary();
+
 }

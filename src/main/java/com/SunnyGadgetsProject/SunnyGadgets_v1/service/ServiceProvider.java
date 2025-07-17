@@ -111,4 +111,9 @@ public class ServiceProvider implements IServiceProvider {
         logger.info("Provider deleted: {}", providerOptional.get());
         repositoryProvider.deleteById(id);
     }
+
+    @Override
+    public List<NameTotalSalarySeller> getProvidersSalary() {
+        return repositoryProvider.getProvidersSalary();
+    }
 }
