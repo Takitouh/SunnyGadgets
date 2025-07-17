@@ -61,4 +61,10 @@ public class ControllerCustomer {
     public ResponseEntity<CustomerResponseDTO> updateCustomer(@RequestBody CustomerCreateDTO customer, @PathVariable Long id) {
         return ResponseEntity.ok(serviceCustomer.updateCustomer(customer, id));
     }
+
+    @GetMapping("/findby-age/{age}")
+    @PreAuthorize("hasAuthority('READ')")
+    public ResponseEntity<List<NameCustomerDTO>> getAllCustomersByAge(@PathVariable Integer age) {
+        return ResponseEntity.ok(serviceCustomer.findCustomersByAgeGreaterThanEqual(age));
+    }
 }
