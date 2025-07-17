@@ -1,5 +1,6 @@
 package com.SunnyGadgetsProject.SunnyGadgets_v1.service;
 
+import com.SunnyGadgetsProject.SunnyGadgets_v1.dto.NameDescriptionPriceProductDTO;
 import com.SunnyGadgetsProject.SunnyGadgets_v1.dto.ProductCreateDTO;
 import com.SunnyGadgetsProject.SunnyGadgets_v1.dto.ProductResponseDTO;
 

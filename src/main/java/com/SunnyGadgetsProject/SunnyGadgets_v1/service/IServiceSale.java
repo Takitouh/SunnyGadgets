@@ -1,5 +1,6 @@
 package com.SunnyGadgetsProject.SunnyGadgets_v1.service;
 
+import com.SunnyGadgetsProject.SunnyGadgets_v1.dto.NameQuantPurchasesCustomerDTO;
 import com.SunnyGadgetsProject.SunnyGadgets_v1.dto.SaleCreateDTO;
 import com.SunnyGadgetsProject.SunnyGadgets_v1.dto.SaleResponseDTO;
 
@@ -12,5 +13,9 @@ public interface IServiceSale {
     List<SaleResponseDTO> allSales();
     SaleResponseDTO updateSale(SaleCreateDTO sale, Long id);
     void deleteSale(Long id);
+
+    //Query's
+    Long totalSold();
+    List<NameQuantPurchasesCustomerDTO> getCustomersByPurchases();
 
 }

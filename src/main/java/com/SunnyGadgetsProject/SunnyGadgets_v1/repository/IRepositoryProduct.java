@@ -1,9 +1,10 @@
 package com.SunnyGadgetsProject.SunnyGadgets_v1.repository;
 
 import com.SunnyGadgetsProject.SunnyGadgets_v1.dto.NameDescriptionPriceProductDTO;
-import com.SunnyGadgetsProject.SunnyGadgets_v1.dto.ProductResponseDTO;
 import com.SunnyGadgetsProject.SunnyGadgets_v1.entity.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;

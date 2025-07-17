@@ -2,6 +2,7 @@ package com.SunnyGadgetsProject.SunnyGadgets_v1.service;
 
 import com.SunnyGadgetsProject.SunnyGadgets_v1.dto.CustomerCreateDTO;
 import com.SunnyGadgetsProject.SunnyGadgets_v1.dto.CustomerResponseDTO;
+import com.SunnyGadgetsProject.SunnyGadgets_v1.dto.NameCustomerDTO;
 import com.SunnyGadgetsProject.SunnyGadgets_v1.entity.Customer;
 import com.SunnyGadgetsProject.SunnyGadgets_v1.mapper.CustomerMapper;
 import com.SunnyGadgetsProject.SunnyGadgets_v1.repository.IRepositoryCustomer;
@@ -83,13 +84,11 @@ public class ServiceCustomer implements IServiceCustomer {
         }
 
 
-
         optionalCustomer.get().setName(customer.getName());
         optionalCustomer.get().setEmail(customer.getEmail());
         optionalCustomer.get().setAddress(customer.getAddress());
         optionalCustomer.get().setPhoneNumber(customer.getPhoneNumber());
         optionalCustomer.get().setAge(customer.getAge());
-
 
 
         repositoryCustomer.save(optionalCustomer.get());

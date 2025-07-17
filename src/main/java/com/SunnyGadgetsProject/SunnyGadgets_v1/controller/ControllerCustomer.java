@@ -2,6 +2,7 @@ package com.SunnyGadgetsProject.SunnyGadgets_v1.controller;
 
 import com.SunnyGadgetsProject.SunnyGadgets_v1.dto.CustomerCreateDTO;
 import com.SunnyGadgetsProject.SunnyGadgets_v1.dto.CustomerResponseDTO;
+import com.SunnyGadgetsProject.SunnyGadgets_v1.dto.NameCustomerDTO;
 import com.SunnyGadgetsProject.SunnyGadgets_v1.service.IServiceCustomer;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,7 +35,6 @@ public class ControllerCustomer {
     @PreAuthorize("hasAuthority('READ')")
     public ResponseEntity<List<CustomerResponseDTO>> getAllCustomers() {
         return ResponseEntity.ok(serviceCustomer.allCustomers());
-
     }
 
     @PostMapping("/create")

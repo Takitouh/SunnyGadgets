@@ -1,5 +1,6 @@
 package com.SunnyGadgetsProject.SunnyGadgets_v1.controller;
 
+import com.SunnyGadgetsProject.SunnyGadgets_v1.dto.NameQuantPurchasesCustomerDTO;
 import com.SunnyGadgetsProject.SunnyGadgets_v1.dto.SaleCreateDTO;
 import com.SunnyGadgetsProject.SunnyGadgets_v1.dto.SaleResponseDTO;
 import com.SunnyGadgetsProject.SunnyGadgets_v1.entity.Sale;
