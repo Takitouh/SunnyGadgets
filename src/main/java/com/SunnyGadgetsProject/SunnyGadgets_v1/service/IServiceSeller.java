@@ -13,4 +13,7 @@ public interface IServiceSeller {
     SellerResponseDTO updateSeller(SellerCreateDTO seller, Long id);
     void deleteSeller(Long id);
 
+    //Methods for use query's of repository
+    List<NameTotalSalarySeller> getSellersTotalSalary();
+
 }

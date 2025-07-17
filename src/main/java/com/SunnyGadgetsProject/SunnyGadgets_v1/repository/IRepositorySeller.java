@@ -6,4 +6,8 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface IRepositorySeller extends JpaRepository<Seller, Long> {
+    //Query's
+    @Query(value = "SELECT e.name, e.salary+s.commission AS salary FROM sellers s INNER JOIN employes e ON e.id_employee = s.id_seller"
+            , nativeQuery = true)
+    List<NameTotalSalarySeller> getSellersTotalSalary();
 }

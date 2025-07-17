@@ -100,4 +100,9 @@ public class ServiceSeller implements IServiceSeller {
         logger.info("Seller deleted: {}", sellerOptional.get());
         repositorySeller.deleteById(id);
     }
+
+    @Override
+    public List<NameTotalSalarySeller> getSellersTotalSalary() {
+        return repositorySeller.getSellersTotalSalary();
+    }
 }

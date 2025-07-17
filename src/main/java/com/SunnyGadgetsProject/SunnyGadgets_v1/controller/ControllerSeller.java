@@ -61,5 +61,11 @@ public class ControllerSeller {
     public ResponseEntity<SellerResponseDTO> updateSeller(@RequestBody SellerCreateDTO seller, @PathVariable Long id) {
         return ResponseEntity.ok(serviceSeller.updateSeller(seller, id));
     }
+
+    @GetMapping("/get/salaries")
+    @PreAuthorize("hasAuthority('READ')")
+    public ResponseEntity<List<NameTotalSalarySeller>> getAllTotalSalarySellers() {
+        return ResponseEntity.ok(serviceSeller.getSellersTotalSalary());
+    }
 }
 
