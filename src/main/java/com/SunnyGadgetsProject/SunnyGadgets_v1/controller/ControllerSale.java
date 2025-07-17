@@ -60,4 +60,16 @@ public class ControllerSale {
     public ResponseEntity<SaleResponseDTO> updateSale(@RequestBody SaleCreateDTO sale, @PathVariable Long id) {
         return ResponseEntity.ok(serviceSale.updateSale(sale, id));
     }
+
+    @GetMapping("/total")
+    @PreAuthorize("hasAuthority('READ')")
+    public ResponseEntity<Long> getTotalSold() {
+        return ResponseEntity.ok(serviceSale.totalSold());
+    }
+
+    @GetMapping("/Npurchasesofcustomers")
+    @PreAuthorize("hasAuthority('READ')")
+    public ResponseEntity<List<NameQuantPurchasesCustomerDTO>> getAllSalesOfCustomers() {
+        return ResponseEntity.ok(serviceSale.getCustomersByPurchases());
+    }
 }

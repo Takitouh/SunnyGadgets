@@ -157,6 +157,16 @@ public class ServiceSale implements IServiceSale {
         repositorySale.deleteById(id);
     }
 
+    @Override
+    public Long totalSold() {
+        return repositorySale.totalSales();
+    }
+
+    @Override
+    public List<NameQuantPurchasesCustomerDTO> getCustomersByPurchases() {
+        return repositorySale.findCustomersByPurchases();
+    }
+
     public Sale processSale(SaleCreateDTO sale) {
         Sale saleEntity = saleMapper.toEntity(sale);
         //Variables for get the objects relationated with our sale
