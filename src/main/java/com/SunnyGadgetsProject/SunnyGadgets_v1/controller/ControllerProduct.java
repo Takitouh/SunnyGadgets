@@ -67,5 +67,11 @@ public class ControllerProduct {
         return ResponseEntity.ok(serviceProduct.findProductsByPrice(price));
     }
 
+    @GetMapping("/find-productbycategory/{category}")
+    @PreAuthorize("hasAuthority('READ')")
+    public ResponseEntity<List<NameDescriptionPriceProductDTO>> findProductsByCategory(@PathVariable String category) {
+        return ResponseEntity.ok(serviceProduct.findProductsByCategory(category));
+    }
+
 }
 

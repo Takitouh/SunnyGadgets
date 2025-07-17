@@ -15,4 +15,5 @@ public interface IServiceProduct {
 
     //Query's
     List<NameDescriptionPriceProductDTO> findProductsByPrice(long price);
+    List<NameDescriptionPriceProductDTO> findProductsByCategory(String category);
 }

@@ -115,5 +115,10 @@ public class ServiceProduct implements IServiceProduct {
         return repositoryProduct.findByPriceGreaterThanEqual(price);
     }
 
+    @Override
+    public List<NameDescriptionPriceProductDTO> findProductsByCategory(String category) {
+       return repositoryProduct.findByCategory(category);
+    }
+
 
 }
