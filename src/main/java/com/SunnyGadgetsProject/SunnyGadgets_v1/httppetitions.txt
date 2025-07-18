@@ -28,10 +28,10 @@ POST (create batch):
 PUT (update):
   URL: http://localhost:8080/api/v1/category/update/{id}
   JSON Body:
-  {
-    "name": "Updated Electronics",
-    "description": "Updated description for electronic products"
-  }
+{
+    "name": "Electronics updated",
+    "description": "Description updated"
+}
 
 DELETE (remove):
   URL: http://localhost:8080/api/v1/category/delete/{id}
@@ -47,17 +47,13 @@ GET (all):
 POST (create):
   URL: http://localhost:8080/api/v1/product/create
   JSON Body:
-  {
-    "name": "Laptop",
-    "description": "High-end laptop",
-    "price": 1500,
-    "stock": 10,
-    "category": {
-      "id_category": 1,
-      "name": "Electronics",
-      "description": "Modern electronic products"
-    }
-  }
+      {
+        "name": "Keyboard updated",
+        "description": "Description Keyboard updated",
+        "price": 3500,
+        "stock": 35,
+        "idCategory": 1
+      }
 
   POST (create batch):
     URL: http://localhost:8080/api/v1/product/createBatch
@@ -68,42 +64,42 @@ POST (create):
         "description": "Intel i7, 16GB RAM, RTX 3060, 1TB SSD",
         "price": 1800,
         "stock": 8,
-        "category": { "id_category": 1 }
+        "idCategory": 1
       },
       {
         "name": "Mechanical Keyboard",
         "description": "RGB backlit, blue switches",
         "price": 120,
         "stock": 25,
-        "category": { "id_category": 2 }
+        "idCategory": 2
       },
       {
         "name": "Smartphone",
         "description": "6.7-inch OLED, 128GB, dual SIM",
         "price": 900,
         "stock": 15,
-        "category": { "id_category": 3 }
+        "idCategory" : 3
       },
       {
         "name": "Noise-Canceling Headphones",
         "description": "Wireless over-ear with 30-hour battery life",
         "price": 250,
         "stock": 10,
-        "category": { "id_category": 4 }
+        "idCategory":  4
       },
       {
         "name": "2TB External Hard Drive",
         "description": "USB 3.1 portable drive",
         "price": 130,
         "stock": 20,
-        "category": { "id_category": 5 }
+        "idCategory": 5
       },
       {
         "name": "Wi-Fi 6 Router",
         "description": "Dual-band gigabit wireless router",
         "price": 110,
         "stock": 18,
-        "category": { "id_category": 6 }
+        "idCategory": 6
       }
     ]
 
@@ -111,17 +107,13 @@ POST (create):
 PUT (update):
   URL: http://localhost:8080/api/v1/product/update/{id}
   JSON Body:
-  {
-    "name": "Updated Laptop",
-    "description": "Updated high-end laptop",
-    "price": 1400,
-    "stock": 8,
-    "category": {
-      "id_category": 1,
-      "name": "Electronics",
-      "description": "Modern electronic products"
-    }
-  }
+      {
+        "name": "Gaming laptop updated",
+        "description": "laptop updated with put method",
+        "price": 2000,
+        "stock": 10,
+        "idCategory": 2
+      }
 
 DELETE (remove):
   URL: http://localhost:8080/api/v1/product/delete/{id}
@@ -137,81 +129,67 @@ GET (all):
 POST (create):
   URL: http://localhost:8080/api/v1/provider/create
   JSON Body:
-  {
-    "salary": 3500,
-    "name": "Juan Perez",
-    "email": "juan.perez@example.com",
-    "phone": "1234567890",
-    "productSet": [
-      {
-        "name": "Laptop lenovo",
-        "description": "High-end laptop",
-        "price": 1500,
-        "stock": 10
-      },
-      {
-        "name": "Smartphone",
-        "description": "Modern smartphone",
-        "price": 800,
-        "stock": 15
-      }
-    ]
-  }
+    {
+        "salary": 2100000,
+        "phoneNumber": "3154868594",
+        "name": "Sofia mesa",
+        "email": "sofiamesa@example.com",
+        "company": "AMD",
+        "existentProductsIds": [
+            2, 1
+        ]
+    }
 
   POST (create batch):
     URL: http://localhost:8080/api/v1/provider/createBatch
     JSON Body:
 
-    [
-      {
+[
+    {
         "salary": 2100000,
+        "phoneNumber": "3154868594",
+        "name": "Sofia mesa",
+        "email": "sofiamesa@example.com",
+        "company": "AMD",
+        "existentProductsIds": [
+            2, 1
+        ]
+    },
+    {
+        "salary": 2100000,
+        "phoneNumber": "3154268474",
+        "name": "Fabricio Gaviria",
+        "email": "fabricioga@example.com",
+        "company": "Nvidia",
+        "existentProductsIds": [
+            3
+        ]
+    },
+    {
+        "salary": 2100000,
+        "phoneNumber": "3154268594",
         "name": "Juan Perez",
-        "email": "juan.perez@example.com",
-        "phone": "1234567890",
-        "productSet": [
-          {
-            "name": "Mouse RGB",
-            "description": "Mouse gamer with RGB and different level's of DPI",
-            "price": 45000,
-            "stock": 18,
-            "category": { "id_category": 5 }
-          },
-          {
-            "name": "Smartphone",
-            "description": "Modern smartphone",
-            "price": 800000,
-            "stock": 12,
-            "category": { "id_category": 5 }
-          }
+        "email": "juan.perz@example.com",
+        "company": "Nvidia",
+        "existentProductsIds": [
+            4
         ]
-      },
-      {
-        "salary": 1980000,
-        "name": "Mariana López",
-        "email": "mariana.lopez@example.com",
-        "phone": "3147852963",
-        "productSet": [
-          { "id_product": 1 },
-          { "id_product": 4 }
-        ]
-      }
+    }
+]
 
 PUT (update):
   URL: http://localhost:8080/api/v1/provider/update/{id}
   JSON Body:
-  {
-    "salary": 3600,
-    "name": "Juan Perez Updated",
-    "email": "juan.updated@example.com",
-    "phone": "1234567890",
-    "productSet": [
-                "name": "Updated Mouse RGB",
-                "description": "Updated mouse gamer with RGB and different level's of DPI",
-                "price": 49000,
-                "stock": 11,
-                "category": { "id_category": 5 }
-    ]
-  }
+    {
+        "salary": 5100000,
+        "phoneNumber": "4154868594",
+        "name": "Sofia silla",
+        "email": "sofiasilla@example.com",
+        "company": "AMD",
+        "existentProductsIds": [
+            4, 1
+        ]
+    }
 
 DELETE (remove):
   URL: http://localhost:8080/api/v1/provider/delete/{id}
@@ -224,8 +202,6 @@ GET (single):
 GET (all):
   URL: http://localhost:8080/api/v1/employee/get
 
-
-
 DELETE (remove):
   URL: http://localhost:8080/api/v1/employee/delete/{id}
 
@@ -237,20 +213,6 @@ GET (single):
 GET (all):
   URL: http://localhost:8080/api/v1/detailsale/get
 
-
-
-PUT (update):
-  URL: http://localhost:8080/api/v1/detailsale/update/{id}
-  JSON Body:
-  {
-    "quantity": 4,
-    "unitPrice": 180
-  }
-
-DELETE (remove):
-  URL: http://localhost:8080/api/v1/detailsale/delete/{id}
-
-
 --- Sale ---
 GET (single):
   URL: http://localhost:8080/api/v1/sale/get/{id}
@@ -261,42 +223,80 @@ GET (all):
 POST (create):
   URL: http://localhost:8080/api/v1/sale/create
   JSON Body:
-  {
-    "customer" : {
-      "id_customer" : 1
-    },
-    "seller": {
-      "id_employee": 1
-    },
-    "listdetailSale" : [
+{
+    "idCustomer": 4,
+    "idSeller": 6,
+    "listdetailSale": [
         {
-            "quantity" : 1,
-            "product" : {
-            "id_product" : 1
-            }
+            "quantity": 10,
+            "product": 3
         }
     ]
-  }
+}
+
+  POST (create batch):
+    URL: http://localhost:8080/api/v1/sale/createBatch
+    JSON Body:
+    [
+        {
+            "idCustomer": 1,
+            "idSeller": 1,
+            "listdetailSale": [
+                {
+                    "quantity": 1,
+                    "product": 1
+                }
+            ]
+        },
+        {
+            "idCustomer": 2,
+            "idSeller": 2,
+            "listdetailSale": [
+                {
+                    "quantity": 3,
+                    "product": 3
+                }
+            ]
+        },
+        {
+            "idCustomer": 3,
+            "idSeller": 3,
+            "listdetailSale": [
+                {
+                    "quantity": 2,
+                    "product": 5
+                },
+                {
+                    "quantity": 3,
+                    "product": 4
+                }
+            ]
+        },
+        {
+            "idCustomer": 4,
+            "idSeller": 4,
+            "listdetailSale": [
+                {
+                    "quantity": 4,
+                    "product": 6
+                }
+            ]
+        }
+    ]
 
 PUT (update):
   URL: http://localhost:8080/api/v1/sale/update/{id}
   JSON Body:
-  {
-    "customer" : {
-      "id_customer" : 2
-    },
-    "seller": {
-      "id_employee": 2
-    },
-    "listdetailSale" : [
+{
+    "idCustomer": 1,
+    "idSeller": 2,
+    "listdetailSale": [
         {
-            "quantity" : 2,
-            "product" : {
-            "id_product" : 3
-            }
+            "quantity": 2,
+            "product": 3
         }
     ]
-  }
+}
 
 DELETE (remove):
   URL: http://localhost:8080/api/v1/sale/delete/{id}
@@ -313,21 +313,191 @@ POST (create):
   URL: http://localhost:8080/api/v1/seller/create
   JSON Body:
   {
-    "salary": 3000,
-    "name": "Carlos Ruiz",
-    "email": "carlos.ruiz@example.com",
-    "phone": "1122334455"
+    "salary": 2000000,
+    "name": "Camilo Salazar",
+    "email": "Camilosalazar@example.com",
+    "phone": "3145621562"
   }
+
+    POST (create batch):
+      URL: http://localhost:8080/api/v1/seller/createBatch
+
+  [
+    {
+      "salary": 1700000,
+      "name": "Carlos Ruiz",
+      "email": "carlos.ruiz@example.com",
+      "phoneNumber": "1122334455"
+    },
+    {
+      "salary": 1950000,
+      "name": "Lucía Herrera",
+      "email": "lucia.herrera@example.com",
+      "phoneNumber": "3157896541"
+    },
+    {
+      "salary": 1825000,
+      "name": "Manuel Torres",
+      "email": "manuel.torres@example.com",
+      "phoneNumber": "3007412589"
+    },
+    {
+      "salary": 2100000,
+      "name": "Daniela Pérez",
+      "email": "daniela.perez@example.com",
+      "phoneNumber": "3216549870"
+    },
+    {
+      "salary": 1770000,
+      "name": "Felipe Mendoza",
+      "email": "felipe.mendoza@example.com",
+      "phoneNumber": "3112233445"
+    },
+    {
+      "salary": 2000000,
+      "name": "Sofía Ríos",
+      "email": "sofia.rios@example.com",
+      "phoneNumber": "3124567890"
+    }
+  ]
 
 PUT (update):
   URL: http://localhost:8080/api/v1/seller/update/{id}
   JSON Body:
-  {
-    "salary": 3200,
-    "name": "Carlos Ruiz Updated",
-    "email": "carlos.ruiz.updated@example.com",
-    "phone": "1122334455"
-  }
+    {
+        "name": "Sofía Mares",
+        "phoneNumber": "8984567890",
+        "salary": 1000000,
+        "commission": 20000
+    }
 
 DELETE (remove):
   URL: http://localhost:8080/api/v1/seller/delete/{id}
+
+  --Security
+
+  -> [Permissions]
+
+  GET (ALL)
+
+  http://localhost:8080/api/v1/permissions/get
+
+  POST (CREATE)
+
+  http://localhost:8080/api/v1/permissions/create
+
+  JSON BODY:
+
+  {
+      "permissionName": "READ"
+  }
+
+  POST (CREATE BATCH)
+
+  http://localhost:8080/api/v1/permissions/createBatch
+
+  JSON BODY:
+  [
+      {
+      "permissionName": "CREATE"
+      },
+      {
+      "permissionName": "READ"
+      },
+      {
+      "permissionName": "UPDATE"
+      },
+      {
+      "permissionName": "DELETE"
+      }
+  ]
+
+  UPDATED (PUT)
+
+  http://localhost:8080/api/v1/permissions/update/{id}
+
+  JSON BODY:
+  {
+      "permissionName": "CREATE"
+  }
+
+  -> [ROLES]
+
+  GET (ALL)
+
+  http://localhost:8080/api/v1/roles/get
+
+  POST (CREATE)
+  http://localhost:8080/api/v1/roles/create
+
+  JSON BODY:
+  {
+      "role": "ADMIN",
+      "permissionsIds": [1,2,3,4]
+  }
+
+  POST (CREATE BATCH)
+
+  http://localhost:8080/api/v1/roles/createBatch
+
+  JSON BODY:
+  [
+      {
+      "role": "MANAGER",
+      "permissionsIds": [3,4]
+      },
+      {
+      "role": "USER",
+      "permissionsIds": [1]
+  }
+  ]
+
+  UPDATE (PUT)
+
+  http://localhost:8080/api/v1/roles/update/{id}
+
+  JSON BODY:
+  {
+      "role": "USERUPDATED",
+      "permissionsIds": [1,2]
+  }
+
+  DELETE
+
+  http://localhost:8080/api/v1/roles/delete/{id}
+
+  -> [USERS]
+
+  GET (ALL)
+
+  http://localhost:8080/api/v1/usersec/get
+
+  POST (CREATE)
+
+  JSON BODY:
+
+{
+    "username": "Jhon",
+    "password": "123",
+    "enabled": true,
+    "accountNotExpired": true,
+    "accountNotLocked": true,
+    "credentialsNotExpired": true,
+    "existingRolesIds": [1]
+}
+
+UPDATE (PUT)
+
+http://localhost:8080/api/v1/usersec/update/{id}
+
+JSON BODY:
+{
+    "username": "PruebaActualizada",
+    "password": "lincy",
+    "enabled": true,
+    "accountNotExpired": true,
+    "accountNotLocked": true,
+    "credentialsNotExpired": true,
+    "existingRolesIds": [1]
+}
+
