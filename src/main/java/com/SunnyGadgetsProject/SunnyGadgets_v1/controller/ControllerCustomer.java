@@ -67,4 +67,10 @@ public class ControllerCustomer {
     public ResponseEntity<List<NameCustomerDTO>> getAllCustomersByAge(@PathVariable Integer age) {
         return ResponseEntity.ok(serviceCustomer.findCustomersByAgeGreaterThanEqual(age));
     }
+
+    @GetMapping("/find-purchases/{id}")
+    @PreAuthorize("hasAuthority('READ')")
+    public ResponseEntity<List<SaleResponseDTO>> getPurchaseCustomers(@PathVariable Long id) {
+        return ResponseEntity.ok(serviceCustomer.findPurchaseCustomers(id));
+    }
 }

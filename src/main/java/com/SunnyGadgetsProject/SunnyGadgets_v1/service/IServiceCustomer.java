@@ -15,4 +15,5 @@ public interface IServiceCustomer {
     void deleteCustomer(Long id);
     //Query's
     List<NameCustomerDTO> findCustomersByAgeGreaterThanEqual(Integer age);
+    List<SaleResponseDTO> findPurchaseCustomers(Long id);
 }

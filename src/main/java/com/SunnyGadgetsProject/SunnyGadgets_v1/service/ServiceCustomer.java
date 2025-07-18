@@ -115,4 +115,16 @@ public class ServiceCustomer implements IServiceCustomer {
         }
         return repositoryCustomer.findCustomersByAgeGreaterThanEqual(age);
     }
+
+    @Override
+    public List<SaleResponseDTO> findPurchaseCustomers(Long id) {
+        List<SaleResponseDTO> purchasesCustomer = new ArrayList<>();
+        for(Sale s : repositoryCustomer.findPurchaseCustomers(id)){
+           purchasesCustomer.add(saleMapper.toDto(s));
+        }
+        if (purchasesCustomer.isEmpty()) {
+            throw new EntityNotFoundException("No purchases found for customer with id " + id);
+        }
+        return purchasesCustomer;
+    }
 }
