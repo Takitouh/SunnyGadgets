@@ -37,7 +37,7 @@ public class ServiceDetailSale implements IServiceDetailSale {
             detailSaleResponseDTOS.add(detailSaleMapper.toDto(ds));
         }
         if (detailSaleResponseDTOS.isEmpty()) {
-            throw new EntityNotFoundException("No detail sales found"); //Excepcion Not Found
+            throw new EntityNotFoundException("No detail sales found"); //Exception Not Found
         }
         logger.info("Retrieving detailSale list");
         return detailSaleResponseDTOS;
