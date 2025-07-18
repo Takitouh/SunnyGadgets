@@ -1,10 +1,10 @@
 package com.SunnyGadgetsProject.SunnyGadgets_v1.service;
 
-import com.SunnyGadgetsProject.SunnyGadgets_v1.dto.CustomerCreateDTO;
-import com.SunnyGadgetsProject.SunnyGadgets_v1.dto.CustomerResponseDTO;
-import com.SunnyGadgetsProject.SunnyGadgets_v1.dto.NameCustomerDTO;
+import com.SunnyGadgetsProject.SunnyGadgets_v1.dto.*;
 import com.SunnyGadgetsProject.SunnyGadgets_v1.entity.Customer;
+import com.SunnyGadgetsProject.SunnyGadgets_v1.entity.Sale;
 import com.SunnyGadgetsProject.SunnyGadgets_v1.mapper.CustomerMapper;
+import com.SunnyGadgetsProject.SunnyGadgets_v1.mapper.SaleMapper;
 import com.SunnyGadgetsProject.SunnyGadgets_v1.repository.IRepositoryCustomer;
 import jakarta.persistence.EntityNotFoundException;
 import org.slf4j.Logger;
@@ -22,12 +22,13 @@ public class ServiceCustomer implements IServiceCustomer {
     private static final Logger logger = LoggerFactory.getLogger(ServiceCustomer.class);
     private final IRepositoryCustomer repositoryCustomer;
     private final CustomerMapper customerMapper;
+    private final SaleMapper saleMapper;
 
-    // Inyección de dependencias por constructor
 
-    public ServiceCustomer(IRepositoryCustomer repositoryCustomer, CustomerMapper customerMapper) {
+    public ServiceCustomer(IRepositoryCustomer repositoryCustomer, CustomerMapper customerMapper, SaleMapper saleMapper) {
         this.repositoryCustomer = repositoryCustomer;
         this.customerMapper = customerMapper;
+        this.saleMapper = saleMapper;
     }
 
     @Override
