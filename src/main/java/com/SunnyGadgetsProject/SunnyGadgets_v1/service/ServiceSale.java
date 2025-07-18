@@ -7,6 +7,9 @@ import com.SunnyGadgetsProject.SunnyGadgets_v1.repository.*;
 import jakarta.persistence.EntityNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -46,7 +49,6 @@ public class ServiceSale implements IServiceSale {
     @Override
     public List<SaleResponseDTO> createSale(List<SaleCreateDTO> sales) {
         List<SaleResponseDTO> responseDTOs = new ArrayList<>();
-        DetailSale readdetailSale;
         List<DetailSale> listdetailSale;
         for (SaleCreateDTO s : sales) {
             listdetailSale = new ArrayList<>();
@@ -70,15 +72,15 @@ public class ServiceSale implements IServiceSale {
     }
 
     @Override
-    public List<SaleResponseDTO> allSales() {
+    public Page<SaleResponseDTO> allSales(Pageable pageable) {
         List<SaleResponseDTO> sales = new ArrayList<>();
-        for (Sale s : repositorySale.findAll()) {
+        for (Sale s : repositorySale.findAll(pageable)) {
             sales.add(saleMapper.toDto(s));
         }
         if (sales.isEmpty()) {
             throw new EntityNotFoundException("No sales found"); //Exception Not Found
         }
-        return sales;
+        return new PageImpl<>(sales);
     }
 
     @Override

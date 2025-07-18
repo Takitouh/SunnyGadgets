@@ -10,7 +10,7 @@ public interface IServiceSale {
     SaleResponseDTO createSale(SaleCreateDTO sale);
     List<SaleResponseDTO> createSale(List<SaleCreateDTO> sales);
     SaleResponseDTO getSaleById(Long id);
-    List<SaleResponseDTO> allSales();
+    Page<SaleResponseDTO> allSales(Pageable pageable);
     SaleResponseDTO updateSale(SaleCreateDTO sale, Long id);
     void deleteSale(Long id);
 

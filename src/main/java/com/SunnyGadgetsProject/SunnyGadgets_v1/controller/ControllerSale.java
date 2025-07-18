@@ -33,8 +33,9 @@ public class ControllerSale {
 
     @GetMapping("/get")
     @PreAuthorize("hasAuthority('READ')")
-    public ResponseEntity<List<SaleResponseDTO>> getAllSales() {
-        return ResponseEntity.ok(serviceSale.allSales());
+    public ResponseEntity<Page<SaleResponseDTO>> getAllSales(@PageableDefault(size = 3, sort = "idSale", direction = Sort.Direction.ASC)
+                                                                 Pageable pageable) {
+        return ResponseEntity.ok(serviceSale.allSales(pageable));
     }
 
     @PostMapping("/create")
