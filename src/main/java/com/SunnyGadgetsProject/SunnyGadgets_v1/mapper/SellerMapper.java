@@ -19,7 +19,8 @@ public abstract class SellerMapper {
     @Mapping(target = "idEmployee", ignore = true)
     @Mapping(target = "createdAt", ignore = true)
     @Mapping(target = "updatedAt", ignore = true)
-    public abstract Seller toEntity(SellerCreateDTO dto);
+    @Mapping(target = "sales", ignore = true)
+    Seller toEntity(SellerCreateDTO dto);
 
     // Entity → ResponseDTO
     @Mapping(target = "idSeller", source = "idEmployee")
