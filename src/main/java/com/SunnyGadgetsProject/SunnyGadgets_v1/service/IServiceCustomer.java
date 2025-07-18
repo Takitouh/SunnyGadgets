@@ -3,6 +3,7 @@ package com.SunnyGadgetsProject.SunnyGadgets_v1.service;
 import com.SunnyGadgetsProject.SunnyGadgets_v1.dto.CustomerCreateDTO;
 import com.SunnyGadgetsProject.SunnyGadgets_v1.dto.CustomerResponseDTO;
 import com.SunnyGadgetsProject.SunnyGadgets_v1.dto.NameCustomerDTO;
+import com.SunnyGadgetsProject.SunnyGadgets_v1.dto.SaleResponseDTO;
 
 import java.util.List;
 

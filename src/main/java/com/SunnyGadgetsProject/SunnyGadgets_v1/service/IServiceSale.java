@@ -3,6 +3,8 @@ package com.SunnyGadgetsProject.SunnyGadgets_v1.service;
 import com.SunnyGadgetsProject.SunnyGadgets_v1.dto.NameQuantPurchasesCustomerDTO;
 import com.SunnyGadgetsProject.SunnyGadgets_v1.dto.SaleCreateDTO;
 import com.SunnyGadgetsProject.SunnyGadgets_v1.dto.SaleResponseDTO;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
