@@ -17,7 +17,6 @@ public interface CustomerMapper {
     Customer toEntity(CustomerCreateDTO dto);
 
     // Entity → ResponseDTO
-    //@Mapping(target = "sales", ignore = true)
     CustomerResponseDTO toDto(Customer customer);
 
 }
