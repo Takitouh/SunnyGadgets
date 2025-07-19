@@ -27,7 +27,7 @@ public class UserDetailsServiceImp implements UserDetailsService {
         //tenemos User sec y necesitamos devolver UserDetails
         //traemos el usuario de la bd
         UserSec userSec = userRepo.findUserEntityByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException("El usuario " + username + "no fue encontrado"));
+                .orElseThrow(() -> new UsernameNotFoundException("The user " + username + " was not found"));
 
         //con GrantedAuthority Spring Security maneja permisos
         List<GrantedAuthority> authorityList = new ArrayList<>();
