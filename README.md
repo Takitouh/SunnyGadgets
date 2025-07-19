@@ -1,2 +1,2 @@
 # SunnyGadgets
-Project of a tech store using Spring Boot and Spring Security
+Project based in a tech store to practice handling RESTFUL API and securing them
