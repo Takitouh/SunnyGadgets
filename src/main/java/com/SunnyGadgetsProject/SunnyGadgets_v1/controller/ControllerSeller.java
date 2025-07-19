@@ -2,6 +2,7 @@ package com.SunnyGadgetsProject.SunnyGadgets_v1.controller;
 
 
 import com.SunnyGadgetsProject.SunnyGadgets_v1.dto.NameTotalSalarySeller;
+import com.SunnyGadgetsProject.SunnyGadgets_v1.dto.SaleResponseDTO;
 import com.SunnyGadgetsProject.SunnyGadgets_v1.dto.SellerCreateDTO;
 import com.SunnyGadgetsProject.SunnyGadgets_v1.dto.SellerResponseDTO;
 import com.SunnyGadgetsProject.SunnyGadgets_v1.entity.Seller;
@@ -67,6 +68,12 @@ public class ControllerSeller {
     @PreAuthorize("hasAuthority('READ')")
     public ResponseEntity<List<NameTotalSalarySeller>> getAllTotalSalarySellers() {
         return ResponseEntity.ok(serviceSeller.getSellersTotalSalary());
+    }
+
+    @GetMapping("/find-sales/{id}")
+    @PreAuthorize("hasAuthority('READ')")
+    public ResponseEntity<List<SaleResponseDTO>> getSalesSeller(@PathVariable Long id) {
+        return ResponseEntity.ok(serviceSeller.findSalesSeller(id));
     }
 }
 

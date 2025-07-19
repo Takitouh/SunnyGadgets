@@ -1,6 +1,7 @@
 package com.SunnyGadgetsProject.SunnyGadgets_v1.service;
 
 import com.SunnyGadgetsProject.SunnyGadgets_v1.dto.NameTotalSalarySeller;
+import com.SunnyGadgetsProject.SunnyGadgets_v1.dto.SaleResponseDTO;
 import com.SunnyGadgetsProject.SunnyGadgets_v1.dto.SellerCreateDTO;
 import com.SunnyGadgetsProject.SunnyGadgets_v1.dto.SellerResponseDTO;
 
@@ -17,4 +18,5 @@ public interface IServiceSeller {
     //Methods for use query's of repository
     List<NameTotalSalarySeller> getSellersTotalSalary();
 
+    List<SaleResponseDTO> findSalesSeller(Long id);
 }
