@@ -85,65 +85,26 @@ public class ServiceSale implements IServiceSale {
 
     @Override
     public SaleResponseDTO updateSale(SaleCreateDTO sale, Long id) {
-        Sale saleEntity = repositorySale.findById(id).orElseThrow(EntityNotFoundException::new);
+        Sale saleEntity = repositorySale.findById(id).orElseThrow(() -> new EntityNotFoundException("Sale with id " + id + " not found"));
         //Variables for get the objects relationated with our sale
-        Optional<Customer> optionalCustomer = repositoryCustomer.findById(sale.getIdCustomer());
-        Optional<Seller> optionalSeller = repositorySeller.findById(sale.getIdSeller());
-        //Two Set<> for recover all the sales of Customer and Seller
-        //We recover the Sale's that could have the seller or customer
-        Set<Sale> salesCustomer = optionalCustomer.map(Customer::getPurchases).orElse(new HashSet<>());
-        Set<Sale> salesSeller = optionalSeller.map(Seller::getSales).orElse(new HashSet<>());
+        Seller seller = repositorySeller.findById(sale.getIdSeller()).orElseThrow(() -> new EntityNotFoundException("Seller with id " + sale.getIdSeller() + " not found"));
 
-        if (optionalCustomer.isEmpty()) {
-            throw new RuntimeException("Customer not found");
-        } else if (optionalSeller.isEmpty()) {
-            throw new RuntimeException("Seller not found");
+        Sale sEntity = saleMapper.toEntity(sale);
+        //Create two List<DetailSale> one for the new details sale and the other one for the old
+        List<DetailSale> newDetailSales = calculateTotal(sEntity.getListdetailSale(), saleEntity, seller);
+        List<DetailSale> oldDetailSales = saleEntity.getListdetailSale();
+        //We assign the new values of new detail sales to old details sale
+        for (int i = 0; i < sEntity.getListdetailSale().size(); i++) {
+            oldDetailSales.get(i).setSale(newDetailSales.get(i).getSale());
+            oldDetailSales.get(i).setSubtotal(newDetailSales.get(i).getSubtotal());
+            oldDetailSales.get(i).setUnitPrice(newDetailSales.get(i).getUnitPrice());
+            oldDetailSales.get(i).setQuantity(newDetailSales.get(i).getQuantity());
+            oldDetailSales.get(i).setProduct(newDetailSales.get(i).getProduct());
         }
-        //List<> to iterate across the DetailSale of the sale and calculate the total, subtotal, establish the other
-        //attributes of detailsale
-        List<DetailSale> auxlistdetailSale = new ArrayList<>();
-        DetailSale auxdetailSale;
-        long total = 0;
-        long auxsubtotal;
-
-        for (DetailSaleCreateDTO ds : sale.getListdetailSale()) {
-            for (DetailSale dsE : saleEntity.getListdetailSale()) {
-                auxdetailSale = repositoryDetailSale.findById(dsE.getId_detailsale()).orElseThrow(EntityNotFoundException::new);
-                Optional<Product> optionalProduct = repositoryProduct.findById(ds.getProduct());
-                if (optionalProduct.isEmpty()) {
-                    throw new RuntimeException("Product not found");
-                }
-                //Calculate the subtotal with the unit price and the quantity
-                auxsubtotal = optionalProduct.get().getPrice() * ds.getQuantity();
-                //We set the values for the items of the list detail sale
-                auxdetailSale.setUnitPrice(optionalProduct.get().getPrice());
-                auxdetailSale.setSubtotal(auxsubtotal);
-                auxdetailSale.setProduct(optionalProduct.get());
-                auxdetailSale.setQuantity(ds.getQuantity());
-                auxdetailSale.setSale(saleEntity);
-                //Add all the items to other list
-                auxlistdetailSale.add(auxdetailSale);
-                //Sum the total
-                total += auxdetailSale.getSubtotal();
-            }
-        }
-        /*
-        Parece que esta funcionando bien, lo unico seria hacer una refactorizacion luego para mejorar la calidad de codigo
-         */
-        //Add the new sale and establish the corresponding Set<Sale> to Customer and Seller
-        salesCustomer.add(saleEntity);
-        salesSeller.add(saleEntity);
-        optionalCustomer.get().setPurchases(salesCustomer);
-        optionalSeller.get().setSales(salesSeller);
-        //All sellers will receive 1% of comission of all sales
-        optionalSeller.get().setCommission((long) (total*0.1));
-        //And assignate this new list to sale, also assignate the customer and total
-        saleEntity.setListdetailSale(auxlistdetailSale);
-        saleEntity.setCustomer(optionalCustomer.get());
-        //Update the customer with its new purchase
-        //repositoryCustomer.save(optionalCustomer.get());
-        saleEntity.setSeller(optionalSeller.get());
-        saleEntity.setTotal(total);
+        //Assign List<>, Customer and Seller
+        saleEntity.setListdetailSale(oldDetailSales);
+        saleEntity.setCustomer(sEntity.getCustomer());
+        saleEntity.setSeller(sEntity.getSeller());
         repositorySale.save(saleEntity);
         logger.info("Sale updated: {}", sale);
         return saleMapper.toDto(saleEntity);
