@@ -37,7 +37,7 @@ public class ControllerSale {
 
     @GetMapping("/get")
     @PreAuthorize("hasAuthority('READ')")
-    public ResponseEntity<Page<SaleResponseDTO>> getAllSales(@PageableDefault(size = 3, sort = "idSale", direction = Sort.Direction.ASC)
+    public ResponseEntity<Page<SaleResponseDTO>> getAllSales(@PageableDefault(size = 5, sort = "idSale", direction = Sort.Direction.ASC)
                                                                  Pageable pageable) {
         return ResponseEntity.ok(serviceSale.allSales(pageable));
     }
