@@ -48,7 +48,7 @@ public class ControllerPermission {
         return new ResponseEntity<>(permissionService.createPermission(permission), HttpStatus.CREATED);
     }
 
-    @DeleteMapping("/delete")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<Permission> deletePermission(@PathVariable Long id) {
         servicePermission.deletePermission(id);
         return ResponseEntity.noContent().build();

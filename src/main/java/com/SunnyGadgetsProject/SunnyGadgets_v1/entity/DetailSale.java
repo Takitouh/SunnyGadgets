@@ -12,8 +12,8 @@ import lombok.*;
 public class DetailSale {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id_detailsale;
-    private int quantity;
+    private Long idDetailSale;
+    private Integer quantity;
 
     private long unitPrice;
 
