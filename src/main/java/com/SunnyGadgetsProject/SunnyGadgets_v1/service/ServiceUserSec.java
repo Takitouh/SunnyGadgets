@@ -45,12 +45,9 @@ public class ServiceUserSec implements IServiceUserSec{
     }
 
     @Override
-    public UserSecResponseDTO createUser(UserSecCreateDTO userSec) {
-
-        if (userSec.getExistingRolesIds().isEmpty()) {
-            throw new EntityNotFoundException("The user must have at least one role");
-        }
-        //Set<Role> roleList = userSec.getNewRoles().isEmpty() ? new HashSet<>() : roleMapper.toDto(userSec.getNewRoles());
+    public UserSecResponseDTO createUser(UserSecCreateDTO userSecDTO) {
+        
+        UserSec user = userMapper.toEntity(userSecDTO);
 
         userSec.setPassword(encryptPassword(userSec.getPassword()));
 
