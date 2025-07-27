@@ -1,8 +1,6 @@
 package com.SunnyGadgetsProject.SunnyGadgets_v1.service;
 
-import com.SunnyGadgetsProject.SunnyGadgets_v1.dto.NameDescriptionPriceProductDTO;
-import com.SunnyGadgetsProject.SunnyGadgets_v1.dto.ProductCreateDTO;
-import com.SunnyGadgetsProject.SunnyGadgets_v1.dto.ProductResponseDTO;
+import com.SunnyGadgetsProject.SunnyGadgets_v1.dto.*;
 
 import java.util.List;
 
@@ -11,7 +9,8 @@ public interface IServiceProduct {
     List<ProductResponseDTO> createProduct(List<ProductCreateDTO> products);
     ProductResponseDTO getProductById(Long id);
     List<ProductResponseDTO> allProducts();
-    ProductResponseDTO updateProduct(ProductCreateDTO product, Long id);
+    ProductResponseDTO updateProduct(ProductPutDTO product, Long id);
+    ProductResponseDTO updateProduct(ProductPatchDTO product, Long id);
     void deleteProduct(Long id);
 
     //Query's

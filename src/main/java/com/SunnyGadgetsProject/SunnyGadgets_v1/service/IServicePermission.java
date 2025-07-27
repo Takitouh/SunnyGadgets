@@ -1,6 +1,8 @@
 package com.SunnyGadgetsProject.SunnyGadgets_v1.service;
 
 import com.SunnyGadgetsProject.SunnyGadgets_v1.dto.PermissionCreateDTO;
+import com.SunnyGadgetsProject.SunnyGadgets_v1.dto.PermissionPatchDTO;
+import com.SunnyGadgetsProject.SunnyGadgets_v1.dto.PermissionPutDTO;
 import com.SunnyGadgetsProject.SunnyGadgets_v1.dto.PermissionResponseDTO;
 
 import java.util.List;
@@ -11,7 +13,8 @@ public interface IServicePermission {
     PermissionResponseDTO getPermissionById(Long id);
     PermissionResponseDTO createPermission(PermissionCreateDTO permission);
     List<PermissionResponseDTO> createPermission(Set<PermissionCreateDTO> permission);
-    PermissionResponseDTO updatePermission(PermissionCreateDTO permission, Long id);
+    PermissionResponseDTO updatePermission(PermissionPutDTO permission, Long id);
+    PermissionResponseDTO updatePermission(PermissionPatchDTO permission, Long id);
     void deletePermission(Long id);
 
 }
