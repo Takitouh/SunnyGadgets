@@ -9,8 +9,10 @@ import java.util.Set;
 @Getter
 @Setter
 @NoArgsConstructor
-@DiscriminatorValue(value = "PROVIDER")
-@PrimaryKeyJoinColumn(name = "idProvider")
+@AttributeOverride(
+        name  = "idEmployee",
+        column = @Column(name = "idProvider")
+)
 @Table(name = "providers")
 
 public class Provider extends Employee {
