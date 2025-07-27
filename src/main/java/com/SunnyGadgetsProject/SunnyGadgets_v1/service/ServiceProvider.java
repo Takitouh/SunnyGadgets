@@ -41,14 +41,14 @@ public class ServiceProvider implements IServiceProvider {
     @Override
     public List<ProviderResponseDTO> createProvider(List<ProviderCreateDTO> providers) {
         List<ProviderResponseDTO> responses = new ArrayList<>();
-        for (ProviderCreateDTO provider : providers) {
-            if (provider.getExistentProductsIds().isEmpty()) {
-                throw new EntityNotFoundException("The provider must have at least one product");
-            }
-            Provider providerEntity = providerMapper.toEntity(provider);
-            repositoryProvider.save(providerEntity);
-            responses.add(providerMapper.toDto(providerEntity));
-            logger.info("List of providers created: {}", provider);
+        List<Provider> providers = new ArrayList<>();
+        for (ProviderCreateDTO providerCreateDTO : providerCreateDTOS) {
+            Provider providerEntity = providerMapper.toEntity(providerCreateDTO);
+            providers.add(providerEntity);
+        }
+        repositoryProvider.saveAll(providers);
+        for (Provider pr : providers) {
+            responses.add(providerMapper.toDto(pr));
         }
         return responses;
     }
