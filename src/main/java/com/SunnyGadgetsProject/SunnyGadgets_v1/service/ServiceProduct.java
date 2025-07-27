@@ -45,8 +45,15 @@ public class ServiceProduct implements IServiceProduct {
     public List<ProductResponseDTO> createProduct(List<ProductCreateDTO> products) {
         List<Product> productList = new ArrayList<>();
         List<ProductResponseDTO> productDTOList = new ArrayList<>();
-        for (ProductCreateDTO pro : products) {
-            productList.add(productMapper.toEntity(pro));
+        Product product;
+        for (ProductCreateDTO pro : productCreateDTOS) {
+            product = productMapper.toEntity(pro);
+            for(Provider provider : product.getSetProviders()){
+                Set<Product> products = provider.getProductSet();
+                products.add(product);
+                provider.setProductSet(products);
+            }
+            productList.add(product);
         }
         repositoryProduct.saveAll(productList);
         for (Product pro : productList) {
