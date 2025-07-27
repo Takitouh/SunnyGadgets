@@ -8,8 +8,10 @@ import java.util.Set;
 @Entity @Getter
 @Setter
 @NoArgsConstructor
-@DiscriminatorValue(value = "SELLER")
-@PrimaryKeyJoinColumn(name = "idSeller")
+@AttributeOverride(
+        name  = "idEmployee",
+        column = @Column(name = "idSeller")
+)
 @Table(name = "sellers")
 
 public class Seller extends Employee {
