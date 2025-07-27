@@ -1,10 +1,7 @@
 package com.SunnyGadgetsProject.SunnyGadgets_v1.controller;
 
 
-import com.SunnyGadgetsProject.SunnyGadgets_v1.dto.NameTotalSalarySeller;
-import com.SunnyGadgetsProject.SunnyGadgets_v1.dto.SaleResponseDTO;
-import com.SunnyGadgetsProject.SunnyGadgets_v1.dto.SellerCreateDTO;
-import com.SunnyGadgetsProject.SunnyGadgets_v1.dto.SellerResponseDTO;
+import com.SunnyGadgetsProject.SunnyGadgets_v1.dto.*;
 import com.SunnyGadgetsProject.SunnyGadgets_v1.entity.Seller;
 import com.SunnyGadgetsProject.SunnyGadgets_v1.service.IServiceSeller;
 import org.springframework.http.HttpStatus;
@@ -58,9 +55,15 @@ public class ControllerSeller {
         return ResponseEntity.noContent().build();
     }
 
-    @PutMapping("/update/{id}")
+    @PutMapping("/put/{id}")
     @PreAuthorize("hasAuthority('UPDATE')")
-    public ResponseEntity<SellerResponseDTO> updateSeller(@RequestBody SellerCreateDTO seller, @PathVariable Long id) {
+    public ResponseEntity<SellerResponseDTO> updateSeller(@RequestBody SellerPutDTO seller, @PathVariable Long id) {
+        return ResponseEntity.ok(serviceSeller.updateSeller(seller, id));
+    }
+
+    @PatchMapping("/patch/{id}")
+    @PreAuthorize("hasAuthority('UPDATE')")
+    public ResponseEntity<SellerResponseDTO> updateSeller(@RequestBody SellerPatchDTO seller, @PathVariable Long id) {
         return ResponseEntity.ok(serviceSeller.updateSeller(seller, id));
     }
 

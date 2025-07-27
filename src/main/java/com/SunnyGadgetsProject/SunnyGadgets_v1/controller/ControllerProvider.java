@@ -1,8 +1,6 @@
 package com.SunnyGadgetsProject.SunnyGadgets_v1.controller;
 
-import com.SunnyGadgetsProject.SunnyGadgets_v1.dto.NameTotalSalarySeller;
-import com.SunnyGadgetsProject.SunnyGadgets_v1.dto.ProviderCreateDTO;
-import com.SunnyGadgetsProject.SunnyGadgets_v1.dto.ProviderResponseDTO;
+import com.SunnyGadgetsProject.SunnyGadgets_v1.dto.*;
 import com.SunnyGadgetsProject.SunnyGadgets_v1.entity.Provider;
 import com.SunnyGadgetsProject.SunnyGadgets_v1.service.IServiceProvider;
 import org.springframework.http.HttpStatus;
@@ -56,9 +54,15 @@ public class ControllerProvider {
         return ResponseEntity.noContent().build();
     }
 
-    @PutMapping("/update/{id}")
+    @PutMapping("/put/{id}")
     @PreAuthorize("hasAuthority('UPDATE')")
-    public ResponseEntity<ProviderResponseDTO> updateProvider(@RequestBody ProviderCreateDTO provider, @PathVariable Long id) {
+    public ResponseEntity<ProviderResponseDTO> updateProvider(@RequestBody ProviderPutDTO provider, @PathVariable Long id) {
+        return ResponseEntity.ok(serviceProvider.updateProvider(provider, id));
+    }
+
+    @PatchMapping("/patch/{id}")
+    @PreAuthorize("hasAuthority('UPDATE')")
+    public ResponseEntity<ProviderResponseDTO> updateProvider(@RequestBody ProviderPatchDTO provider, @PathVariable Long id) {
         return ResponseEntity.ok(serviceProvider.updateProvider(provider, id));
     }
 

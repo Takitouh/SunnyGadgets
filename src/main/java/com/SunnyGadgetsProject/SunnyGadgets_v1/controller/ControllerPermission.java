@@ -2,6 +2,8 @@ package com.SunnyGadgetsProject.SunnyGadgets_v1.controller;
 
 
 import com.SunnyGadgetsProject.SunnyGadgets_v1.dto.PermissionCreateDTO;
+import com.SunnyGadgetsProject.SunnyGadgets_v1.dto.PermissionPatchDTO;
+import com.SunnyGadgetsProject.SunnyGadgets_v1.dto.PermissionPutDTO;
 import com.SunnyGadgetsProject.SunnyGadgets_v1.dto.PermissionResponseDTO;
 import com.SunnyGadgetsProject.SunnyGadgets_v1.entity.Permission;
 import com.SunnyGadgetsProject.SunnyGadgets_v1.service.IServicePermission;
@@ -52,8 +54,13 @@ public class ControllerPermission {
         return ResponseEntity.noContent().build();
     }
 
-    @PutMapping("/update/{id}")
-    public ResponseEntity<PermissionResponseDTO> updatePermission(@PathVariable Long id, @RequestBody PermissionCreateDTO permission) {
+    @PutMapping("/put/{id}")
+    public ResponseEntity<PermissionResponseDTO> updatePermission(@PathVariable Long id, @RequestBody PermissionPutDTO permission) {
+        return ResponseEntity.ok(servicePermission.updatePermission(permission, id));
+    }
+
+    @PatchMapping("/patch/{id}")
+    public ResponseEntity<PermissionResponseDTO> updatePermission(@PathVariable Long id, @RequestBody PermissionPatchDTO permission) {
         return ResponseEntity.ok(servicePermission.updatePermission(permission, id));
     }
 }

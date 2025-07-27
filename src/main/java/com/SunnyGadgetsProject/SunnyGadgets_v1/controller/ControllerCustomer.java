@@ -1,9 +1,6 @@
 package com.SunnyGadgetsProject.SunnyGadgets_v1.controller;
 
-import com.SunnyGadgetsProject.SunnyGadgets_v1.dto.CustomerCreateDTO;
-import com.SunnyGadgetsProject.SunnyGadgets_v1.dto.CustomerResponseDTO;
-import com.SunnyGadgetsProject.SunnyGadgets_v1.dto.NameCustomerDTO;
-import com.SunnyGadgetsProject.SunnyGadgets_v1.dto.SaleResponseDTO;
+import com.SunnyGadgetsProject.SunnyGadgets_v1.dto.*;
 import com.SunnyGadgetsProject.SunnyGadgets_v1.service.IServiceCustomer;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -57,9 +54,15 @@ public class ControllerCustomer {
         return ResponseEntity.noContent().build();
     }
 
-    @PutMapping("/update/{id}")
+    @PutMapping("/put/{id}")
     @PreAuthorize("hasAuthority('UPDATE')")
-    public ResponseEntity<CustomerResponseDTO> updateCustomer(@RequestBody CustomerCreateDTO customer, @PathVariable Long id) {
+    public ResponseEntity<CustomerResponseDTO> updateCustomer(@RequestBody CustomerPutDTO customer, @PathVariable Long id) {
+        return ResponseEntity.ok(serviceCustomer.updateCustomer(customer, id));
+    }
+
+    @PatchMapping("/patch/{id}")
+    @PreAuthorize("hasAuthority('UPDATE')")
+    public ResponseEntity<CustomerResponseDTO> updateCustomer(@RequestBody CustomerPatchDTO customer, @PathVariable Long id) {
         return ResponseEntity.ok(serviceCustomer.updateCustomer(customer, id));
     }
 

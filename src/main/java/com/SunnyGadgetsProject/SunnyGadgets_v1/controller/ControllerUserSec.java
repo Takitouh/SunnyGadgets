@@ -1,6 +1,8 @@
 package com.SunnyGadgetsProject.SunnyGadgets_v1.controller;
 
 import com.SunnyGadgetsProject.SunnyGadgets_v1.dto.UserSecCreateDTO;
+import com.SunnyGadgetsProject.SunnyGadgets_v1.dto.UserSecPatchDTO;
+import com.SunnyGadgetsProject.SunnyGadgets_v1.dto.UserSecPutDTO;
 import com.SunnyGadgetsProject.SunnyGadgets_v1.dto.UserSecResponseDTO;
 import com.SunnyGadgetsProject.SunnyGadgets_v1.service.IServiceUserSec;
 import org.springframework.http.HttpStatus;
@@ -35,8 +37,13 @@ public class ControllerUserSec {
 
     }
 
-    @PutMapping("/update/{id}")
-    public ResponseEntity<UserSecResponseDTO> updateUser(@PathVariable Long id, @RequestBody UserSecCreateDTO userSec) {
+    @PutMapping("/put/{id}")
+    public ResponseEntity<UserSecResponseDTO> updateUser(@PathVariable Long id, @RequestBody UserSecPutDTO userSec) {
+        return ResponseEntity.ok(userService.updateUser(userSec, id));
+    }
+
+    @PatchMapping("/patch/{id}")
+    public ResponseEntity<UserSecResponseDTO> updateUser(@PathVariable Long id, @RequestBody UserSecPatchDTO userSec) {
         return ResponseEntity.ok(userService.updateUser(userSec, id));
     }
 

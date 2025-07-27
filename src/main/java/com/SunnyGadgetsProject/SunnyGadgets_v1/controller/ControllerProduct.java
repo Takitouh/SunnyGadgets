@@ -1,9 +1,7 @@
 package com.SunnyGadgetsProject.SunnyGadgets_v1.controller;
 
 
-import com.SunnyGadgetsProject.SunnyGadgets_v1.dto.NameDescriptionPriceProductDTO;
-import com.SunnyGadgetsProject.SunnyGadgets_v1.dto.ProductCreateDTO;
-import com.SunnyGadgetsProject.SunnyGadgets_v1.dto.ProductResponseDTO;
+import com.SunnyGadgetsProject.SunnyGadgets_v1.dto.*;
 import com.SunnyGadgetsProject.SunnyGadgets_v1.entity.Product;
 import com.SunnyGadgetsProject.SunnyGadgets_v1.service.IServiceProduct;
 import org.springframework.http.HttpStatus;
@@ -56,9 +54,15 @@ public class ControllerProduct {
         return ResponseEntity.noContent().build();
     }
 
-    @PutMapping("/update/{id}")
+    @PutMapping("/put/{id}")
     @PreAuthorize("hasAuthority('UPDATE')")
-    public ResponseEntity<ProductResponseDTO> updateProduct(@RequestBody ProductCreateDTO product, @PathVariable Long id) {
+    public ResponseEntity<ProductResponseDTO> updateProduct(@RequestBody ProductPutDTO product, @PathVariable Long id) {
+        return ResponseEntity.ok(serviceProduct.updateProduct(product, id));
+    }
+
+    @PatchMapping("/patch/{id}")
+    @PreAuthorize("hasAuthority('UPDATE')")
+    public ResponseEntity<ProductResponseDTO> updateProduct(@RequestBody ProductPatchDTO product, @PathVariable Long id) {
         return ResponseEntity.ok(serviceProduct.updateProduct(product, id));
     }
 

@@ -1,8 +1,6 @@
 package com.SunnyGadgetsProject.SunnyGadgets_v1.controller;
 
-import com.SunnyGadgetsProject.SunnyGadgets_v1.dto.NameQuantPurchasesCustomerDTO;
-import com.SunnyGadgetsProject.SunnyGadgets_v1.dto.SaleCreateDTO;
-import com.SunnyGadgetsProject.SunnyGadgets_v1.dto.SaleResponseDTO;
+import com.SunnyGadgetsProject.SunnyGadgets_v1.dto.*;
 import com.SunnyGadgetsProject.SunnyGadgets_v1.entity.Sale;
 import com.SunnyGadgetsProject.SunnyGadgets_v1.service.IServiceSale;
 import org.springframework.data.domain.Page;
@@ -61,9 +59,15 @@ public class ControllerSale {
         return ResponseEntity.noContent().build();
     }
 
-    @PutMapping("/update/{id}")
+    @PutMapping("/put/{id}")
     @PreAuthorize("hasAuthority('UPDATE')")
-    public ResponseEntity<SaleResponseDTO> updateSale(@RequestBody SaleCreateDTO sale, @PathVariable Long id) {
+    public ResponseEntity<SaleResponseDTO> updateSale(@RequestBody SalePutDTO sale, @PathVariable Long id) {
+        return ResponseEntity.ok(serviceSale.updateSale(sale, id));
+    }
+
+    @PatchMapping("/patch/{id}")
+    @PreAuthorize("hasAuthority('UPDATE')")
+    public ResponseEntity<SaleResponseDTO> updateSale(@RequestBody SalePatchDTO sale, @PathVariable Long id) {
         return ResponseEntity.ok(serviceSale.updateSale(sale, id));
     }
 

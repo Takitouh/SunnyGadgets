@@ -2,6 +2,8 @@ package com.SunnyGadgetsProject.SunnyGadgets_v1.controller;
 
 
 import com.SunnyGadgetsProject.SunnyGadgets_v1.dto.CategoryCreateDTO;
+import com.SunnyGadgetsProject.SunnyGadgets_v1.dto.CategoryPatchDTO;
+import com.SunnyGadgetsProject.SunnyGadgets_v1.dto.CategoryPutDTO;
 import com.SunnyGadgetsProject.SunnyGadgets_v1.dto.CategoryResponseDTO;
 import com.SunnyGadgetsProject.SunnyGadgets_v1.service.IServiceCategory;
 import org.springframework.http.HttpStatus;
@@ -54,9 +56,15 @@ public class ControllerCategory {
         return ResponseEntity.noContent().build();
     }
 
-    @PutMapping("/update/{id}")
+    @PutMapping("/put/{id}")
     @PreAuthorize("hasAuthority('UPDATE')")
-    public ResponseEntity<CategoryResponseDTO> updateCategory(@RequestBody CategoryCreateDTO category, @PathVariable Long id) {
+    public ResponseEntity<CategoryResponseDTO> updateCategory(@RequestBody CategoryPutDTO category, @PathVariable Long id) {
+        return ResponseEntity.ok(serviceCategory.updateCategory(category, id));
+    }
+
+    @PatchMapping("/patch/{id}")
+    @PreAuthorize("hasAuthority('UPDATE')")
+    public ResponseEntity<CategoryResponseDTO> updateCategory(@RequestBody CategoryPatchDTO category, @PathVariable Long id) {
         return ResponseEntity.ok(serviceCategory.updateCategory(category, id));
     }
 }

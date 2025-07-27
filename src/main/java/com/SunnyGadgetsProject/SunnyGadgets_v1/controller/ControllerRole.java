@@ -1,6 +1,8 @@
 package com.SunnyGadgetsProject.SunnyGadgets_v1.controller;
 
 import com.SunnyGadgetsProject.SunnyGadgets_v1.dto.RoleCreateDTO;
+import com.SunnyGadgetsProject.SunnyGadgets_v1.dto.RolePatchDTO;
+import com.SunnyGadgetsProject.SunnyGadgets_v1.dto.RolePutDTO;
 import com.SunnyGadgetsProject.SunnyGadgets_v1.dto.RoleResponseDTO;
 import com.SunnyGadgetsProject.SunnyGadgets_v1.service.IServiceRole;
 import org.springframework.http.HttpStatus;
@@ -39,8 +41,12 @@ public class ControllerRole {
     public ResponseEntity<List<RoleResponseDTO>> createRole(@RequestBody Set<RoleCreateDTO> role) {
         return ResponseEntity.ok(roleService.createRole(role));
     }
-    @PutMapping("/update/{id}")
-    public ResponseEntity<RoleResponseDTO> updateRole(@PathVariable Long id, @RequestBody RoleCreateDTO role) {
+    @PutMapping("/put/{id}")
+    public ResponseEntity<RoleResponseDTO> updateRole(@PathVariable Long id, @RequestBody RolePutDTO role) {
+        return ResponseEntity.ok(roleService.updateRole(role, id));
+    }
+    @PatchMapping("/patch/{id}")
+    public ResponseEntity<RoleResponseDTO> updateRole(@PathVariable Long id, @RequestBody RolePatchDTO role) {
         return ResponseEntity.ok(roleService.updateRole(role, id));
     }
     @DeleteMapping("/delete/{id}")
