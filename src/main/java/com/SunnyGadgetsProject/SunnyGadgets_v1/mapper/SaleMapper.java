@@ -1,8 +1,6 @@
 package com.SunnyGadgetsProject.SunnyGadgets_v1.mapper;
 
-import com.SunnyGadgetsProject.SunnyGadgets_v1.dto.DetailSaleCreateDTO;
-import com.SunnyGadgetsProject.SunnyGadgets_v1.dto.SaleCreateDTO;
-import com.SunnyGadgetsProject.SunnyGadgets_v1.dto.SaleResponseDTO;
+import com.SunnyGadgetsProject.SunnyGadgets_v1.dto.*;
 import com.SunnyGadgetsProject.SunnyGadgets_v1.entity.Customer;
 import com.SunnyGadgetsProject.SunnyGadgets_v1.entity.DetailSale;
 import com.SunnyGadgetsProject.SunnyGadgets_v1.entity.Sale;
@@ -16,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Mapper(componentModel = "spring", uses = {DetailSaleMapper.class})
 
@@ -28,10 +27,25 @@ public abstract class SaleMapper {
 
     @Autowired
     protected IRepositoryProduct repositoryProduct;
+    //PatchDTO -> Entity
+    @Mapping(target = "idSale", ignore = true)
+    @Mapping(target = "salecreatedAt", ignore = true)
+    @Mapping(target = "total", ignore = true)
+    @Mapping(target = "customer", source = "idCustomer")
+    @Mapping(target = "seller", source = "idSeller")
 
+    public abstract Sale toEntity(SalePatchDTO dto);
+    // PutDTO -> Entity
+    @Mapping(target = "idSale", ignore = true)
+    @Mapping(target = "salecreatedAt", ignore = true)
+    @Mapping(target = "total", ignore = true)
+    @Mapping(target = "customer", source = "idCustomer")
+    @Mapping(target = "seller", source = "idSeller")
+    public abstract Sale toEntity(SalePutDTO dto);
     // CreateDTO → Entity
     @Mapping(target = "idSale", ignore = true)
     @Mapping(target = "salecreatedAt", ignore = true)
+    @Mapping(target = "total", ignore = true)
     @Mapping(target = "customer", source = "idCustomer")
     @Mapping(target = "seller", source = "idSeller")
     public abstract Sale toEntity(SaleCreateDTO dto);
@@ -44,7 +58,19 @@ public abstract class SaleMapper {
     //method to find the customer by id
     @SuppressWarnings("unused")
     public  Customer toFindCustomerById(Long id){
+
         return repositoryCustomer.findById(id).orElseThrow(()->new RuntimeException("Customer not found"));
+    }
+
+    //method to find the seller by id
+    @SuppressWarnings("unused")
+    public Seller toFindOptionalSellerById(Optional<Long> id){
+        return id.map(aLong -> repositorySeller.findById(aLong).orElseThrow(() -> new RuntimeException("Seller not found"))).orElse(null);
+    }
+    //method to find the customer by id
+    @SuppressWarnings("unused")
+    public  Customer toFindOptionalCustomerById(Optional<Long> id){
+        return id.map(aLong -> repositoryCustomer.findById(aLong).orElseThrow(() -> new RuntimeException("Customer not found"))).orElse(null);
     }
 
     //method to find the seller by id
@@ -76,8 +102,8 @@ public abstract class SaleMapper {
 
         for ( DetailSaleCreateDTO detailSaleCreateDTO : detailsaleCreateDTO ) {
             detailSaleEntity = new DetailSale();
-            detailSaleEntity.setProduct(repositoryProduct.findById(detailSaleCreateDTO.getProduct()).orElseThrow(()->new RuntimeException("Product not found")));
-            detailSaleEntity.setQuantity(detailSaleCreateDTO.getQuantity());
+            detailSaleEntity.setProduct(repositoryProduct.findById(detailSaleCreateDTO.product()).orElseThrow(()->new RuntimeException("Product not found")));
+            detailSaleEntity.setQuantity(detailSaleCreateDTO.quantity());
             detailSale.add(detailSaleEntity);
         }
 

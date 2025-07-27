@@ -1,6 +1,8 @@
 package com.SunnyGadgetsProject.SunnyGadgets_v1.mapper;
 
 import com.SunnyGadgetsProject.SunnyGadgets_v1.dto.UserSecCreateDTO;
+import com.SunnyGadgetsProject.SunnyGadgets_v1.dto.UserSecPatchDTO;
+import com.SunnyGadgetsProject.SunnyGadgets_v1.dto.UserSecPutDTO;
 import com.SunnyGadgetsProject.SunnyGadgets_v1.dto.UserSecResponseDTO;
 import com.SunnyGadgetsProject.SunnyGadgets_v1.entity.Role;
 import com.SunnyGadgetsProject.SunnyGadgets_v1.entity.UserSec;
@@ -17,14 +19,20 @@ public abstract class UserMapper {
 
     @Autowired
     protected IRepositoryRole repositoryRole;
-
+    // PatchDTO -> Entity
+    @Mapping(target = "roles", source = "existingRolesIds")
+    @Mapping(target = "idUser", ignore = true)
+    public abstract UserSec toEntity(UserSecPatchDTO dto);
+    // PutDTO -> Entity
+    @Mapping(target = "roles", source = "existingRolesIds")
+    @Mapping(target = "idUser", ignore = true)
+    public abstract UserSec toEntity(UserSecPutDTO dto);
     // CreateDTO → Entity
     @Mapping(target = "roles", source = "existingRolesIds")
     @Mapping(target = "idUser", ignore = true)
     public abstract UserSec toEntity(UserSecCreateDTO dto);
 
     // Entity → ResponseDTO
-    @Mapping(target = "idUser", source = "idUser")
     public abstract UserSecResponseDTO toDto(UserSec userSec);
     @SuppressWarnings("unused")
     protected Set<Role> mapRoles(Set<Long> ids) {
