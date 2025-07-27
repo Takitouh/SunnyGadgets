@@ -22,8 +22,7 @@ public class Product {
     //@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Category category;
 
-    @ManyToMany(mappedBy = "productSet")
-    //@JsonIgnore
+    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST}, mappedBy = "productSet")
     private Set<Provider> setProviders;
 
 }
