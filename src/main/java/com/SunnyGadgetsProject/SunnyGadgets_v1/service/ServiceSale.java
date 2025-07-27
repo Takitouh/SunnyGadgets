@@ -80,17 +80,30 @@ public class ServiceSale implements IServiceSale {
     }
 
     @Override
-    public SaleResponseDTO updateSale(SaleCreateDTO sale, Long id) {
-        Sale saleEntity = repositorySale.findById(id).orElseThrow(() -> new EntityNotFoundException("Sale with id " + id + " not found"));
+    public SaleResponseDTO updateSale(SalePutDTO salePutDTO, Long id) {
+        Sale oldSale = repositorySale.findById(id).orElseThrow(() -> new EntityNotFoundException("Sale with id " + id + " not found"));
         //Variables for get the objects associated with our sale
-        Seller seller = repositorySeller.findById(sale.getIdSeller()).orElseThrow(() -> new EntityNotFoundException("Seller with id " + sale.getIdSeller() + " not found"));
+        Seller seller = repositorySeller.findById(salePutDTO.idSeller()).orElseThrow(() -> new EntityNotFoundException("Seller with id " + salePutDTO.idSeller() + " not found"));
 
-        Sale sEntity = saleMapper.toEntity(sale);
+        Sale newSale = saleMapper.toEntity(salePutDTO);
         //Create two List<DetailSale> one for the new details sale and the other one for the old
-        List<DetailSale> newDetailSales = calculateTotal(sEntity.getListdetailSale(), saleEntity, seller);
-        List<DetailSale> oldDetailSales = saleEntity.getListdetailSale();
+        List<DetailSale> newDetailSales = calculateTotal(newSale.getListdetailSale(), oldSale, seller);
+        List<DetailSale> oldDetailSales = oldSale.getListdetailSale();
+        Seller oldSeller = oldSale.getSeller();
+        oldSeller.setCommission((long) (oldSeller.getCommission() - (oldSale.getTotal() * 0.1)));
+        repositorySeller.save(oldSeller);
+
+        if (newDetailSales.size() != oldDetailSales.size())
+            throw new RuntimeException("There is a mismatch with the size of new detail sale and the old detail sale");
+        Product oldProduct;
+        for (int i = 0; i < newDetailSales.size(); i++) {
+            newDetailSales.get(i).setSale(oldDetailSales.get(i).getSale());
+            //Here we restore the previous stock
+            oldProduct = oldDetailSales.get(i).getProduct();
+            oldProduct.setStock(oldProduct.getStock() + oldDetailSales.get(i).getQuantity());
+        }
         //We assign the new values of new detail sales to old details sale
-        for (int i = 0; i < sEntity.getListdetailSale().size(); i++) {
+        for (int i = 0; i < newSale.getListdetailSale().size(); i++) {
             oldDetailSales.get(i).setSale(newDetailSales.get(i).getSale());
             oldDetailSales.get(i).setSubtotal(newDetailSales.get(i).getSubtotal());
             oldDetailSales.get(i).setUnitPrice(newDetailSales.get(i).getUnitPrice());
@@ -98,12 +111,62 @@ public class ServiceSale implements IServiceSale {
             oldDetailSales.get(i).setProduct(newDetailSales.get(i).getProduct());
         }
         //Assign List<>, Customer and Seller
-        saleEntity.setListdetailSale(oldDetailSales);
-        saleEntity.setCustomer(sEntity.getCustomer());
-        saleEntity.setSeller(sEntity.getSeller());
-        repositorySale.save(saleEntity);
-        logger.info("Sale updated: {}", sale);
-        return saleMapper.toDto(saleEntity);
+        oldSale.setListdetailSale(oldDetailSales);
+        oldSale.setCustomer(newSale.getCustomer());
+        oldSale.setSeller(newSale.getSeller());
+        repositorySale.save(oldSale);
+        logger.info("Sale updated with PUT: {}", salePutDTO);
+        return saleMapper.toDto(oldSale);
+    }
+
+    @Override
+    public SaleResponseDTO updateSale(SalePatchDTO salePatchDTO, Long id) {
+        Sale oldSale = repositorySale.findById(id).orElseThrow(() -> new EntityNotFoundException("Sale with id " + id + " not found"));
+        //Variables for get the objects associated with our sale
+        Seller seller = salePatchDTO.idSeller().isEmpty() ? oldSale.getSeller() : repositorySeller.findById(salePatchDTO.idSeller().get()).orElseThrow(EntityNotFoundException::new);
+
+        Sale newSale = saleMapper.toEntity(salePatchDTO);
+        List<DetailSale> oldDetailSales = oldSale.getListdetailSale();
+
+        Seller oldSeller = oldSale.getSeller();
+        oldSeller.setCommission((long) (oldSeller.getCommission() - (oldSale.getTotal() * 0.1)));
+        repositorySeller.save(oldSeller);
+
+        if (!newSale.getListdetailSale().isEmpty()) {
+            //Create two List<DetailSale> one for the new details sale and the other one for the old
+            List<DetailSale> newDetailSales = newSale.getListdetailSale();
+            if (newDetailSales.size() != oldDetailSales.size())
+                throw new RuntimeException("There is a mismatch with the size of new detail sale and the old detail sale");
+            Product oldProduct;
+            for (int i = 0; i < newDetailSales.size(); i++) {
+                newDetailSales.get(i).setSale(oldDetailSales.get(i).getSale());
+                //Here we restore the previous stock
+                oldProduct = oldDetailSales.get(i).getProduct();
+                oldProduct.setStock(oldProduct.getStock() + oldDetailSales.get(i).getQuantity());
+
+                newDetailSales.get(i).setQuantity(newDetailSales.get(i).getQuantity() == null ? oldDetailSales.get(i).getQuantity() : newDetailSales.get(i).getQuantity());
+                newDetailSales.get(i).setProduct(newDetailSales.get(i).getProduct() == null ? oldDetailSales.get(i).getProduct() : newDetailSales.get(i).getProduct());
+            }
+
+            newDetailSales = calculateTotal(newSale.getListdetailSale(), oldSale, seller);
+            //We assign the new values of new detail sales to old details sale
+            for (int i = 0; i < newSale.getListdetailSale().size(); i++) {
+                oldDetailSales.get(i).setSale(newDetailSales.get(i).getSale());
+                oldDetailSales.get(i).setSubtotal(newDetailSales.get(i).getSubtotal());
+                oldDetailSales.get(i).setUnitPrice(newDetailSales.get(i).getUnitPrice());
+                oldDetailSales.get(i).setQuantity(newDetailSales.get(i).getQuantity());
+                oldDetailSales.get(i).setProduct(newDetailSales.get(i).getProduct());
+            }
+        }
+        //Hay un problema con el stock cuando se actualiza y es que se necesita que se revierta el stock, es decir si cambia el stock se debe volver a agregar lo viejo y se resta el stock nuevo
+
+        //Assign List<>, Customer and Seller
+        oldSale.setListdetailSale(oldDetailSales);
+        oldSale.setCustomer(newSale.getCustomer() == null ? oldSale.getCustomer() : newSale.getCustomer());
+        oldSale.setSeller(newSale.getSeller() == null ? oldSale.getSeller() : newSale.getSeller());
+        repositorySale.save(oldSale);
+        logger.info("Sale updated with PATCH: {}", salePatchDTO);
+        return saleMapper.toDto(oldSale);
     }
 
     @Override
@@ -132,7 +195,7 @@ public class ServiceSale implements IServiceSale {
         Sale saleEntity = saleMapper.toEntity(sale);
 
         //Variables for handle customer and seller associated with the sale
-        Seller seller = repositorySeller.findById(sale.getIdSeller()).orElseThrow(() -> new EntityNotFoundException("Seller with id " + sale.getIdSeller() + " not found"));
+        Seller seller = repositorySeller.findById(sale.idSeller()).orElseThrow(() -> new EntityNotFoundException("Seller with id " + sale.idSeller() + " not found"));
 
         List<DetailSale> detailSale = calculateTotal(saleEntity.getListdetailSale(), saleEntity, seller);
 
@@ -145,7 +208,7 @@ public class ServiceSale implements IServiceSale {
         //List<> to iterate across the DetailSale of the sale and calculate the total, subtotal, establish the other
         //attributes of detailsale
         List<DetailSale> auxlistdetailSale = new ArrayList<>();
-        long commission = seller.getCommission();
+        long commission = seller.getCommission() == null? 0 : seller.getCommission();
         long total = 0;
         long auxsubtotal;
 
@@ -153,6 +216,10 @@ public class ServiceSale implements IServiceSale {
             //Find product according to ID of detail sale
             Product optionalProduct = repositoryProduct.findById(ds.getProduct().getIdProduct())
                     .orElseThrow(() -> new EntityNotFoundException("Product with id " + ds.getProduct().getIdProduct() + " not found"));
+            if (optionalProduct.getStock() < ds.getQuantity()) {
+                throw new RuntimeException("The product " + optionalProduct.getName() + " has not enough stock");
+            }
+            optionalProduct.setStock(optionalProduct.getStock() - ds.getQuantity());
             //Calculate the subtotal with the unit price and the quantity
             auxsubtotal = optionalProduct.getPrice() * ds.getQuantity();
             //Now set the values

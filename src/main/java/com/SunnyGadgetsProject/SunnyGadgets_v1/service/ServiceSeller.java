@@ -1,9 +1,6 @@
 package com.SunnyGadgetsProject.SunnyGadgets_v1.service;
 
-import com.SunnyGadgetsProject.SunnyGadgets_v1.dto.NameTotalSalarySeller;
-import com.SunnyGadgetsProject.SunnyGadgets_v1.dto.SaleResponseDTO;
-import com.SunnyGadgetsProject.SunnyGadgets_v1.dto.SellerCreateDTO;
-import com.SunnyGadgetsProject.SunnyGadgets_v1.dto.SellerResponseDTO;
+import com.SunnyGadgetsProject.SunnyGadgets_v1.dto.*;
 import com.SunnyGadgetsProject.SunnyGadgets_v1.entity.Sale;
 import com.SunnyGadgetsProject.SunnyGadgets_v1.entity.Seller;
 import com.SunnyGadgetsProject.SunnyGadgets_v1.mapper.SaleMapper;
@@ -80,21 +77,35 @@ public class ServiceSeller implements IServiceSeller {
     }
 
     @Override
-    public SellerResponseDTO updateSeller(SellerCreateDTO seller, Long id) {
-        Optional<Seller> sellerOptional = repositorySeller.findById(id);
-        if (sellerOptional.isEmpty()) {
-            throw new EntityNotFoundException("Seller with ID " + id + " not found"); //Exception not found
-        }
-        Seller s = sellerMapper.toEntity(seller);
-        sellerOptional.get().setName(s.getName());
-        sellerOptional.get().setPhoneNumber(s.getPhoneNumber());
-        sellerOptional.get().setSales(s.getSales());
-        sellerOptional.get().setSalary(s.getSalary());
-        sellerOptional.get().setCommission(s.getCommission());
+    public SellerResponseDTO updateSeller(SellerPutDTO sellerPutDTO, Long id) {
+        Seller oldSeller = repositorySeller.findById(id).orElseThrow(() -> new EntityNotFoundException("Seller with id " + id + " not found"));
 
-        repositorySeller.save(sellerOptional.get());
-        logger.info("Seller updated: {}", seller);
-        return sellerMapper.toDto(sellerOptional.get());
+        Seller newSeller = sellerMapper.toEntity(sellerPutDTO);
+        oldSeller.setName(newSeller.getName());
+        oldSeller.setPhoneNumber(newSeller.getPhoneNumber());
+        oldSeller.setSales(newSeller.getSales());
+        oldSeller.setSalary(newSeller.getSalary());
+        oldSeller.setCommission(newSeller.getCommission());
+
+        repositorySeller.save(oldSeller);
+        logger.info("Seller updated with PUT: {}", sellerPutDTO);
+        return sellerMapper.toDto(oldSeller);
+    }
+
+    @Override
+    public SellerResponseDTO updateSeller(SellerPatchDTO sellerPatchDTO, Long id) {
+        Seller oldSeller = repositorySeller.findById(id).orElseThrow(() -> new EntityNotFoundException("Seller with id " + id + " not found"));
+
+        Seller newSeller = sellerMapper.toEntity(sellerPatchDTO);
+        oldSeller.setName(newSeller.getName() == null || newSeller.getName().isEmpty()? oldSeller.getName() : newSeller.getName());
+        oldSeller.setPhoneNumber(newSeller.getPhoneNumber() == null || newSeller.getPhoneNumber().isEmpty()? oldSeller.getPhoneNumber() : newSeller.getPhoneNumber());
+        oldSeller.setSales(newSeller.getSales() == null || newSeller.getSales().isEmpty()? oldSeller.getSales() : newSeller.getSales());
+        oldSeller.setSalary(newSeller.getSalary() == null? oldSeller.getSalary() : newSeller.getSalary());
+        oldSeller.setCommission(newSeller.getCommission() == 0? oldSeller.getCommission() : newSeller.getCommission());
+
+        repositorySeller.save(oldSeller);
+        logger.info("Seller updated with PATCH: {}", sellerPatchDTO);
+        return sellerMapper.toDto(oldSeller);
     }
 
     @Override

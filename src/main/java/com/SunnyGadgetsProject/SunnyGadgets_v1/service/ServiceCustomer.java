@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class ServiceCustomer implements IServiceCustomer {
@@ -37,7 +36,7 @@ public class ServiceCustomer implements IServiceCustomer {
         cu.setPurchases(new HashSet<>());
         cu = repositoryCustomer.save(cu);
         CustomerResponseDTO responseDTO = customerMapper.toDto(cu);
-        logger.info("Customer created: {}", customer.getName());
+        logger.info("Customer created: {}", customer.name());
         return responseDTO;
     }
 
@@ -78,40 +77,53 @@ public class ServiceCustomer implements IServiceCustomer {
     }
 
     @Override
-    public CustomerResponseDTO updateCustomer(CustomerCreateDTO customer, Long id) {
-        Optional<Customer> optionalCustomer = repositoryCustomer.findById(id);
-        if (optionalCustomer.isEmpty()) {
-            throw new EntityNotFoundException("Customer with id " + id + " not found"); //Exception Not found
-        }
+    public CustomerResponseDTO updateCustomer(CustomerPutDTO customer, Long id) {
+        Customer optionalCustomer = repositoryCustomer.findById(id).orElseThrow(EntityNotFoundException::new);
+
+        optionalCustomer.setName(customer.name());
+        optionalCustomer.setEmail(customer.email());
+        optionalCustomer.setAddress(customer.address());
+        optionalCustomer.setPhoneNumber(customer.phoneNumber());
+        optionalCustomer.setAge(customer.age());
+
+        repositoryCustomer.save(optionalCustomer);
+
+        logger.info("Customer updated with PUT: {}", optionalCustomer.getName());
+
+        return customerMapper.toDto(optionalCustomer);
+    }
+
+    @Override
+    public CustomerResponseDTO updateCustomer(CustomerPatchDTO customerPatchDTO, Long id) {
+        Customer customerEntity = repositoryCustomer.findById(id).orElseThrow(() -> new EntityNotFoundException("Customer not found"));
 
 
-        optionalCustomer.get().setName(customer.getName());
-        optionalCustomer.get().setEmail(customer.getEmail());
-        optionalCustomer.get().setAddress(customer.getAddress());
-        optionalCustomer.get().setPhoneNumber(customer.getPhoneNumber());
-        optionalCustomer.get().setAge(customer.getAge());
+        //We check if the values sent are empty or null, if it is, so we put the previous value else the new value
+        customerEntity.setName(customerPatchDTO.name() == null || customerPatchDTO.name().isEmpty() ? customerEntity.getName() : customerPatchDTO.name());
+        customerEntity.setEmail(customerPatchDTO.email() == null || customerPatchDTO.email().isEmpty() ? customerEntity.getEmail() : customerPatchDTO.email());
+        customerEntity.setAddress(customerPatchDTO.address() == null || customerPatchDTO.address().isEmpty() ? customerEntity.getAddress() : customerPatchDTO.address());
+        customerEntity.setPhoneNumber(customerPatchDTO.phoneNumber() == null || customerPatchDTO.phoneNumber().isEmpty() ? customerEntity.getPhoneNumber() : customerPatchDTO.phoneNumber());
+        customerEntity.setAge(customerPatchDTO.age() == null ? customerEntity.getAge() : customerPatchDTO.age());
 
 
-        repositoryCustomer.save(optionalCustomer.get());
+        repositoryCustomer.save(customerEntity);
 
-        logger.info("Customer updated: {}", optionalCustomer.get().getName());
+        logger.info("Customer updated with PATCH: {}", customerEntity.getName());
 
-        return customerMapper.toDto(optionalCustomer.get());
+        return customerMapper.toDto(customerEntity);
     }
 
     @Override
     public void deleteCustomer(Long id) {
-        Optional<Customer> customer = repositoryCustomer.findById(id);
-        if (customer.isEmpty()) {
-            throw new EntityNotFoundException("Customer with id " + id + " not found"); //Exception not found
-        }
+        Customer customer = repositoryCustomer.findById(id).orElseThrow(EntityNotFoundException::new);
+
         repositoryCustomer.deleteById(id);
-        logger.info("Customer deleted: {}", customer.get().getEmail());
+        logger.info("Customer deleted: {}", customer.getName());
     }
 
     @Override
     public List<NameCustomerDTO> findCustomersByAgeGreaterThanEqual(Integer age) {
-        if (age <= 0) {
+        if (age < 16) {
             throw new EntityNotFoundException("Invalid age: " + age);
         }
         return repositoryCustomer.findCustomersByAgeGreaterThanEqual(age);

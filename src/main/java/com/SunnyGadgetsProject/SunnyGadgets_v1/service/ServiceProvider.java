@@ -1,8 +1,7 @@
 package com.SunnyGadgetsProject.SunnyGadgets_v1.service;
 
-import com.SunnyGadgetsProject.SunnyGadgets_v1.dto.NameTotalSalarySeller;
-import com.SunnyGadgetsProject.SunnyGadgets_v1.dto.ProviderCreateDTO;
-import com.SunnyGadgetsProject.SunnyGadgets_v1.dto.ProviderResponseDTO;
+import com.SunnyGadgetsProject.SunnyGadgets_v1.dto.*;
+import com.SunnyGadgetsProject.SunnyGadgets_v1.entity.Customer;
 import com.SunnyGadgetsProject.SunnyGadgets_v1.entity.Product;
 import com.SunnyGadgetsProject.SunnyGadgets_v1.entity.Provider;
 import com.SunnyGadgetsProject.SunnyGadgets_v1.mapper.ProviderMapper;
@@ -14,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class ServiceProvider implements IServiceProvider {
@@ -35,11 +35,11 @@ public class ServiceProvider implements IServiceProvider {
         Provider provider = providerMapper.toEntity(providerCreateDTO);
         repositoryProvider.save(provider);
         logger.info("Provider created: {}", provider);
-        return providerMapper.toDto(providerEntity);
+        return providerMapper.toDto(provider);
     }
 
     @Override
-    public List<ProviderResponseDTO> createProvider(List<ProviderCreateDTO> providers) {
+    public List<ProviderResponseDTO> createProvider(List<ProviderCreateDTO> providerCreateDTOS) {
         List<ProviderResponseDTO> responses = new ArrayList<>();
         List<Provider> providers = new ArrayList<>();
         for (ProviderCreateDTO providerCreateDTO : providerCreateDTOS) {
@@ -50,6 +50,7 @@ public class ServiceProvider implements IServiceProvider {
         for (Provider pr : providers) {
             responses.add(providerMapper.toDto(pr));
         }
+        logger.info("List of providers created: {}", providers);
         return responses;
     }
 
@@ -78,35 +79,44 @@ public class ServiceProvider implements IServiceProvider {
     }
 
     @Override
-    public ProviderResponseDTO updateProvider(ProviderCreateDTO provider, Long id) {
-        Optional<Provider> providerOptional = repositoryProvider.findById(id);
-        if (providerOptional.isEmpty()) {
-            throw new EntityNotFoundException("Provider with id " + id + " not found"); //Exception not found
-        }
-        Set<Product> products = new HashSet<>();
-        for (Long idProduct : provider.getExistentProductsIds()) {
-            products.add(repositoryProduct.findById(idProduct).orElseThrow(EntityNotFoundException::new));
-        }
+    public ProviderResponseDTO updateProvider(ProviderPutDTO providerPutDTO, Long id) {
+        Provider provider = repositoryProvider.findById(id).orElseThrow(() -> new EntityNotFoundException("Provider with id: " + id + " not found"));
+        Set<Product> products = providerPutDTO.existentProductsIds().stream().map(idProduct -> repositoryProduct.findById(idProduct).orElseThrow(() -> new EntityNotFoundException("Product with id: " + id + " not found"))).collect(Collectors.toSet());
 
-        providerOptional.get().setName(provider.getName());
-        providerOptional.get().setEmail(provider.getEmail());
-        providerOptional.get().setPhoneNumber(provider.getPhoneNumber());
-        providerOptional.get().setSalary(provider.getSalary());
-        providerOptional.get().setProductSet(products);
-        providerOptional.get().setCompany(provider.getCompany());
+        provider.setName(providerPutDTO.name());
+        provider.setEmail(providerPutDTO.email());
+        provider.setPhoneNumber(providerPutDTO.phoneNumber());
+        provider.setSalary(providerPutDTO.salary());
+        provider.setProductSet(products);
+        provider.setCompany(providerPutDTO.company());
 
-        repositoryProvider.save(providerOptional.get());
-        logger.info("Provider updated: {}", provider);
-        return providerMapper.toDto(providerOptional.get());
+        repositoryProvider.save(provider);
+        logger.info("Provider updated with PUT: {}", providerPutDTO);
+        return providerMapper.toDto(provider);
+    }
+
+    @Override
+    public ProviderResponseDTO updateProvider(ProviderPatchDTO providerPatchDTO, Long id) {
+        Provider provider = repositoryProvider.findById(id).orElseThrow(() -> new EntityNotFoundException("Provider with id: " + id + " not found"));
+        Set<Product> products = providerPatchDTO.existentProductsIds() != null ? providerPatchDTO.existentProductsIds().stream().map(idProduct -> repositoryProduct.findById(idProduct).orElseThrow(() -> new EntityNotFoundException("Product with id: " + id + " not found"))).collect(Collectors.toSet())
+                : provider.getProductSet();
+
+        provider.setName(providerPatchDTO.name() == null || providerPatchDTO.name().isEmpty() ? provider.getName() : providerPatchDTO.name());
+        provider.setEmail(providerPatchDTO.email() == null || providerPatchDTO.email().isEmpty() ? provider.getEmail() : providerPatchDTO.email());
+        provider.setPhoneNumber(providerPatchDTO.phoneNumber() == null || providerPatchDTO.phoneNumber().isEmpty() ? provider.getPhoneNumber() : providerPatchDTO.phoneNumber());
+        provider.setSalary(providerPatchDTO.salary() == null ? provider.getSalary() : providerPatchDTO.salary());
+        provider.setProductSet(products);
+        provider.setCompany(providerPatchDTO.company() == null || providerPatchDTO.company().isEmpty() ? provider.getCompany() : providerPatchDTO.company());
+
+        repositoryProvider.save(provider);
+        logger.info("Provider updated with PATCH: {}", providerPatchDTO);
+        return providerMapper.toDto(provider);
     }
 
     @Override
     public void deleteProvider(Long id) {
-        Optional<Provider> providerOptional = repositoryProvider.findById(id);
-        if (providerOptional.isEmpty()) {
-            return; //Exception not found
-        }
-        logger.info("Provider deleted: {}", providerOptional.get());
+        Provider provider = repositoryProvider.findById(id).orElseThrow(() -> new EntityNotFoundException("Provider with id: " + id + " not found"));
+        logger.info("Provider deleted: {}", provider);
         repositoryProvider.deleteById(id);
     }
 

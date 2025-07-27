@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -42,7 +41,7 @@ public class ServicePermission implements IServicePermission {
     @Override
     public PermissionResponseDTO getPermissionById(Long id) {
         Permission permission = permissionRepository.findById(id).orElseThrow(EntityNotFoundException::new);
-        logger.info("Get permission by id: " + id);
+        logger.info("Get permission by id: {}", id);
         return permissionMapper.toDto(permission);
     }
 
@@ -72,16 +71,23 @@ public class ServicePermission implements IServicePermission {
 
 
     @Override
-    public PermissionResponseDTO updatePermission(PermissionCreateDTO permission, Long id) {
-        Optional<Permission> permissionOptional = permissionRepository.findById(id);
-        if (permissionOptional.isEmpty()) {
-            throw new EntityNotFoundException("Permission with id " + id + " not found"); //Exception Not Found
-        }
+    public PermissionResponseDTO updatePermission(PermissionPutDTO permissionPutDTO, Long id) {
+        Permission permissionEntity = permissionRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Permission with id " + id + " not found"));
 
-        permissionOptional.get().setPermissionName(permission.getPermissionName());
-        permissionRepository.save(permissionOptional.get());
-        logger.info("Permission updated: {}", permission.getPermissionName());
-        return permissionMapper.toDto(permissionOptional.get());
+        permissionEntity.setPermissionName(permissionPutDTO.permissionName());
+        permissionRepository.save(permissionEntity);
+        logger.info("Permission updated with PUT: {}", permissionPutDTO.permissionName());
+        return permissionMapper.toDto(permissionEntity);
+    }
+
+    @Override
+    public PermissionResponseDTO updatePermission(PermissionPatchDTO permissionPatchDTO, Long id) {
+        Permission permissionEntity = permissionRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Permission with id " + id + " not found"));
+
+        permissionEntity.setPermissionName(permissionPatchDTO.permissionName().isEmpty() ? permissionEntity.getPermissionName() : permissionPatchDTO.permissionName());
+        permissionRepository.save(permissionEntity);
+        logger.info("Permission updated with PATCH: {}", permissionPatchDTO.permissionName());
+        return permissionMapper.toDto(permissionEntity);
     }
 
     @Override

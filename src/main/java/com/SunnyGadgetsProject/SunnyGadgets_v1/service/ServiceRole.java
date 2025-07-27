@@ -1,6 +1,8 @@
 package com.SunnyGadgetsProject.SunnyGadgets_v1.service;
 
 import com.SunnyGadgetsProject.SunnyGadgets_v1.dto.RoleCreateDTO;
+import com.SunnyGadgetsProject.SunnyGadgets_v1.dto.RolePatchDTO;
+import com.SunnyGadgetsProject.SunnyGadgets_v1.dto.RolePutDTO;
 import com.SunnyGadgetsProject.SunnyGadgets_v1.dto.RoleResponseDTO;
 import com.SunnyGadgetsProject.SunnyGadgets_v1.entity.Permission;
 import com.SunnyGadgetsProject.SunnyGadgets_v1.entity.Role;
@@ -13,6 +15,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class ServiceRole implements IServiceRole{
@@ -66,20 +69,31 @@ public class ServiceRole implements IServiceRole{
 
 
     @Override
-    public RoleResponseDTO updateRole(RoleCreateDTO role, Long id) {
-        Role roleEntity = roleRepository.findById(id).orElseThrow(EntityNotFoundException::new);
-        Set<Permission> rolePermissions = new HashSet<>();
-        for (Long idPermission : role.getPermissionsIds()){
-            rolePermissions.add(permissionRepository.findById(idPermission).orElseThrow(EntityNotFoundException::new));
-        }
-        roleEntity.setPermissions(rolePermissions);
-        roleEntity.setRole(role.getRole());
+    public RoleResponseDTO updateRole(RolePutDTO rolePutDTO, Long id) {
+        Role role = roleRepository.findById(id).orElseThrow(EntityNotFoundException::new);
+        Set<Permission> rolePermissions = rolePutDTO.permissionsIds().stream().map(permissionId -> permissionRepository.findById(permissionId).orElseThrow(() -> new EntityNotFoundException("Permission with id: " + permissionId + " not found"))).collect(Collectors.toSet());
+        role.setPermissions(rolePermissions);
+        role.setRole(rolePutDTO.role());
         //Persist
-        roleRepository.save(roleEntity);
+        roleRepository.save(role);
         //Map the entity to DTO for response
-        logger.info("Update role from repository");
-        return roleMapper.toDto(roleEntity);
+        logger.info("Role updated with PUT: {}", role);
+        return roleMapper.toDto(role);
     }
+
+    @Override
+    public RoleResponseDTO updateRole(RolePatchDTO rolePatchDTO, Long id) {
+        Role role = roleRepository.findById(id).orElseThrow(EntityNotFoundException::new);
+        Set<Long> permissionIds = rolePatchDTO.permissionsIds() == null? new HashSet<>() : rolePatchDTO.permissionsIds();
+        Set<Permission> rolePermissions = permissionIds.isEmpty()? role.getPermissions() : rolePatchDTO.permissionsIds().stream().map(permissionId -> permissionRepository.findById(permissionId).orElseThrow(() -> new EntityNotFoundException("Permission with id: " + permissionId + " not found"))).collect(Collectors.toSet());
+
+        role.setPermissions(rolePermissions);
+        role.setRole(rolePatchDTO.role() == null || rolePatchDTO.role().isEmpty()? role.getRole() : rolePatchDTO.role());
+        //Persist
+        roleRepository.save(role);
+        //Map the entity to DTO for response
+        logger.info("Role updated with PATCH: {}", role);
+        return roleMapper.toDto(role);    }
 
     @Override
     public void deleteRole(Long id) {
@@ -91,10 +105,10 @@ public class ServiceRole implements IServiceRole{
         Role roleEntity;
         RoleResponseDTO roleResponseDTO;
         Set<Permission> rolePermissions = new HashSet<>();
-        if (role.getPermissionsIds().isEmpty()) {
+        if (role.permissionsIds().isEmpty()) {
             throw new EntityNotFoundException("The role must have at least one permission");
         }
-        for (Long permissionId : role.getPermissionsIds()) {
+        for (Long permissionId : role.permissionsIds()) {
             //We use the set of ID'S for search and store each one of the permissions
             if (permissionRepository.findById(permissionId).isEmpty()) {
                 throw new EntityNotFoundException("Permission with id " + permissionId + " not found");

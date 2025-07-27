@@ -1,12 +1,12 @@
 package com.SunnyGadgetsProject.SunnyGadgets_v1.service;
 
 import com.SunnyGadgetsProject.SunnyGadgets_v1.dto.CategoryCreateDTO;
+import com.SunnyGadgetsProject.SunnyGadgets_v1.dto.CategoryPatchDTO;
+import com.SunnyGadgetsProject.SunnyGadgets_v1.dto.CategoryPutDTO;
 import com.SunnyGadgetsProject.SunnyGadgets_v1.dto.CategoryResponseDTO;
 import com.SunnyGadgetsProject.SunnyGadgets_v1.entity.Category;
-import com.SunnyGadgetsProject.SunnyGadgets_v1.entity.Product;
 import com.SunnyGadgetsProject.SunnyGadgets_v1.mapper.CategoryMapper;
 import com.SunnyGadgetsProject.SunnyGadgets_v1.repository.IRepositoryCategory;
-import com.SunnyGadgetsProject.SunnyGadgets_v1.repository.IRepositoryProduct;
 import jakarta.persistence.EntityNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,17 +22,16 @@ public class ServiceCategory implements IServiceCategory {
 
     //I will use the constructor method for DI because I read it's a better practice
     private final IRepositoryCategory repositoryCategory;
-    private final IRepositoryProduct repositoryProduct;
 
-    public ServiceCategory(CategoryMapper categoryMapper, IRepositoryCategory repositoryCategory, IRepositoryProduct repositoryProduct) {
+    public ServiceCategory(CategoryMapper categoryMapper, IRepositoryCategory repositoryCategory) {
         this.categoryMapper = categoryMapper;
         this.repositoryCategory = repositoryCategory;
-        this.repositoryProduct = repositoryProduct;
     }
 
     @Override
     public CategoryResponseDTO createCategory(CategoryCreateDTO category) {
         Category c = categoryMapper.toEntity(category);
+        c.setProductSet(new HashSet<>());
         c = repositoryCategory.save(c);
         CategoryResponseDTO responseDTO = categoryMapper.toDto(c);
         logger.info("Category created: {}", c);
@@ -43,8 +42,11 @@ public class ServiceCategory implements IServiceCategory {
     public List<CategoryResponseDTO> createCategory(List<CategoryCreateDTO> categories) {
         List<Category> categoryList = new ArrayList<>();
         List<CategoryResponseDTO> categoryDTOList = new ArrayList<>();
+        Category categ;
         for (CategoryCreateDTO category : categories) {
-            categoryList.add(categoryMapper.toEntity(category));
+            categ = categoryMapper.toEntity(category);
+            categ.setProductSet(new HashSet<>());
+            categoryList.add(categ);
         }
         repositoryCategory.saveAll(categoryList);
         for (Category c : categoryList) {
@@ -75,27 +77,35 @@ public class ServiceCategory implements IServiceCategory {
     }
 
     @Override
-    public CategoryResponseDTO updateCategory(CategoryCreateDTO category, Long id) {
+    public CategoryResponseDTO updateCategory(CategoryPutDTO category, Long id) {
         Optional<Category> categoryOptional = repositoryCategory.findById(id);
         if (categoryOptional.isEmpty()) {
             throw new EntityNotFoundException("Category with id " + id + " not found"); //Exception Not Found
         }
 
-        Set<Product> productSet = new HashSet<>();
-        Product product;
-        for(Long idProduct : category.getExistingProductIds()){
-            product = repositoryProduct.findById(idProduct).orElseThrow(EntityNotFoundException::new);
-            productSet.add(product);
-        }
-
-        categoryOptional.get().setName(category.getName());
-        categoryOptional.get().setDescription(category.getDescription());
-        categoryOptional.get().setProductSet(productSet);
+        categoryOptional.get().setName(category.name());
+        categoryOptional.get().setDescription(category.description());
         repositoryCategory.save(categoryOptional.get());
 
-        logger.info("Category updated: {}", category);
+        logger.info("Category updated with PUT: {}", category);
 
         return categoryMapper.toDto(categoryOptional.get());
+    }
+
+    @Override
+    public CategoryResponseDTO updateCategory(CategoryPatchDTO category, Long id) {
+        Category categoryEntity = repositoryCategory.findById(id).orElseThrow(() -> new EntityNotFoundException("Category with id " + id + " not found"));
+
+        String name = category.name() == null || category.name().isEmpty() ? categoryEntity.getName() : category.name();
+        String description = category.description() == null || category.description().isEmpty() ? categoryEntity.getDescription() : category.description();
+
+
+        categoryEntity.setName(name);
+        categoryEntity.setDescription(description);
+        repositoryCategory.save(categoryEntity);
+
+        logger.info("Category updated with PATCH: {}", category);
+        return categoryMapper.toDto(categoryEntity);
     }
 
     @Override

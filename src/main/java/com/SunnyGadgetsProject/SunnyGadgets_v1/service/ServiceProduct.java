@@ -14,6 +14,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class ServiceProduct implements IServiceProduct {
@@ -33,16 +34,21 @@ public class ServiceProduct implements IServiceProduct {
     }
 
     @Override
-    public ProductResponseDTO createProduct(ProductCreateDTO product) {
-        Product p = productMapper.toEntity(product);
+    public ProductResponseDTO createProduct(ProductCreateDTO productCreateDTO) {
+        Product p = productMapper.toEntity(productCreateDTO);
+        for(Provider provider : p.getSetProviders()){
+            Set<Product> products = provider.getProductSet();
+            products.add(p);
+            provider.setProductSet(products);
+        }
         p = repositoryProduct.save(p);
         ProductResponseDTO responseDTO = productMapper.toDto(p);
-        logger.info("Product created: {}", product);
+        logger.info("Product created: {}", productCreateDTO);
         return responseDTO;
     }
 
     @Override
-    public List<ProductResponseDTO> createProduct(List<ProductCreateDTO> products) {
+    public List<ProductResponseDTO> createProduct(List<ProductCreateDTO> productCreateDTOS) {
         List<Product> productList = new ArrayList<>();
         List<ProductResponseDTO> productDTOList = new ArrayList<>();
         Product product;
@@ -59,7 +65,7 @@ public class ServiceProduct implements IServiceProduct {
         for (Product pro : productList) {
             productDTOList.add(productMapper.toDto(pro));
         }
-        logger.info("Products created: {}", products);
+        logger.info("Products created: {}", productCreateDTOS);
         return productDTOList;
     }
 
@@ -84,28 +90,45 @@ public class ServiceProduct implements IServiceProduct {
     }
 
     @Override
-    public ProductResponseDTO updateProduct(ProductCreateDTO product, Long id) {
-        Optional<Product> productOptional = repositoryProduct.findById(id);
-        if (productOptional.isEmpty()) {
-            throw new EntityNotFoundException("Product with id " + id + " not found"); //Exception not found
+    public ProductResponseDTO updateProduct(ProductPutDTO productPutDTO, Long id) {
+        Product oldProduct = repositoryProduct.findById(id).orElseThrow(() -> new EntityNotFoundException("Product with id: " + id + " not found"));
+        Set<Provider> providers = oldProduct.getSetProviders();
+        if(productPutDTO.existingProvidersIds() != null) {
+            providers = productPutDTO.existingProvidersIds().stream().map(idProvider -> repositoryProvider.findById(idProvider).orElseThrow(EntityNotFoundException::new)).collect(Collectors.toSet());
         }
-        Set<Provider> providers = new HashSet<>();
-        for (Long idP : product.getExistingProvidersIds()){
-            providers.add(repositoryProvider.findById(idP).orElseThrow(EntityNotFoundException::new));
-        }
+        Category category = repositoryCategory.findById(productPutDTO.idCategory()).orElseThrow(EntityNotFoundException::new);
 
-        Category category = repositoryCategory.findById(product.getIdCategory()).orElseThrow(EntityNotFoundException::new);
-        productOptional.get().setName(product.getName());
-        productOptional.get().setDescription(product.getDescription());
-        productOptional.get().setPrice(product.getPrice());
-        productOptional.get().setStock(product.getStock());
-        productOptional.get().setSetProviders(providers);
-        productOptional.get().setCategory(category);
+        oldProduct.setName(productPutDTO.name());
+        oldProduct.setDescription(productPutDTO.description());
+        oldProduct.setPrice(productPutDTO.price());
+        oldProduct.setStock(productPutDTO.stock());
+        oldProduct.setSetProviders(providers);
+        oldProduct.setCategory(category);
 
-        repositoryProduct.save(productOptional.get());
-        logger.info("Product updated: {}",  product);
-        return productMapper.toDto(productOptional.get());
+        repositoryProduct.save(oldProduct);
+        logger.info("Product updated with PUT: {}", productPutDTO);
+        return productMapper.toDto(oldProduct);
     }
+
+    @Override
+    public ProductResponseDTO updateProduct(ProductPatchDTO productPatchDTO, Long id) {
+        Product oldProduct = repositoryProduct.findById(id).orElseThrow(() -> new EntityNotFoundException("Product with id: " + id + "not found"));
+        Set<Provider> providers = oldProduct.getSetProviders();
+        if(productPatchDTO.existingProvidersIds() != null) {
+            providers = productPatchDTO.existingProvidersIds().isEmpty() ? oldProduct.getSetProviders() :
+                    productPatchDTO.existingProvidersIds().stream().map(idProvider -> repositoryProvider.findById(idProvider).orElseThrow(EntityNotFoundException::new)).collect(Collectors.toSet());
+        }
+        Category category = productPatchDTO.idCategory() != null ? repositoryCategory.findById(productPatchDTO.idCategory()).orElseThrow(() -> new EntityNotFoundException("Category with id: " + productPatchDTO.idCategory() + "not found")) : oldProduct.getCategory();
+        oldProduct.setName(productPatchDTO.name() == null || productPatchDTO.name().isEmpty()? oldProduct.getName() : productPatchDTO.name());
+        oldProduct.setDescription(productPatchDTO.description() == null || productPatchDTO.description().isEmpty()? oldProduct.getDescription() : productPatchDTO.description());
+        oldProduct.setPrice(productPatchDTO.price() == null ? oldProduct.getPrice() : productPatchDTO.price());
+        oldProduct.setStock(productPatchDTO.stock() == null ? oldProduct.getStock() : productPatchDTO.stock());
+        oldProduct.setSetProviders(providers);
+        oldProduct.setCategory(category);
+
+        repositoryProduct.save(oldProduct);
+        logger.info("Product updated with PATCH: {}", productPatchDTO);
+        return productMapper.toDto(oldProduct);    }
 
     @Override
     public void deleteProduct(Long id) {
@@ -124,7 +147,7 @@ public class ServiceProduct implements IServiceProduct {
 
     @Override
     public List<NameDescriptionPriceProductDTO> findProductsByCategory(String category) {
-       return repositoryProduct.findByCategory(category);
+        return repositoryProduct.findByCategory(category);
     }
 
 
