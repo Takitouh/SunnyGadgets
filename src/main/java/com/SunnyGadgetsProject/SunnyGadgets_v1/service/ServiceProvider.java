@@ -31,12 +31,9 @@ public class ServiceProvider implements IServiceProvider {
     }
 
     @Override
-    public ProviderResponseDTO createProvider(ProviderCreateDTO provider) {
-        if (provider.getExistentProductsIds().isEmpty()) {
-            throw new EntityNotFoundException("The provider must have at least one product");
-        }
-        Provider providerEntity = providerMapper.toEntity(provider);
-        repositoryProvider.save(providerEntity);
+    public ProviderResponseDTO createProvider(ProviderCreateDTO providerCreateDTO) {
+        Provider provider = providerMapper.toEntity(providerCreateDTO);
+        repositoryProvider.save(provider);
         logger.info("Provider created: {}", provider);
         return providerMapper.toDto(providerEntity);
     }
