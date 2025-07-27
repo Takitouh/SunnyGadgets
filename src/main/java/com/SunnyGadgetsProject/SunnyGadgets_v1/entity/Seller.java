@@ -19,6 +19,6 @@ public class Seller extends Employee {
     @OneToMany(mappedBy = "seller")
     private Set<Sale> sales;
 
-    private long commission;
+    private Long commission;
 
 }
