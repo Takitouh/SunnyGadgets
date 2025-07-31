@@ -34,6 +34,7 @@ public class ServiceSeller implements IServiceSeller {
     public SellerResponseDTO createSeller(SellerCreateDTO seller) {
         Seller s = sellerMapper.toEntity(seller);
         s.setSales(new HashSet<>());
+        s.setCommission(s.getCommission() == null ? 0 : s.getCommission());
         s = repositorySeller.save(s);
         SellerResponseDTO responseDTO = sellerMapper.toDto(s);
         logger.info("Seller created: {}", seller);
@@ -48,6 +49,7 @@ public class ServiceSeller implements IServiceSeller {
         for (SellerCreateDTO seller : sellers) {
             sellerEntity = sellerMapper.toEntity(seller);
             sellerEntity.setSales(new HashSet<>());
+            sellerEntity.setCommission(sellerEntity.getCommission() == null ? 0 : sellerEntity.getCommission());
             sellerList.add(sellerEntity);
         }
         repositorySeller.saveAll(sellerList);
