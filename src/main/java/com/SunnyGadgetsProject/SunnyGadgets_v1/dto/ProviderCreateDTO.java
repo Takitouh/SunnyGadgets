@@ -1,28 +1,30 @@
 package com.SunnyGadgetsProject.SunnyGadgets_v1.dto;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.*;
 
 import java.util.HashSet;
 import java.util.Set;
 
 public record ProviderCreateDTO(
-    @NotNull(message = "Salary can't be null") @Positive(message = "The salary can't be negative or zero")
-    Long salary,
+        @Schema(description = "Salary of the provider", example = "3500")
+        @NotNull(message = "Salary can't be null") @Positive(message = "The salary can't be negative or zero")
+        Long salary,
+        @Schema(description = "Name of provider", example = "Alexander Volkanovski")
+        @NotBlank(message = "Name can't be blank or null")
+        String name,
+        @Schema(description = "Phone of provider", example = "3124152452")
+        @Size(max = 10, min = 10, message = "The length of the phone is invalid")
+        String phoneNumber,
+        @Schema(description = "Optional ID's of existent products", example = "1")
+        Set<Long> existentProductsIds,
 
-    @NotBlank(message = "Name can't be blank or null")
-    String name,
-
-    @Size(max = 10, min = 10, message = "The length of the phone is invalid")
-    String phoneNumber,
-
-    Set<Long> existentProductsIds,
-
-
-    @NotBlank(message = "Company name can't be blank or null")
-    String company,
-
-    @Email(message = "Invalid email")
-    String email
+        @Schema(description = "Name of company of the provider", example = "AMD")
+        @NotBlank(message = "Company name can't be blank or null")
+        String company,
+        @Schema(description = "Email of the provider", example = "alexvolkanovski@gmail.com")
+        @Email(message = "Invalid email")
+        String email
 ) {
     public ProviderCreateDTO {
         if (existentProductsIds == null) {
