@@ -12,6 +12,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -32,6 +33,7 @@ public abstract class ProductMapper {
 
     // Entity → ResponseDTO
     public abstract ProductResponseDTO toDto(Product product);
+
     @SuppressWarnings("unused")
     protected Category mapCategory(Long id) {
         if (id == null) {
@@ -40,21 +42,23 @@ public abstract class ProductMapper {
 
         return repositoryCategory.findById(id).orElseThrow(EntityNotFoundException::new);
     }
+
     @SuppressWarnings("unused")
     protected String mapCategoryName(Category category) {
         if (category == null) {
-            throw new NullPointerException("Category is null");
+            throw new NullPointerException("The product must belong to a category");
         }
         return category.getName();
     }
+
     @SuppressWarnings("unused")
     protected Set<Provider> mapProviders(Set<Long> ids) {
         if (ids == null) {
-            throw new NullPointerException("ids is null");
+            return new HashSet<>();
         }
         return ids.stream()
                 .map(id -> repositoryProvider.findById(id)
-                        .orElseThrow(() -> new IllegalArgumentException("Permission with id " + id + " doesn't exist")))
+                        .orElseThrow(() -> new IllegalArgumentException("Provider with id " + id + " doesn't exist")))
                 .collect(Collectors.toSet());
     }
 }

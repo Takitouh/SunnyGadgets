@@ -9,6 +9,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -20,16 +21,15 @@ public abstract class CategoryMapper {
 
     // CreateDTO → Entity
     @Mapping(target = "idCategory", ignore = true)
-    @Mapping(target = "productSet", source = "existingProductIds")
+    @Mapping(target = "productSet", ignore = true)
     public abstract Category toEntity(CategoryCreateDTO dto);
     // Entity → ResponseDTO
-    @Mapping(target = "idCategory", source = "idCategory")
     public abstract CategoryResponseDTO toDto(Category category);
 
     @SuppressWarnings("unused")
-    protected Set<Product> mapPermissions(Set<Long> ids) {
+    protected Set<Product> mapProducts(Set<Long> ids) {
         if (ids == null) {
-            throw new NullPointerException("ids is null");
+            return new HashSet<>();
         }
         return ids.stream()
                 .map(id -> repositoryProduct.findById(id)
