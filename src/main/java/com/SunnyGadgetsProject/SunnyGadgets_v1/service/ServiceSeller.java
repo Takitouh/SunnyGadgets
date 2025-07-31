@@ -122,7 +122,7 @@ public class ServiceSeller implements IServiceSeller {
 
     @Override
     public List<NameTotalSalarySeller> getSellersTotalSalary() {
-        return repositorySeller.getSellersTotalSalary();
+        return repositorySeller.getSellersSalary();
     }
 
     @Override
