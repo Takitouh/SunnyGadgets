@@ -55,9 +55,8 @@ public class SecurityConfig {
                 .sessionManagement(session ->
                         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorizeRequests -> authorizeRequests.requestMatchers(
-                                "/v3/api-docs/**",
                                 "/swagger-ui/**",
-                                "/swagger-ui.html",
+                                "/api-docs/**",
                                 "/api/v1/permissions/**",
                                 "/api/v1/roles/**",
                                 "/api/v1/usersec/**",
