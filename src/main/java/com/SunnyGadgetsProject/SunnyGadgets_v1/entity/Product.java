@@ -19,7 +19,6 @@ public class Product {
     private int stock;
     @ManyToOne
     @JoinColumn(referencedColumnName = "idCategory", nullable = false)
-    //@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Category category;
 
     @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST}, mappedBy = "productSet")
