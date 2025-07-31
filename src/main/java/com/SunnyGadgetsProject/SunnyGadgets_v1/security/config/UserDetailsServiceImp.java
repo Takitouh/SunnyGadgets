@@ -6,7 +6,6 @@ import com.SunnyGadgetsProject.SunnyGadgets_v1.dto.AuthResponseDTO;
 import com.SunnyGadgetsProject.SunnyGadgets_v1.entity.UserSec;
 import com.SunnyGadgetsProject.SunnyGadgets_v1.repository.IRepositoryUserSec;
 import com.SunnyGadgetsProject.SunnyGadgets_v1.utils.JwtUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -27,14 +26,15 @@ import java.util.Objects;
 @Service
 public class UserDetailsServiceImp implements UserDetailsService {
 
-    @Autowired
-    private IRepositoryUserSec userRepo;
+    private final IRepositoryUserSec userRepo;
+    private final JwtUtils jwtUtils;
+    private final PasswordEncoder passwordEncoder;
 
-    @Autowired
-    private JwtUtils jwtUtils;
-
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    public UserDetailsServiceImp(IRepositoryUserSec userRepo, JwtUtils jwtUtils, PasswordEncoder passwordEncoder) {
+        this.userRepo = userRepo;
+        this.jwtUtils = jwtUtils;
+        this.passwordEncoder = passwordEncoder;
+    }
 
     @Override
     public UserDetails loadUserByUsername (String username) throws UsernameNotFoundException {
