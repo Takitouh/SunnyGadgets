@@ -19,8 +19,6 @@ public class ServiceCategory implements IServiceCategory {
 
     private static final Logger logger = LoggerFactory.getLogger(ServiceCategory.class);
     private final CategoryMapper categoryMapper;
-
-    //I will use the constructor method for DI because I read it's a better practice
     private final IRepositoryCategory repositoryCategory;
 
     public ServiceCategory(CategoryMapper categoryMapper, IRepositoryCategory repositoryCategory) {
@@ -59,7 +57,7 @@ public class ServiceCategory implements IServiceCategory {
 
     @Override
     public CategoryResponseDTO getCategoryById(Long id) {
-        Category category = repositoryCategory.findById(id).orElseThrow(EntityNotFoundException::new);
+        Category category = repositoryCategory.findById(id).orElseThrow(() -> new EntityNotFoundException("Category not found"));
 
         return categoryMapper.toDto(category);
     }
