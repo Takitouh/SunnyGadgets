@@ -11,7 +11,7 @@ import java.util.List;
 @Repository
 public interface IRepositoryProvider extends JpaRepository<Provider, Long> {
     //Query's
-    @Query(value = "SELECT e.name, e.salary AS salary FROM providers p INNER JOIN employes e ON e.id_employee = p.id_provider"
+    @Query(value = "SELECT p.name, p.salary AS salary FROM providers p"
             , nativeQuery = true)
     List<NameTotalSalarySeller> getProvidersSalary();
 }

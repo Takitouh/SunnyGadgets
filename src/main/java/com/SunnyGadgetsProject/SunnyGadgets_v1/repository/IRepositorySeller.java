@@ -13,9 +13,9 @@ import java.util.List;
 @Repository
 public interface IRepositorySeller extends JpaRepository<Seller, Long> {
     //Query's
-    @Query(value = "SELECT e.name, e.salary+s.commission AS salary FROM sellers s INNER JOIN employes e ON e.id_employee = s.id_seller"
+    @Query(value = "SELECT s.name, s.salary+s.commission AS salary FROM sellers s"
             , nativeQuery = true)
-    List<NameTotalSalarySeller> getSellersTotalSalary();
+    List<NameTotalSalarySeller> getSellersSalary();
 
     @Query(value = "SELECT * FROM sales s, sellers se  WHERE se.id_seller = s.id_sale AND :idSeller = s.fk_seller ",
             nativeQuery = true)
