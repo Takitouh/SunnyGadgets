@@ -120,7 +120,7 @@ public class ServiceProvider implements IServiceProvider {
     }
 
     @Override
-    public List<NameTotalSalarySeller> getProvidersSalary() {
+    public List<NameTotalSalary> getProvidersSalary() {
         return repositoryProvider.getProvidersSalary();
     }
 }

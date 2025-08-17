@@ -115,7 +115,7 @@ public class ServiceSale implements IServiceSale {
         oldSale.setCustomer(newSale.getCustomer());
         oldSale.setSeller(newSale.getSeller());
         repositorySale.save(oldSale);
-        logger.info("Sale updated with PUT: {}", salePutDTO);
+        logger.info("Sale updated with PUT: {}", newSale.getIdSale());
         return saleMapper.toDto(oldSale);
     }
 
@@ -158,14 +158,13 @@ public class ServiceSale implements IServiceSale {
                 oldDetailSales.get(i).setProduct(newDetailSales.get(i).getProduct());
             }
         }
-        //Hay un problema con el stock cuando se actualiza y es que se necesita que se revierta el stock, es decir si cambia el stock se debe volver a agregar lo viejo y se resta el stock nuevo
 
         //Assign List<>, Customer and Seller
         oldSale.setListdetailSale(oldDetailSales);
         oldSale.setCustomer(newSale.getCustomer() == null ? oldSale.getCustomer() : newSale.getCustomer());
         oldSale.setSeller(newSale.getSeller() == null ? oldSale.getSeller() : newSale.getSeller());
         repositorySale.save(oldSale);
-        logger.info("Sale updated with PATCH: {}", salePatchDTO);
+        logger.info("Sale updated with PATCH: {}", newSale);
         return saleMapper.toDto(oldSale);
     }
 
@@ -204,7 +203,7 @@ public class ServiceSale implements IServiceSale {
         return saleEntity;
     }
 
-    private List<DetailSale> calculateTotal(List<DetailSale> detailSales, Sale sale, Seller seller) {
+    public List<DetailSale> calculateTotal(List<DetailSale> detailSales, Sale sale, Seller seller) {
         //List<> to iterate across the DetailSale of the sale and calculate the total, subtotal, establish the other
         //attributes of detailsale
         List<DetailSale> auxlistdetailSale = new ArrayList<>();
@@ -217,7 +216,8 @@ public class ServiceSale implements IServiceSale {
             Product optionalProduct = repositoryProduct.findById(ds.getProduct().getIdProduct())
                     .orElseThrow(() -> new EntityNotFoundException("Product with id " + ds.getProduct().getIdProduct() + " not found"));
             if (optionalProduct.getStock() < ds.getQuantity()) {
-                throw new RuntimeException("The product " + optionalProduct.getName() + " has not enough stock");
+                throw new RuntimeException("The product " + optionalProduct.getName() + " has not enough stock\n" +
+                        "Stock of product: " + optionalProduct.getStock() + ", required amount: " + ds.getQuantity());
             }
             optionalProduct.setStock(optionalProduct.getStock() - ds.getQuantity());
             //Calculate the subtotal with the unit price and the quantity
