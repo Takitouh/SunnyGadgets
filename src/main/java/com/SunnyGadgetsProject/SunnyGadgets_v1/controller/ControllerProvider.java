@@ -403,7 +403,7 @@ public class ControllerProvider {
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Providers and salaries obtained", content =
             @Content(mediaType = "application/json",
-                    schema = @Schema(implementation = NameTotalSalarySeller.class), examples = {
+                    schema = @Schema(implementation = NameTotalSalary.class), examples = {
                     @ExampleObject(value = """
                             [
                                 {
@@ -435,7 +435,7 @@ public class ControllerProvider {
     })
     @GetMapping("/find-salaries")
     @PreAuthorize("hasAuthority('READ')")
-    public ResponseEntity<List<NameTotalSalarySeller>> getAllSalaryProviders() {
+    public ResponseEntity<List<NameTotalSalary>> getAllSalaryProviders() {
         return ResponseEntity.ok(serviceProvider.getProvidersSalary());
     }
 }
