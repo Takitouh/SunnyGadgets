@@ -9,6 +9,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Set;
 
 @Repository
 public interface IRepositoryCustomer extends JpaRepository<Customer, Long> {
@@ -17,5 +18,5 @@ public interface IRepositoryCustomer extends JpaRepository<Customer, Long> {
 
     @Query(value = "SELECT * FROM sales s, customers c  WHERE c.id_customer = s.id_sale AND :idCustomer = s.fk_customer ",
             nativeQuery = true)
-    List<Sale> findPurchaseCustomers(@Param(value = "idCustomer") Long id);
+    Set<Sale> findPurchaseCustomers(@Param(value = "idCustomer") Long id);
 }
