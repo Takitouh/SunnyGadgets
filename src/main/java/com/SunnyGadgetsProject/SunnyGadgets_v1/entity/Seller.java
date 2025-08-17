@@ -7,7 +7,7 @@ import java.util.Set;
 
 @Entity @Getter
 @Setter
-@NoArgsConstructor
+@NoArgsConstructor @AllArgsConstructor
 @AttributeOverride(
         name  = "idEmployee",
         column = @Column(name = "idSeller")

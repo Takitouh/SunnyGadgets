@@ -9,7 +9,7 @@ import java.util.List;
 
 @Entity @Getter
 @Setter
-@NoArgsConstructor
+@NoArgsConstructor @AllArgsConstructor
 @Table(name = "sales")
 
 public class Sale {
