@@ -1,0 +1,2618 @@
+{
+	"info": {
+		"_postman_id": "72e4684c-a178-471a-bae5-73c610e4d230",
+		"name": "SunnyGadgets_v1",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "42749134"
+	},
+	"item": [
+		{
+			"name": "Sunnygadgets",
+			"item": [
+				{
+					"name": "Category",
+					"item": [
+						{
+							"name": "getAll",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{Token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/api/v1/category/get",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"category",
+										"get"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "postBatch",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{Token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "[\r\n  { \"name\": \"Computers\", \"description\": \"Laptops, desktops, and components\" },\r\n  { \"name\": \"Peripherals\", \"description\": \"External devices like mice, keyboards, and monitors\" },\r\n  { \"name\": \"Mobile Devices\", \"description\": \"Smartphones, tablets, and accessories\" },\r\n  { \"name\": \"Audio\", \"description\": \"Headphones, speakers, and microphones\" },\r\n  { \"name\": \"Storage\", \"description\": \"Hard drives, SSDs, USB sticks, and memory cards\" },\r\n  { \"name\": \"Networking\", \"description\": \"Routers, modems, and network accessories\" }\r\n]",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/api/v1/category/createBatch",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"category",
+										"createBatch"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "getbyID",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{Token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/api/v1/category/get/5",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"category",
+										"get",
+										"5"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "postOne",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{Token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"TEST\",\r\n    \"description\": \"TESTING\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/api/v1/category/create",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"category",
+										"create"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "deleteOne",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{Token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/api/v1/category/delete/7",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"category",
+										"delete",
+										"7"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "patchOne",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{Token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"description\": \"Description updated AAAAAAAAAAAA\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/api/v1/category/patch/7",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"category",
+										"patch",
+										"7"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "putOne",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{Token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"Electronics updated\",\r\n    \"description\": \"Description updated\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/api/v1/category/put/7",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"category",
+										"put",
+										"7"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Security",
+					"item": [
+						{
+							"name": "Permission",
+							"item": [
+								{
+									"name": "postOne",
+									"request": {
+										"auth": {
+											"type": "noauth"
+										},
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"permissionName\": \"TEST\"\r\n}\r\n",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "http://localhost:8080/api/v1/permissions/create",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "8080",
+											"path": [
+												"api",
+												"v1",
+												"permissions",
+												"create"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "postBatch",
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "[\r\n    {\r\n    \"permissionName\": \"CREATE\"\r\n    },\r\n    {\r\n    \"permissionName\": \"READ\"\r\n    },\r\n    {\r\n    \"permissionName\": \"UPDATE\"\r\n    },\r\n    {\r\n    \"permissionName\": \"DELETE\"\r\n    } \r\n]",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "http://localhost:8080/api/v1/permissions/createBatch",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "8080",
+											"path": [
+												"api",
+												"v1",
+												"permissions",
+												"createBatch"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "getAll",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "http://localhost:8080/api/v1/permissions/get",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "8080",
+											"path": [
+												"api",
+												"v1",
+												"permissions",
+												"get"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "getById",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "http://localhost:8080/api/v1/permissions/get/1",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "8080",
+											"path": [
+												"api",
+												"v1",
+												"permissions",
+												"get",
+												"1"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "putOne",
+									"request": {
+										"auth": {
+											"type": "noauth"
+										},
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"permissionName\": \"Hello\"\r\n}\r\n",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "http://localhost:8080/api/v1/permissions/update/5",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "8080",
+											"path": [
+												"api",
+												"v1",
+												"permissions",
+												"update",
+												"5"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "User",
+							"item": [
+								{
+									"name": "postOne",
+									"request": {
+										"auth": {
+											"type": "noauth"
+										},
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "\r\n{\r\n    \"username\": \"Jhon\",\r\n    \"password\": \"lincy\",\r\n    \"enabled\": true,\r\n    \"accountNotExpired\": true,\r\n    \"accountNotLocked\": true,\r\n    \"credentialsNotExpired\": true,\r\n    \"existingRolesIds\": [1]\r\n}\r\n",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "http://localhost:8080/api/v1/usersec/create",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "8080",
+											"path": [
+												"api",
+												"v1",
+												"usersec",
+												"create"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "getAll",
+									"request": {
+										"auth": {
+											"type": "noauth"
+										},
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "http://localhost:8080/api/v1/usersec/get",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "8080",
+											"path": [
+												"api",
+												"v1",
+												"usersec",
+												"get"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "getById",
+									"request": {
+										"auth": {
+											"type": "noauth"
+										},
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "http://localhost:8080/api/v1/usersec/get/1",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "8080",
+											"path": [
+												"api",
+												"v1",
+												"usersec",
+												"get",
+												"1"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "putOne",
+									"request": {
+										"auth": {
+											"type": "noauth"
+										},
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"username\": \"User PUT\",\r\n    \"password\": \"lincy\",\r\n    \"enabled\": true,\r\n    \"accountNotExpired\": true,\r\n    \"accountNotLocked\": true,\r\n    \"credentialsNotExpired\": true,\r\n    \"existingRolesIds\": [1]\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "http://localhost:8080/api/v1/usersec/put/2",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "8080",
+											"path": [
+												"api",
+												"v1",
+												"usersec",
+												"put",
+												"2"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "patchOne",
+									"request": {
+										"method": "PATCH",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"username\": \"User PATCH\",\r\n    \"password\": \"linacy\",\r\n    \"enabled\": true,\r\n    \"accountNotExpired\": false,\r\n    \"existingRolesIds\": [2]\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "http://localhost:8080/api/v1/usersec/patch/2",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "8080",
+											"path": [
+												"api",
+												"v1",
+												"usersec",
+												"patch",
+												"2"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "Role",
+							"item": [
+								{
+									"name": "postOne",
+									"request": {
+										"auth": {
+											"type": "noauth"
+										},
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"role\": \"ADMIN\",\r\n    \"permissionsIds\": [1,2,3,4]\r\n}\r\n",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "http://localhost:8080/api/v1/roles/create",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "8080",
+											"path": [
+												"api",
+												"v1",
+												"roles",
+												"create"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "postBatch",
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "[\r\n    {\r\n    \"role\": \"TEST1\",\r\n    \"permissionsIds\": [3,4]\r\n    },\r\n    {\r\n    \"role\": \"TEST2\",\r\n    \"permissionsIds\": [1,2]\r\n}\r\n]",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "http://localhost:8080/api/v1/roles/createBatch",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "8080",
+											"path": [
+												"api",
+												"v1",
+												"roles",
+												"createBatch"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "getAll",
+									"request": {
+										"auth": {
+											"type": "noauth"
+										},
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "http://localhost:8080/api/v1/roles/get",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "8080",
+											"path": [
+												"api",
+												"v1",
+												"roles",
+												"get"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "getByID",
+									"request": {
+										"auth": {
+											"type": "noauth"
+										},
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "http://localhost:8080/api/v1/roles/get/2",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "8080",
+											"path": [
+												"api",
+												"v1",
+												"roles",
+												"get",
+												"2"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "putOne",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiIyOWNkMTg2MjE4ZDExZjlmMzVjNGVhMjQ3NzRiNDhhMmNhNWY2NzAxYjM5ZmEwNTA5NTQzM2Y2MDM3NTliNGVjIiwic3ViIjoiSmhvbiIsImlhdCI6MTc1MzU2MjQ2OCwiYXV0aG9yaXRpZXMiOiJDUkVBVEUsREVMRVRFLFJFQUQsUk9MRV9BRE1JTixVUERBVEUiLCJleHAiOjE3NTM1NjQyNjgsImp0aSI6IjkwZDAyZDlkLTRlN2YtNDMzYS04MGQ0LTc2NzA2YjEwMGJkZCIsIm5iZiI6MTc1MzU2MjQ2OH0.46FfN_TcZBq50lPIglXZRlmaUECNwQCwcyDDqZ-l06s",
+													"type": "string"
+												}
+											]
+										},
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"role\": \"USER\",\r\n    \"permissionsIds\": [1]\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "http://localhost:8080/api/v1/roles/put/2",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "8080",
+											"path": [
+												"api",
+												"v1",
+												"roles",
+												"put",
+												"2"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "patchOne",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiIyOWNkMTg2MjE4ZDExZjlmMzVjNGVhMjQ3NzRiNDhhMmNhNWY2NzAxYjM5ZmEwNTA5NTQzM2Y2MDM3NTliNGVjIiwic3ViIjoiSmhvbiIsImlhdCI6MTc1MzU2MjQ2OCwiYXV0aG9yaXRpZXMiOiJDUkVBVEUsREVMRVRFLFJFQUQsUk9MRV9BRE1JTixVUERBVEUiLCJleHAiOjE3NTM1NjQyNjgsImp0aSI6IjkwZDAyZDlkLTRlN2YtNDMzYS04MGQ0LTc2NzA2YjEwMGJkZCIsIm5iZiI6MTc1MzU2MjQ2OH0.46FfN_TcZBq50lPIglXZRlmaUECNwQCwcyDDqZ-l06s",
+													"type": "string"
+												}
+											]
+										},
+										"method": "PATCH",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"role\": \"USERUPDATAAED\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "http://localhost:8080/api/v1/roles/patch/2",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "8080",
+											"path": [
+												"api",
+												"v1",
+												"roles",
+												"patch",
+												"2"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "deleteOne",
+									"request": {
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "http://localhost:8080/api/v1/roles/delete/2",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "8080",
+											"path": [
+												"api",
+												"v1",
+												"roles",
+												"delete",
+												"2"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "JWT",
+							"item": [
+								{
+									"name": "requestJWT",
+									"request": {
+										"auth": {
+											"type": "noauth"
+										},
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"username\" : \"Jhon\",\r\n    \"password\" : \"lincy\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "http://localhost:8080/auth/login",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "8080",
+											"path": [
+												"auth",
+												"login"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "Customer",
+					"item": [
+						{
+							"name": "getAll",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{Token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/api/v1/customer/get",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"customer",
+										"get"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "postBatch",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{Token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "[\r\n    {\r\n        \"name\": \"German Garmendia\",\r\n        \"age\": 35,\r\n        \"address\": \"Santiago de Chile\",\r\n        \"email\": \"german@gmail.com\",\r\n        \"phoneNumber\": \"3124726594\"\r\n    },\r\n    {\r\n        \"name\": \"Ana María Rodríguez\",\r\n        \"age\": 29,\r\n        \"address\": \"Medellín, Colombia\",\r\n        \"email\": \"ana.rodriguez@example.com\",\r\n        \"phoneNumber\": \"3015987745\"\r\n    },\r\n    {\r\n        \"name\": \"Luis Fernando Gómez\",\r\n        \"age\": 41,\r\n        \"address\": \"Bogotá, Colombia\",\r\n        \"email\": \"luis.fernando@example.com\",\r\n        \"phoneNumber\": \"3104721839\"\r\n    },\r\n    {\r\n        \"name\": \"Jessica Morales\",\r\n        \"age\": 22,\r\n        \"address\": \"Lima, Perú\",\r\n        \"email\": \"jess.morales21@example.com\",\r\n        \"phoneNumber\": \"9876543210\"\r\n    },\r\n    {\r\n        \"name\": \"Carlos Méndez\",\r\n        \"age\": 38,\r\n        \"address\": \"Quito, Ecuador\",\r\n        \"email\": \"c.mendez@example.com\",\r\n        \"phoneNumber\": \"3126758493\"\r\n    },\r\n    {\r\n        \"name\": \"Valentina Torres\",\r\n        \"age\": 31,\r\n        \"address\": \"Cali, Colombia\",\r\n        \"email\": \"valentina.t@example.com\",\r\n        \"phoneNumber\": \"3049821674\"\r\n    }\r\n]",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/api/v1/customer/createBatch",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"customer",
+										"createBatch"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "getbyID",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{Token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/api/v1/customer/get/2",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"customer",
+										"get",
+										"2"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "postOne",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{Token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "    { \r\n        \"name\": \"TEST PERSON\", \r\n        \"age\": 40,\r\n        \"address\" : \"TEST\",\r\n        \"email\" : \"TESTss@gmail.com\",\r\n        \"phoneNumber\" : \"3124726594\"\r\n     }",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/api/v1/customer/create",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"customer",
+										"create"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "deleteOne",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{Token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/api/v1/customer/delete/7",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"customer",
+										"delete",
+										"7"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "putOne",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{Token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "    { \r\n        \"name\": \"TEST PERSON23AAAAA\", \r\n        \"age\": 43,\r\n        \"address\" : \"TEST2ASASAASF3\",\r\n        \"email\" : \"TEST23ASDAS@gmail.com\",\r\n        \"phoneNumber\" : \"3124727024\"\r\n     }",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/api/v1/customer/put/7",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"customer",
+										"put",
+										"7"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "patchOne",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{Token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "    { \r\n        \"name\": \"TEST PERSON23845232355\", \r\n        \"age\": 5,\r\n        \"email\" : \"TEST2WASAAAAAAAAAAAAAAAAAAAA3@gmail.com\"\r\n     }",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/api/v1/customer/patch/7",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"customer",
+										"patch",
+										"7"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "getCustomersByAge",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{Token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/api/v1/customer/findby-age/35",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"customer",
+										"findby-age",
+										"35"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "getPurchasesOfCustomers",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{Token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/api/v1/customer/find-purchases/1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"customer",
+										"find-purchases",
+										"1"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "DetailSale",
+					"item": [
+						{
+							"name": "getAll",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{Token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/api/v1/detailsale/get",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"detailsale",
+										"get"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "getbyID",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{Token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/api/v1/detailsale/get/1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"detailsale",
+										"get",
+										"1"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Product",
+					"item": [
+						{
+							"name": "getAll",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{Token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/api/v1/product/get",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"product",
+										"get"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "postBatch",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{Token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "[\r\n    {\r\n        \"name\": \"Gaming Laptop\",\r\n        \"description\": \"Intel i7, 16GB RAM, RTX 3060, 1TB SSD\",\r\n        \"price\": 1800,\r\n        \"stock\": 8,\r\n        \"idCategory\": 1,\r\n        \"existingProvidersIds\": [\r\n            1\r\n        ]\r\n    },\r\n    {\r\n        \"name\": \"Mechanical Keyboard\",\r\n        \"description\": \"RGB backlit, blue switches\",\r\n        \"price\": 120,\r\n        \"stock\": 25,\r\n        \"idCategory\": 2,\r\n        \"existingProvidersIds\": [\r\n            1\r\n        ]\r\n    },\r\n    {\r\n        \"name\": \"Smartphone\",\r\n        \"description\": \"6.7-inch OLED, 128GB, dual SIM\",\r\n        \"price\": 900,\r\n        \"stock\": 15,\r\n        \"idCategory\": 3,\r\n        \"existingProvidersIds\": [\r\n            2\r\n        ]\r\n    },\r\n    {\r\n        \"name\": \"Noise-Canceling Headphones\",\r\n        \"description\": \"Wireless over-ear with 30-hour battery life\",\r\n        \"price\": 250,\r\n        \"stock\": 10,\r\n        \"idCategory\": 4,\r\n        \"existingProvidersIds\": [\r\n            3\r\n        ]\r\n    },\r\n    {\r\n        \"name\": \"2TB External Hard Drive\",\r\n        \"description\": \"USB 3.1 portable drive\",\r\n        \"price\": 130,\r\n        \"stock\": 20,\r\n        \"idCategory\": 5,\r\n        \"existingProvidersIds\": [\r\n            2\r\n        ]\r\n    },\r\n    {\r\n        \"name\": \"Wi-Fi 6 Router\",\r\n        \"description\": \"Dual-band gigabit wireless router\",\r\n        \"price\": 110,\r\n        \"stock\": 18,\r\n        \"idCategory\": 6,\r\n        \"existingProvidersIds\": [\r\n            1\r\n        ]\r\n    }\r\n]",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/api/v1/product/createBatch",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"product",
+										"createBatch"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "findbyprice",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{Token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/api/v1/product/findby-productprice/900",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"product",
+										"findby-productprice",
+										"900"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "getbyID",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{Token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/api/v1/product/get/1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"product",
+										"get",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "findbycategory",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{Token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/api/v1/product/findby-productcategory/networking",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"product",
+										"findby-productcategory",
+										"networking"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "postOne",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{Token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "    {\r\n        \"name\": \"Gaming Laptop\",\r\n        \"description\": \"Intel i7, 16GB RAM, RTX 3060, 1TB SSD\",\r\n        \"price\": 1800,\r\n        \"stock\": 8,\r\n        \"idCategory\": 1,\r\n        \"existingProvidersIds\": [\r\n            1\r\n        ]\r\n    }\r\n    ",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/api/v1/product/create",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"product",
+										"create"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "deleteOne",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{Token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/api/v1/product/delete/7",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"product",
+										"delete",
+										"7"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "putOne",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{Token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "      {\r\n        \"name\": \"Gaming laptop updated\",\r\n        \"description\": \"laptop updated with put method\",\r\n        \"price\": 2000,\r\n        \"stock\": 10,\r\n        \"idCategory\": 2\r\n      }",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/api/v1/product/put/1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"product",
+										"put",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "patchOne",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{Token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "      {\r\n        \"name\": \"Gaming laptop updated WITH PATCHHHHHHHHHHHHH\",\r\n        \"price\": 1000,\r\n        \"stock\": 100,\r\n        \"idCategory\": 3\r\n      }",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/api/v1/product/patch/1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"product",
+										"patch",
+										"1"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Provider",
+					"item": [
+						{
+							"name": "getAll",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{Token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/api/v1/provider/get",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"provider",
+										"get"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "postBatch",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{Token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "[\r\n    {\r\n        \"salary\": 2100000,\r\n        \"phoneNumber\": \"3154868594\",\r\n        \"name\": \"Sofia mesa\",\r\n        \"email\": \"sofiamesa@example.com\",\r\n        \"company\": \"AMD\"\r\n    },\r\n    {\r\n        \"salary\": 2100000,\r\n        \"phoneNumber\": \"3154268474\",\r\n        \"name\": \"Fabricio Gaviria\",\r\n        \"email\": \"fabricioga@example.com\",\r\n        \"company\": \"Nvidia\"\r\n    },\r\n    {\r\n        \"salary\": 2100000,\r\n        \"phoneNumber\": \"3154268594\",\r\n        \"name\": \"Juan Pere\",\r\n        \"email\": \"juan.perz@example.com\",\r\n        \"company\": \"Nvidia\"\r\n    }\r\n]",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/api/v1/provider/createBatch",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"provider",
+										"createBatch"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "getbyID",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{Token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/api/v1/provider/get/3",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"provider",
+										"get",
+										"3"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "getSalariesOfProviders",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{Token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/api/v1/provider/find-salaries",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"provider",
+										"find-salaries"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "postOne",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{Token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "    {\r\n        \"salary\": 2100000,\r\n        \"phoneNumber\": \"3154868594\",\r\n        \"name\": \"SofiaDASDAS mesaAAAAADDDD\",\r\n        \"email\": \"sofiamAAAAAAesa@example.com\",\r\n        \"company\": \"AMAAAAAAAD\",\r\n        \"existentProductsIds\": [\r\n            6\r\n        ]\r\n    }",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/api/v1/provider/create",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"provider",
+										"create"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "deleteOne",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{Token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/api/v1/provider/delete/1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"provider",
+										"delete",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "putOne",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{Token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "    {\r\n        \"salary\": 1100000,\r\n        \"name\": \"Sofia RIOS\",\r\n        \"email\": \"sofiasiRIOSlla@example.com\",\r\n        \"company\": \"DEEPSEEAAK\",\r\n        \"existentProductsIds\": [\r\n            1\r\n        ]\r\n    }",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/api/v1/provider/put/8",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"provider",
+										"put",
+										"8"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "patchOne",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{Token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "    {\r\n        \"phoneNumber\": \"4154868594\",\r\n        \"name\": \"Sofia silla\",\r\n        \"email\": \"sofiasilla@example.com\",\r\n        \"company\": \"AMD\",\r\n        \"existentProductsIds\": [\r\n            1, 2, 3, 4\r\n        ]\r\n    }",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/api/v1/provider/patch/8",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"provider",
+										"patch",
+										"8"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Sale",
+					"item": [
+						{
+							"name": "getAll",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{Token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/api/v1/sale/get",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"sale",
+										"get"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "postBatch",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{Token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "[\r\n    {\r\n        \"idCustomer\": 1,\r\n        \"idSeller\": 1,\r\n        \"listdetailSale\": [\r\n            {\r\n                \"quantity\": 1,\r\n                \"product\": 1\r\n            }\r\n        ]\r\n    },\r\n    {\r\n        \"idCustomer\": 2,\r\n        \"idSeller\": 2,\r\n        \"listdetailSale\": [\r\n            {\r\n                \"quantity\": 3,\r\n                \"product\": 3\r\n            }\r\n        ]\r\n    },\r\n    {\r\n        \"idCustomer\": 3,\r\n        \"idSeller\": 3,\r\n        \"listdetailSale\": [\r\n            {\r\n                \"quantity\": 2,\r\n                \"product\": 5\r\n            },\r\n            {\r\n                \"quantity\": 3,\r\n                \"product\": 4\r\n            }\r\n        ]\r\n    },\r\n    {\r\n        \"idCustomer\": 4,\r\n        \"idSeller\": 4,\r\n        \"listdetailSale\": [\r\n            {\r\n                \"quantity\": 4,\r\n                \"product\": 6\r\n            }\r\n        ]\r\n    }\r\n]",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/api/v1/sale/createBatch",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"sale",
+										"createBatch"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "getbyID",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{Token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/api/v1/sale/get/1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"sale",
+										"get",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "totalSold",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{Token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/api/v1/sale/total",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"sale",
+										"total"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "purchasescustomers",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{Token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/api/v1/sale/find-purchases-customers",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"sale",
+										"find-purchases-customers"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "postOne",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{Token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"idCustomer\": 4,\r\n    \"idSeller\": 11,\r\n    \"listdetailSale\": [\r\n        {\r\n            \"quantity\": 1,\r\n            \"product\": 1\r\n        }\r\n    ]\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/api/v1/sale/create",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"sale",
+										"create"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "deleteOne",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{Token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/api/v1/sale/delete/5",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"sale",
+										"delete",
+										"5"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "putOne",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{Token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"idCustomer\": 2,\r\n    \"idSeller\": 2,\r\n    \"listdetailSale\": [\r\n        {\r\n            \"quantity\": 5,\r\n            \"product\": 2\r\n        }\r\n    ]\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/api/v1/sale/put/1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"sale",
+										"put",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "patchOne",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{Token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"idCustomer\": 4,\r\n    \"idSeller\": 4,\r\n    \"listdetailSale\": [\r\n        {\r\n            \"quantity\": 1,\r\n            \"product\": 1\r\n        }\r\n    ]\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/api/v1/sale/patch/1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"sale",
+										"patch",
+										"1"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Seller",
+					"item": [
+						{
+							"name": "getAll",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{Token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/api/v1/seller/get",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"seller",
+										"get"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "postBatch",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{Token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "[\r\n  {\r\n    \"salary\": 1700000,\r\n    \"name\": \"Carlos Ruiz\",\r\n    \"email\": \"carlos.ruiz@example.com\",\r\n    \"phoneNumber\": \"1122334455\"\r\n  },\r\n  {\r\n    \"salary\": 1950000,\r\n    \"name\": \"Lucía Herrera\",\r\n    \"email\": \"lucia.herrera@example.com\",\r\n    \"phoneNumber\": \"3157896541\"\r\n  },\r\n  {\r\n    \"salary\": 1825000,\r\n    \"name\": \"Manuel Torres\",\r\n    \"email\": \"manuel.torres@example.com\",\r\n    \"phoneNumber\": \"3007412589\"\r\n  },\r\n  {\r\n    \"salary\": 2100000,\r\n    \"name\": \"Daniela Pérez\",\r\n    \"email\": \"daniela.perez@example.com\",\r\n    \"phoneNumber\": \"3216549870\"\r\n  },\r\n  {\r\n    \"salary\": 1770000,\r\n    \"name\": \"Felipe Mendoza\",\r\n    \"email\": \"felipe.mendoza@example.com\",\r\n    \"phoneNumber\": \"3112233445\"\r\n  },\r\n  {\r\n    \"salary\": 2000000,\r\n    \"name\": \"Sofía Ríos\",\r\n    \"email\": \"sofia.rios@example.com\",\r\n    \"phoneNumber\": \"3124567890\"\r\n  }\r\n]",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/api/v1/seller/createBatch",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"seller",
+										"createBatch"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "getbyID",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{Token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/api/v1/seller/get/6",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"seller",
+										"get",
+										"6"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "postOne",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{Token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "  {\r\n    \"salary\": 2000000,\r\n    \"name\": \"Camilo Salazar\",\r\n    \"email\": \"Camilosalazar@example.com\",\r\n    \"phone\": \"3145621562\",\r\n    \"commission\" : 0\r\n  }",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/api/v1/seller/create",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"seller",
+										"create"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "deleteOne",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{Token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/api/v1/seller/delete/5",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"seller",
+										"delete",
+										"5"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "putOne",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{Token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "    {\r\n        \"name\": \"Sofía Mares\",\r\n        \"phoneNumber\": \"8984567890\",\r\n        \"salary\": 1000000,\r\n        \"commission\": 20000\r\n    }",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/api/v1/seller/put/6",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"seller",
+										"put",
+										"6"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "patchOne",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{Token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "    {\r\n        \"phoneNumber\": \"3102415056\",\r\n        \"commission\": 500000\r\n    }",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/api/v1/seller/patch/6",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"seller",
+										"patch",
+										"6"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "getSalesOfSellers",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{Token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/api/v1/seller/find-sales/4",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"seller",
+										"find-sales",
+										"4"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "getSalariesOfSellers",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{Token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/api/v1/seller/find-salaries",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"seller",
+										"find-salaries"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Swagger",
+					"item": [
+						{
+							"name": "api-docs",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/api-docs",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api-docs"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			],
+			"auth": {
+				"type": "bearer"
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		}
+	]
+}
