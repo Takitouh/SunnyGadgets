@@ -38,27 +38,22 @@ public class UserDetailsServiceImp implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername (String username) throws UsernameNotFoundException {
-
-        //tenemos User sec y necesitamos devolver UserDetails
-        //traemos el usuario de la bd
+        //Find the username in the DB
         UserSec userSec = userRepo.findUserEntityByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("The user " + username + " was not found"));
-
-        //con GrantedAuthority Spring Security maneja permisos
+        //Spring security handle the authorities with GrantedAuthority
         List<GrantedAuthority> authorityList = new ArrayList<>();
 
-        //Programación funcional a full
-        //tomamos roles y los convertimos en SimpleGrantedAuthority para poder agregarlos a la authorityList
+        //We add the roles to the list of authorities
         userSec.getRoles()
                 .forEach(role -> authorityList.add(new SimpleGrantedAuthority("ROLE_".concat(role.getRole()))));
 
 
-        //ahora tenemos que agregar los permisos
+        //We add the permissions to the list of authorities
         userSec.getRoles().stream()
-                .flatMap(role -> role.getPermissions().stream()) //acá recorro los permisos de los roles
+                .flatMap(role -> role.getPermissions().stream())
                 .forEach(permission -> authorityList.add(new SimpleGrantedAuthority(permission.getPermissionName())));
 
-        //retornamos el usuario en formato Spring Security con los datos de nuestro userSec
         return new User(userSec.getUsername(),
                 userSec.getPassword(),
                 userSec.isEnabled(),
@@ -74,17 +69,17 @@ public class UserDetailsServiceImp implements UserDetailsService {
         String password = userRequest.password();
         Authentication authentication = this.authenticate(username, password);
         SecurityContextHolder.getContext().setAuthentication(authentication);
+        //Create the JWT according to the information of the user
         String accessToken = jwtUtils.createToken(authentication);
-        AuthResponseDTO authResponseDTO = new AuthResponseDTO(username, "Login successful", accessToken, true);
-        return authResponseDTO;
+        return new AuthResponseDTO(username, "Login successful", accessToken, true);
     }
 
     private Authentication authenticate(String username, String password) {
         UserDetails userDetails = this.loadUserByUsername(username);
-
+        //If the credentials are invalid, throw exception
         if(!Objects.equals(userDetails.getUsername(), username) || !passwordEncoder.matches(password, userDetails.getPassword())) {
             throw new BadCredentialsException("Invalid username or password");
-        }
+        } //else continue
        return new UsernamePasswordAuthenticationToken(username, userDetails.getPassword(), userDetails.getAuthorities());
     }
 }
